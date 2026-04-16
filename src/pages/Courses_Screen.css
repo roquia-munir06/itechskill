@@ -1,0 +1,330 @@
+.courses-page-container {
+  padding: 0px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.course-header {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+  color: white;
+  padding: 5px 20px; /* Change from 25px 20px */
+  text-align: center;
+  min-height: 80px; /* Change from 100px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.courses-title {
+  font-size: 3.0rem;
+  font-weight: 640;
+  color: #22013a;
+  margin-bottom: 5px;
+  line-height: 1.1;
+}
+
+.courses-subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.courses-subtitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #8e5203;
+  margin: 0;
+}
+
+.courses-count {
+  font-size: 1.3rem;
+  color: #8e5203;
+  font-weight: 600;
+  padding: 8px 20px;
+  background: rgba(142, 82, 3, 0.1);
+  border-radius: 25px;
+}
+
+/* Courses Grid */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Change from 350px */
+  gap: 25px; /* Change from 30px */
+  margin-bottom: 60px;
+}
+
+/* Course Card Styling */
+.course-card {
+  background: white;
+  border-radius: 12px;
+  /* overflow: hidden; */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #22013a;
+  display: flex;           /* ADD THIS */
+  flex-direction: column;  /* ADD THIS */
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.course-header {
+  background-color: #22013a; /* Default purple */
+  color: white;
+  padding: 15px 20px; /* Change from 25px 20px */
+  text-align: center;
+  min-height: 80px; /* Change from 100px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-title {
+  font-size: 1.5rem; /* Change from 1.5rem */
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.0;
+  color: white !important;
+}
+
+.course-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;        /* ADD THIS — remove the old height lines */
+  min-height: 350px;
+}
+
+.course-fee-section {
+  margin-bottom: 15px;
+}
+
+.fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px; /* Reduced from 5px */
+}
+
+.fee-row.discounted {
+  margin-top: 10px; /* Reduced from 15px */
+}
+
+.fee-dollar {
+  font-size: 0.85rem; /* Slightly smaller font */
+  color: #777;
+  text-align: right;
+  margin-bottom: 1px; /* Minimal margin */
+  line-height: 1.1;
+}
+
+.course-duration {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0; /* Compact padding */
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin: 12px 0; /* Reduced margin */
+}
+
+.duration-label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.duration-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #22013a;
+}
+
+.course-technologies {
+  margin-bottom: 20px;
+  min-height: 80px; /* Reserve consistent space for technologies */
+}
+
+.tech-label {
+  display: block;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  background: rgba(34, 1, 58, 0.1);
+  color: #22013a;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.course-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: auto; /* This pushes buttons to bottom */
+  padding-top: 20px;
+  border-top: 1px solid #eee; /* Optional: add separator line */
+}
+.details-button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.apply-button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #22013a; /* Purple background - ADD THIS */
+  color: white; /* White text - ADD THIS */
+}
+
+.apply-button:hover {
+  background-color: #2a0250; /* Darker purple on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 2, 80, 0.2);
+}
+
+.details-button {
+  background-color: white;
+  color: #22013a;
+  border: 2px solid #22013a;
+}
+
+.details-button:hover {
+  background-color: rgba(34, 1, 58, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 1, 58, 0.1);
+}
+
+/* Courses Footer */
+.courses-footer {
+  text-align: center;
+  padding: 10px 20px;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+}
+
+.courses-footer-text {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-link {
+  color: #22013a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #8e5203;
+  text-decoration: underline;
+}
+
+/* Responsive design for courses */
+@media (max-width: 768px) {
+  .courses-page-container {
+    padding: 20px 15px;
+  }
+  
+  .courses-title {
+    font-size: 2.5rem;
+  }
+  
+  .courses-subtitle {
+    font-size: 1.4rem;
+  }
+  
+  .courses-subheader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  
+  
+ .course-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: auto; /* This pushes buttons to bottom */
+  padding-top: 20px;
+  border-top: 1px solid #eee; /* Optional: add separator line */
+}
+  
+  
+  
+ 
+  
+
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  
+  
+  .courses-title {
+    font-size: 2rem;
+  }
+  
+  
+}
+
+
+/* ── Prevent horizontal overflow ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.courses-page-container {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.courses-grid {
+  overflow-x: hidden;
+}
+
+.tech-tags {
+  flex-wrap: wrap;  /* stops tags from overflowing */
+}
+
+.tech-tag {
+  word-break: break-word;
+}

@@ -1,0 +1,889 @@
+/* Terms.css - Page-specific styles ONLY for Terms component */
+
+/* Container */
+.terms-page-container {
+ max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  color: #333;
+}
+
+/* Hero Section */
+.terms-hero-section {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: linear-gradient(135deg, #2a043b 20%, #868528 100%);
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
+
+.terms-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.terms-hero-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.terms-hero-icon {
+  font-size: 3.5rem;
+  color: #f9f493;
+  opacity: 0.9;
+}
+
+.terms-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  color: #f0f0f0;
+}
+
+.terms-hero-description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0.95;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #f0f0f0;
+}
+
+
+/* Notice Section */
+.terms-notice-section {
+  background: #fff8e1;
+  border-left: 5px solid #22013a;
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 40px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.terms-notice-icon {
+  font-size: 2rem;
+  color: #22013a;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.terms-notice-text h3 {
+  font-size: 1.4rem;
+  color: #22013a;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.terms-notice-text p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Key Points Section */
+.terms-key-points-section {
+  margin-bottom: 60px;
+}
+
+.terms-section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #22013a;
+  margin-bottom: 40px;
+  text-align: center;
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.terms-points-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.terms-point-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.terms-point-card:hover {
+  transform: translateY(-10px);
+  border-color: #22013a;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.terms-point-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: white;
+}
+
+.terms-point-card h3 {
+  font-size: 1.3rem;
+  color: #22013a;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.terms-point-card p {
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Terms Section Colors */
+.terms-point-general {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-point-enrollment {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-point-payment {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-point-learning {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-point-certification {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-point-support {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+/* Main Terms Sections */
+.terms-sections-container {
+  margin: 60px 0;
+}
+
+.terms-content-section {
+  margin-bottom: 40px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.terms-content-header {
+  padding: 25px 30px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.terms-content-icon {
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.terms-content-header .terms-content-title {
+  font-size: 1.6rem;
+  color: white;
+  margin: 0;
+  text-align: left;
+}
+
+.terms-section-content {
+  background: white;
+  padding: 30px;
+}
+
+.terms-section-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.terms-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.terms-list-item:last-child {
+  border-bottom: none;
+}
+
+.terms-list-icon {
+  color: #28a745;
+  font-size: 1.1rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.terms-list-item span {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Terms Section Header Colors */
+.terms-section-general {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-section-enrollment {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-section-payment {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-section-learning {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-section-certification {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+
+
+
+
+
+
+
+.terms-section-support {
+  
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+
+}
+
+.terms-section-privacy {
+  
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+.terms-section-contact {
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 50%, #f9f493 100%);
+}
+
+/* Contact Section */
+.terms-contact-section {
+  background: linear-gradient(135deg, #2a043b 20%, #868528 100%);
+  
+  border-radius: 20px;
+  padding: 60px 40px;
+  margin: 60px 0;
+  text-align: center;
+}
+
+.terms-contact-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.terms-contact-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.terms-contact-header-icon {
+  font-size: 3rem;
+  color: #eee0f8;
+}
+
+.terms-contact-title {
+  font-size: 2.2rem;
+  color: #ebe0f3;
+  margin: 0;
+  font-weight: 700;
+}
+
+.terms-contact-description {
+  font-size: 1.1rem;
+  color: #ebe0f3;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.terms-contact-info {
+  margin-bottom: 40px;
+}
+
+.terms-email-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.terms-email-icon {
+  font-size: 1.8rem;
+  color: #22013a;
+}
+
+.terms-email-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.terms-email-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.terms-email-address {
+  font-size: 1.2rem;
+  color: #22013a;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.terms-email-address:hover {
+  color: #2a0250;
+  text-decoration: underline;
+}
+
+.terms-contact-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.terms-contact-btn,
+.terms-download-btn {
+  padding: 15px 35px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.terms-contact-btn {
+  background: #22013a;
+  color: white;
+}
+
+.terms-contact-btn:hover {
+  background: #2a0250;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(34, 1, 58, 0.2);
+}
+
+.terms-download-btn {
+  background: transparent;
+  color: #e8d9f3;
+  border: 2px solid #e8d9f3;
+}
+
+.terms-download-btn:hover {
+  background: #22013a;
+  color: white;
+  transform: translateY(-3px);
+  
+  border: 2px solid  #22013a;
+}
+
+
+
+
+
+/* Terms Specific Animations */
+@keyframes termsFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terms-page-container > * {
+  animation: termsFadeInUp 0.5s ease forwards;
+}
+
+.terms-page-container > *:nth-child(1) { animation-delay: 0.1s; }
+.terms-page-container > *:nth-child(2) { animation-delay: 0.2s; }
+.terms-page-container > *:nth-child(3) { animation-delay: 0.3s; }
+.terms-page-container > *:nth-child(4) { animation-delay: 0.4s; }
+.terms-page-container > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* Terms Specific Responsive Design */
+@media (max-width: 992px) {
+  .terms-hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .terms-section-title {
+    font-size: 2rem;
+  }
+  
+  .terms-section-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .terms-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* ========== TABLET RESPONSIVE (768px) - Match AboutUs structure ========== */
+@media (max-width: 768px) {
+  .terms-page-container {
+    padding: 0 15px;
+  }
+
+  /* Hero Section */
+  .terms-hero-section {
+    padding: 30px 0;
+    margin-bottom: 30px;
+  }
+
+  .terms-hero-content {
+    padding: 0 15px;
+    text-align: left; /* Match AboutUs left alignment */
+  }
+
+  .terms-hero-header {
+    align-items: flex-start; /* Left align on mobile */
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .terms-hero-icon {
+    font-size: 2.5rem;
+  }
+
+  .terms-hero-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: left; /* Match AboutUs */
+    color: white; /* Maintain white color */
+  }
+  
+  .terms-hero-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: left; /* Match AboutUs */
+    margin-bottom: 15px;
+    color: white; /* Maintain white color */
+  }
+
+  /* Notice Section */
+  .terms-notice-section {
+    padding: 20px 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    flex-direction: row; /* Keep side-by-side */
+    align-items: flex-start;
+  }
+
+  .terms-notice-icon {
+    font-size: 1.8rem;
+    margin-top: 0;
+    text-align: center; /* Keep icon centered */
+  }
+
+  .terms-notice-text h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    text-align: left; /* Match AboutUs */
+  }
+
+  .terms-notice-text p {
+    font-size: 0.9rem;
+    text-align: left; /* Match AboutUs */
+  }
+
+  /* Key Points Section */
+  .terms-key-points-section {
+    margin-bottom: 40px;
+  }
+
+  .terms-section-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: left; /* Match AboutUs */
+    -webkit-text-fill-color: #22013a; /* Solid color for mobile */
+    background: none; /* Remove gradient on mobile */
+  }
+
+  .terms-points-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .terms-point-card {
+    padding: 20px 15px;
+    border-radius: 8px;
+    text-align: left; /* Match AboutUs */
+  }
+
+  .terms-point-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    margin: 0 0 15px 0; /* Remove auto margin for left alignment */
+    text-align: center; /* Keep icons centered */
+  }
+
+  .terms-point-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: left; /* Match AboutUs */
+  }
+
+  .terms-point-card p {
+    font-size: 0.9rem;
+    text-align: left; /* Match AboutUs */
+  }
+
+  /* Main Terms Sections */
+  .terms-sections-container {
+    margin: 40px 0;
+  }
+
+  .terms-content-section {
+    margin-bottom: 25px;
+    border-radius: 8px;
+  }
+
+  .terms-content-header {
+    padding: 20px 15px;
+    flex-direction: column; /* Stack on mobile */
+    text-align: center;
+    gap: 15px;
+  }
+
+  .terms-content-icon {
+    font-size: 1.8rem;
+    text-align: center; /* Keep icon centered */
+  }
+
+  .terms-content-header .terms-content-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .terms-section-content {
+    padding: 20px 15px;
+  }
+
+  .terms-section-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .terms-list-item {
+    padding: 10px 0;
+    gap: 12px;
+  }
+
+  .terms-list-icon {
+    font-size: 1rem;
+    margin-top: 2px;
+    text-align: center; /* Keep icon centered */
+  }
+
+  .terms-list-item span {
+    font-size: 0.9rem;
+    text-align: left; /* Match AboutUs */
+  }
+
+  /* Contact Section */
+  .terms-contact-section {
+    padding: 30px 15px;
+    margin: 40px 0;
+    border-radius: 8px;
+  }
+
+  .terms-contact-header {
+    align-items: flex-start; /* Left align on mobile */
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .terms-contact-header-icon {
+    font-size: 2.5rem;
+    text-align: center; /* Keep icon centered */
+  }
+
+  .terms-contact-title {
+    font-size: 1.8rem;
+    text-align: left; /* Match AboutUs */
+  }
+
+  .terms-contact-description {
+    font-size: 1rem;
+    margin-bottom: 25px;
+    text-align: left; /* Match AboutUs */
+  }
+
+  .terms-contact-info {
+    margin-bottom: 30px;
+  }
+
+  .terms-email-contact {
+    padding: 15px 20px;
+    border-radius: 8px;
+    flex-direction: column; /* Stack on mobile */
+    text-align: center;
+    gap: 10px;
+  }
+
+  .terms-email-icon {
+    font-size: 1.5rem;
+    text-align: center; /* Keep icon centered */
+  }
+
+  .terms-email-details {
+    align-items: center;
+  }
+
+  .terms-email-label {
+    font-size: 0.85rem;
+  }
+
+  .terms-email-address {
+    font-size: 1.1rem;
+  }
+
+  .terms-contact-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .terms-contact-btn,
+  .terms-download-btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 25px;
+    font-size: 0.95rem;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ========== MOBILE RESPONSIVE (480px) - Match AboutUs structure ========== */
+@media (max-width: 480px) {
+  .terms-page-container {
+    padding: 0 10px;
+  }
+
+  /* Hero Section */
+  .terms-hero-section {
+    padding: 25px 0;
+    margin-bottom: 25px;
+  }
+
+  .terms-hero-content {
+    padding: 0 10px;
+  }
+
+  .terms-hero-icon {
+    font-size: 2rem;
+  }
+
+  .terms-hero-title {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  
+  .terms-hero-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  /* Notice Section */
+  .terms-notice-section {
+    padding: 15px 10px;
+    margin-bottom: 25px;
+  }
+
+  .terms-notice-icon {
+    font-size: 1.5rem;
+  }
+
+  .terms-notice-text h3 {
+    font-size: 1.1rem;
+  }
+
+  .terms-notice-text p {
+    font-size: 0.85rem;
+  }
+
+  /* Key Points Section */
+  .terms-key-points-section {
+    margin-bottom: 30px;
+  }
+
+  .terms-section-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .terms-point-card {
+    padding: 15px 10px;
+  }
+
+  .terms-point-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 1.6rem;
+  }
+
+  .terms-point-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .terms-point-card p {
+    font-size: 0.85rem;
+  }
+
+  /* Main Terms Sections */
+  .terms-sections-container {
+    margin: 30px 0;
+  }
+
+  .terms-content-header {
+    padding: 15px 10px;
+  }
+
+  .terms-content-icon {
+    font-size: 1.6rem;
+  }
+
+  .terms-content-header .terms-content-title {
+    font-size: 1.2rem;
+  }
+
+  .terms-section-content {
+    padding: 15px 10px;
+  }
+
+  .terms-list-item {
+    gap: 10px;
+    padding: 8px 0;
+  }
+
+  .terms-list-icon {
+    font-size: 0.9rem;
+  }
+
+  .terms-list-item span {
+    font-size: 0.85rem;
+  }
+
+  /* Contact Section */
+  .terms-contact-section {
+    padding: 25px 10px;
+    margin: 30px 0;
+  }
+
+  .terms-contact-header-icon {
+    font-size: 2rem;
+  }
+
+  .terms-contact-title {
+    font-size: 1.5rem;
+  }
+
+  .terms-contact-description {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .terms-email-contact {
+    padding: 12px 15px;
+  }
+
+  .terms-email-icon {
+    font-size: 1.3rem;
+  }
+
+  .terms-email-label {
+    font-size: 0.8rem;
+  }
+
+  .terms-email-address {
+    font-size: 1rem;
+  }
+
+  .terms-contact-btn,
+  .terms-download-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}.terms-whatsapp-btn {
+  padding: 15px 35px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  background: #25D366;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+.terms-whatsapp-btn:hover {
+  background: #1da851;
+  transform: translateY(-3px);
+}

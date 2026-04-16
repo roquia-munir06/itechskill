@@ -1,0 +1,269 @@
+/* src/components/CompaniesLogo.css */
+
+/* ========== LOGOS & REVIEWS SECTION ========== */
+.logos-reviews-section {
+  padding: 20px 20px 25px;
+  background: #ecdc9a;
+  max-width: 1400px;
+  margin: 20px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.trusted-section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #22013a;
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.trusted-section-subtitle {
+  font-size: 1.3rem;
+  color: #383737;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ========== MARQUEE / ROTATION TRACK ========== */
+.logos-marquee-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 0 8px;
+}
+
+/* Soft fade on left & right edges */
+.marquee-fade-left,
+.marquee-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-fade-left {
+  left: 0;
+  background: linear-gradient(to right, #ecdc9a 0%, transparent 100%);
+}
+
+.marquee-fade-right {
+  right: 0;
+  background: linear-gradient(to left, #ecdc9a 0%, transparent 100%);
+}
+
+/* The scrolling track */
+.logos-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+}
+
+/* Pause on hover for accessibility / usability */
+.logos-marquee-wrapper:hover .logos-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% / 3)); }
+}
+
+/* ========== INDIVIDUAL LOGO ITEMS ========== */
+.logo-item-single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 180px;           /* Increased from 160px */
+  width: 220px;            /* Fixed width for consistent spacing */
+  padding: 15px 20px;
+  background: transparent;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo-item-single:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.15));
+}
+
+/* Logo images — significantly larger */
+.logo-item-single img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 160px;       /* Increased from 140px */
+  object-fit: contain;
+}
+
+/* ========== LABEL ========== */
+.companies-label {
+  font-size: 1.2rem;
+  color: #383737;
+  text-align: center;
+  margin-top: 4px;
+  font-weight: 500;
+  max-width: 800px;
+  line-height: 1.6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Large screens */
+@media (min-width: 1400px) {
+  .logo-item-single {
+    height: 200px;
+    width: 240px;
+  }
+
+  .logo-item-single img {
+    max-height: 180px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .logos-reviews-section {
+    padding: 30px 15px;
+    margin: 20px 10px;
+  }
+
+  .trusted-section-title {
+    font-size: 2.2rem;
+  }
+
+  .trusted-section-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .logo-item-single {
+    height: 150px;
+    width: 190px;
+    padding: 10px 15px;
+  }
+
+  .logo-item-single img {
+    max-height: 130px;
+  }
+
+  .marquee-fade-left,
+  .marquee-fade-right {
+    width: 80px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .logos-reviews-section {
+    padding: 25px 15px;
+    margin: 20px 10px;
+    border-radius: 20px;
+  }
+
+  .trusted-section-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .trusted-section-subtitle {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+
+  .logo-item-single {
+    height: 130px;
+    width: 160px;
+    padding: 10px;
+  }
+
+  .logo-item-single img {
+    max-height: 115px;
+  }
+
+  .marquee-fade-left,
+  .marquee-fade-right {
+    width: 50px;
+  }
+
+  .companies-label {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    padding: 0 10px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .logos-reviews-section {
+    padding: 20px 10px;
+    margin: 15px 5px;
+    border-radius: 15px;
+  }
+
+  .trusted-section-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .trusted-section-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .logo-item-single {
+    height: 120px;
+    width: 140px;
+    padding: 10px 8px;
+  }
+
+  .logo-item-single img {
+    max-height: 105px;
+  }
+
+  .marquee-fade-left,
+  .marquee-fade-right {
+    width: 35px;
+  }
+
+  .companies-label {
+    font-size: 0.85rem;
+    margin-top: 15px;
+  }
+
+  /* Slightly faster on small screens so motion feels snappy */
+  .logos-marquee-track {
+    animation-duration: 20s;
+  }
+}
+
+/* Extra small */
+@media (max-width: 360px) {
+  .logo-item-single {
+    height: 110px;
+    width: 130px;
+  }
+
+  .logo-item-single img {
+    max-height: 95px;
+  }
+
+  .trusted-section-title {
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,3567 @@
+
+
+/* YouTubeRecommendations.css */
+
+.youtube-recommendations-container {
+  padding: 0 20px 0 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.purple-recommendation-box.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0;
+  margin-bottom: 10px;
+  overflow: visible;        /* ← allows image to sit at bottom */
+}
+
+
+.purple-box-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: stretch; /* This makes both text and image fill full height */
+  justify-content: space-between;
+  gap: 40px;
+  height: 100%; /* Takes full 400px */
+  width: 100%;
+}
+
+/* Text section - takes remaining space */
+.purple-box-text {
+  flex: 1;
+  color: white;
+  padding: 20px 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.purple-box-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  width: 100%;
+}
+
+.purple-box-subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.9;
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Image container - MAKE IMAGE TOUCH BOTTOM */
+.purple-box-image.full-height {
+  height: 100%; /* Full 400px */
+  min-width: 300px;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* THIS makes image touch bottom */
+  justify-content: center;
+  overflow: hidden; /* Prevent any overflow */
+}
+
+/* Image itself - FILL HEIGHT AND TOUCH BOTTOM */
+.student-image.full-height {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  max-height: 100%; /* Don't exceed container */
+  object-fit: contain; /* Show full image without cropping */
+  object-position: bottom; /* Anchor to bottom */
+  display: block;
+  margin: 0;
+  align-self: flex-end; /* Ensure it stays at bottom */
+}
+
+/* Recommendations header */
+.recommendations-header {
+  margin-bottom: 30px;
+}
+
+.recommendations-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.recommendations-subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.recommendations-subheader h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.video-count {
+  font-size: 1.2rem;
+  color: #8e5203;
+  font-weight: 500;
+}
+
+/* Videos grid */
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.video-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.video-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.video-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.video-card:hover .play-button {
+  opacity: 1;
+}
+
+.video-duration {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.video-content {
+  padding: 20px;
+}
+
+.video-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.video-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.video-author {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.video-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.video-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+.views-count {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.video-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #8e5203;
+  padding: 4px 12px;
+  background: rgba(142, 82, 3, 0.1);
+  border-radius: 6px;
+}
+
+.video-price.popular-price {
+  color: #28a745;
+  background: rgba(40, 167, 69, 0.1);
+}
+
+
+.company-title,
+.learning-title,
+.support-title {
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.company-links a:hover,
+.learning-links a:hover,
+.support-links a:hover {
+  color: #f9f493;;
+}
+
+.company-links li,
+.learning-links li,
+.support-links li {
+  margin-bottom: 10px;
+}
+
+.company-links a,
+.learning-links a,
+.support-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.company-links a:hover,
+.learning-links a:hover,
+.support-links a:hover {
+  color:  #f9f493;
+}
+
+.youtube-channel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.youtube-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ff0000;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: opacity 0.3s ease;
+}
+
+.youtube-link:hover {
+  opacity: 0.8;
+  color: #f9f493; 
+}
+
+
+
+
+/* Courses Grid - REPLACE or ADD to existing videos-grid */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+/* Course Card Styling */
+.course-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.course-header {
+  background-color: #6a08b1; /* Default purple */
+  color: white;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.course-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.course-content {
+  padding: 25px;
+}
+
+.course-fee-section {
+  margin-bottom: 20px;
+}
+
+.fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.fee-row.discounted {
+  margin-top: 15px;
+}
+
+.fee-label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.fee-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #22013a;
+}
+
+.fee-dollar {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+.course-duration {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.duration-label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.duration-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #22013a;
+}
+
+.course-technologies {
+  margin-bottom: 25px;
+}
+
+.tech-label {
+  display: block;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  background: rgba(34, 1, 58, 0.1);
+  color: #22013a;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.course-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.apply-button,
+.details-button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.apply-button {
+  background-color: #22013a;
+  color: white;
+}
+
+.apply-button:hover {
+  background-color: #2a0250;
+  transform: translateY(-2px);
+}
+
+.details-button {
+  background-color: white;
+  color: #22013a;
+  border: 2px solid #22013a;
+}
+
+.details-button:hover {
+  background-color: rgba(34, 1, 58, 0.05);
+  transform: translateY(-2px);
+}
+
+
+
+
+/* Add these to your YouTubeRecommendations.css */
+
+.category-badge {
+  display: inline-block;
+  background: rgba(142, 82, 3, 0.1);
+  color: #8e5203;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.playlist-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(34, 1, 58, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+}
+
+.playlist-link {
+  color: #ff0000;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.playlist-link:hover {
+  text-decoration: underline;
+}
+
+/* Optional: Add filter for categories */
+.youtube-categories {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.category-filter {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-filter.active {
+  background: #22013a;
+  color: white;
+  border-color: #22013a;
+}
+
+.category-filter:hover {
+  background: rgba(34, 1, 58, 0.1);
+}
+
+/* Skills & Certifications Section - Center Text Vertically */
+.skills-certifications-section {
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius:  30px;
+}
+
+.skills-container {
+  display: flex;
+  gap: 80px;
+  align-items: center; /* Changed from flex-start to center */
+  min-height: 500px; /* Add minimum height */
+}
+
+.skills-content {
+  flex: 1;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* This centers content vertically */
+  height: 100%; /* Take full height of parent */
+}
+
+.skills-main-title {
+  font-size: 2.2rem;
+  color: #22013a;
+  margin-bottom: 25px;
+  font-weight: 700;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #22013a 0%, #8e5203 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.skills-subtitle {
+  font-size: 1.4rem;
+  color: #555;
+  line-height: 1.7;
+  max-width: 500px;
+  font-weight: 500;
+}
+
+/* Carousel Container - Ensure it matches height */
+.skills-carousel-container {
+  flex: 1.5;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center carousel vertically */
+  height: 100%; /* Take full height */
+}
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 20px;
+   min-height: 48px;
+  width: 100%;
+}
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack carousel and controls vertically */
+  align-items: center;
+  width: 100%;
+}
+
+/* Arrow styling - keep as is */
+.carousel-arrow {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.carousel-arrow:hover {
+  background: #22013a;
+  border-color: #22013a;
+  color: white;
+  transform: scale(1.1);
+}
+
+.carousel-arrow:active {
+  transform: scale(0.95);
+}
+
+.carousel-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* Ensure carousel takes full width */
+.skills-carousel {
+  overflow: hidden;
+  flex: 1;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.skills-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  gap: 20px;
+}
+
+/* Improved Skill Card - More Beautiful and Eye-catching */
+.skill-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+   flex: 0 0 calc(50% - 10px);
+  min-width: 0;
+  height: 480px; /* Fixed height ensures consistent center alignment */
+}
+
+.skill-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(34, 1, 58, 0.15);
+ 
+}
+
+
+
+.skill-card-header {
+  padding: 20px;
+  text-align: center;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skill-icon-container {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.skill-icon {
+  font-size: 2rem;
+  color: white;
+}
+
+.skill-card-content {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+
+.skill-title {
+  font-size: 1.4rem;
+  color: #22013a;
+  margin-bottom: 6px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.skill-description {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.skill-meta {
+  margin-bottom: 5px;
+}
+
+.courses-count {
+  display: inline-block;
+  background: rgba(34, 1, 58, 0.1);
+  color: #22013a;
+  padding: 6px 6px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.explore-button {
+  padding: 12px 6px;
+  background-color: #22013a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+
+.explore-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(34, 1, 58, 0.3);
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 0 15px;
+}
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot:hover {
+  background: #aaa;
+  transform: scale(1.2);
+}
+.carousel-dot.active {
+  background: #22013a;
+  transform: scale(1.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .skills-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .skills-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .skills-subtitle {
+    max-width: 100%;
+  }
+  
+  .skill-card {
+    flex: 0 0 calc(50% - 10px); /* 2 cards on tablet */
+  }
+}
+
+@media (max-width: 480px) {
+  .purple-recommendation-box.full-width {
+    height: 280px; /* Even smaller for phones */
+    min-height: 280px;
+    max-height: 280px;
+  }
+
+  .purple-box-content {
+    gap: 10px;
+    padding: 0 10px;
+  }
+ .purple-box-text {
+    width: 65%; /* More space for text */
+    padding: 5px 5px 5px 0;
+  }
+
+  .purple-box-title {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .purple-box-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+ 
+  .purple-box-image.full-height {
+    width: 35%; /* Slightly smaller image width */
+  }
+
+  /* Ensure image still touches bottom on small screens */
+  .student-image.full-height {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+
+
+  .carousel-controls {
+    margin-top: 20px;
+    gap: 10px;
+  }
+  .skills-main-title {
+    font-size: 1.8rem;
+  }
+  
+  .skill-card-header {
+    padding: 20px;
+    min-height: 100px;
+  }
+  
+  .skill-card-content {
+    padding: 20px;
+    min-height: 100px;
+  }
+  
+  .skill-title {
+    font-size: 1.2rem;
+  }
+  
+   .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  
+  
+  .carousel-dots {
+    gap: 10px;
+  }
+}
+
+
+/* NEW: AI Era Career Section */
+.ai-era-section {
+  background: #22013a; /* Changed from gradient to solid purple */
+  border-radius: 30px;
+  margin:  20px;
+  padding: 10px ; /* Reduced from 60px 40px */
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-era-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(142, 82, 3, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ai-era-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.ai-era-content {
+  flex: 1;
+  color: white;
+}
+
+.ai-era-title {
+  font-size: 2.5rem; /* Reduced from 2.8rem */
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 15px; /* Reduced from 20px */
+  color: white; /* Changed from gradient text to solid white */
+}
+
+.ai-era-subtitle {
+  font-size: 1.2rem; /* Reduced from 1.3rem */
+  line-height: 1.6;
+  margin-bottom: 25px; /* Reduced from 30px */
+  opacity: 0.9;
+  max-width: 600px;
+}
+
+.ai-era-features {
+  margin-bottom: 30px; /* Reduced from 40px */
+}
+
+/* AI Era Section Feature Items */
+.ai-era-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.ai-era-feature-icon {
+  color: #f9f493;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.ai-era-button {
+  background: linear-gradient(90deg, #f9f493 0%, #ffdd57 100%);
+  color: #22013a;
+  border: none;
+  padding: 16px 35px; /* Reduced from 18px 40px */
+  font-size: 1rem; /* Reduced from 1.1rem */
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px; /* Reduced from 25px */
+}
+
+.ai-era-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(249, 244, 147, 0.3);
+}
+
+.ai-era-pricing {
+  font-size: 1rem; /* Reduced from 1.1rem */
+  opacity: 0.9;
+}
+
+.ai-era-pricing .price {
+  font-size: 1.6rem; /* Reduced from 1.8rem */
+  font-weight: 700;
+  color: #f9f493;
+  margin-left: 5px;
+}
+
+.ai-era-image {
+  flex: 0 0 350px; /* Reduced from 400px */
+}
+
+.image-placeholder {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  height: 350px; /* Reduced from 400px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.placeholder-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem; /* Reduced from 1.2rem */
+  font-weight: 500;
+}
+
+/* Responsive Design for AI Era Section */
+@media (max-width: 1024px) {
+    .purple-recommendation-box.full-width {
+    height: 350px; /* Slightly smaller than desktop */
+  }
+
+  .purple-box-title {
+    font-size: 2.5rem;
+  }
+
+  .purple-box-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .purple-box-image.full-height {
+    min-width: 250px;
+  }
+  .ai-era-container {
+    gap: 40px;
+  }
+  
+  .ai-era-title {
+    font-size: 2.2rem; /* Reduced from 2.4rem */
+  }
+  
+  .ai-era-image {
+    flex: 0 0 300px; /* Reduced from 350px */
+  }
+  
+  .image-placeholder {
+    height: 300px; /* Reduced from 350px */
+  }
+}
+
+
+@media (max-width: 480px) {
+  .ai-era-section {
+    margin: 30px 10px;
+    padding: 25px 20px; /* Reduced from 30px 20px */
+    border-radius: 15px;
+  }
+  
+  .ai-era-title {
+    font-size: 1.2rem; /* Reduced from 1.8rem */
+  }
+  
+  .ai-era-button {
+    padding: 14px 25px; /* Reduced from 16px 30px */
+    font-size: 0.95rem;
+  }
+  
+  .ai-era-pricing .price {
+    font-size: 1.4rem; /* Reduced from 1.5rem */
+  }
+  
+  .image-placeholder {
+    height: 200px; /* Reduced from 250px */
+  }
+}
+
+
+
+
+/* Add this to your existing AI Era CSS section */
+.ai-platform-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Changed from 'contain' to 'cover' */
+  border-radius: 18px;
+}
+
+/* Update the placeholder to handle the image properly */
+.image-placeholder {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  height: 350px; /* Same as before */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden; /* Ensures image stays within rounded corners */
+}
+
+/* Hide the placeholder text when image is loaded */
+.image-placeholder .placeholder-text {
+  display: none;
+}
+
+/* Fallback if image fails to load */
+.ai-platform-image[src*="placeholder"] + .placeholder-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* DEMO LECTURES SECTION - WITH ARROWS LIKE TRENDING COURSES */
+.demo-lectures-section {
+  max-width: 1400px;
+  margin: 60px auto 40px;
+  padding: 0 20px;
+}
+
+.demo-lectures-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.demo-lectures-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.youtube-icon {
+  color: #ff0000;
+  font-size: 1.8rem;
+}
+
+.demo-lectures-subtitle {
+  font-size: 1.1rem;
+  color: #6a6f73;
+  margin-bottom: 25px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.youtube-channel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #ff0000;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.youtube-channel-link:hover {
+  background: #cc0000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 0, 0, 0.2);
+}
+
+/* DEMO LECTURES CAROUSEL WITH ARROWS */
+.demo-lectures-carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 0 50px;
+}
+.demo-lectures-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.5s ease;
+  /* FIX: Use the CSS variable properly */
+  width: 100%;
+}
+
+.trending-course-card {
+  flex: 0 0 calc((100% - (16px * 3)) / 4); /* 4 cards on desktop */
+  min-width: calc((100% - (16px * 3)) / 4);
+  background: white;
+  border: 1px solid #d1d7dc;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.demo-lecture-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+.demo-lecture-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 158px;
+  overflow: hidden;
+}
+
+.demo-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.demo-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.demo-lecture-card:hover .demo-play-overlay {
+  opacity: 1;
+}
+
+.demo-play-icon {
+  font-size: 48px;
+  color: white;
+}
+
+.demo-lecture-content {
+  padding: 12px;
+}
+
+.demo-lecture-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.demo-lecture-description {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+  min-height: 40px;
+}
+
+.demo-watch-button {
+  width: 100%;
+  padding: 8px;
+  background:  #22013a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.demo-watch-button:hover {
+  background: #2d2f31;
+}
+
+/* ARROWS FOR DEMO LECTURES */
+.demo-lectures-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d1d7dc;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+.demo-lectures-arrow:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.demo-lectures-arrow.left {
+  left: 0;
+}
+
+.demo-lectures-arrow.right {
+  right: 0;
+}
+
+.demo-lectures-arrow svg {
+  width: 24px;
+  height: 24px;
+  color: #1c1d1f;
+}
+
+.demo-lectures-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  display: none; /* This hides the button when disabled */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .demo-lecture-card {
+    flex: 0 0 calc(33.333% - 11px);
+  }
+}
+
+@media (max-width: 900px) {
+  .demo-lecture-card {
+    flex: 0 0 calc(50% - 8px);
+  }
+}
+
+@media (max-width: 600px) {
+  .demo-lectures-section {
+    padding: 0 10px;
+  }
+  
+  .demo-lectures-carousel-wrapper {
+    padding: 0 50px;
+  }
+  
+  .demo-lecture-card {
+    flex: 0 0 100%;
+    min-width: 250px;
+  }
+  
+  .demo-lectures-arrow {
+    width: 40px;
+    height: 40px;
+  }
+}
+/* ========== UPDATED CERTIFICATIONS SECTION ========== */
+.certifications-section {
+  background: linear-gradient(135deg, #2a043b 20%, #868528 100%);
+  padding: 20px 20px;
+  max-width: 1400px;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+
+.certifications-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Main Content Layout - Text Left, Cards Right */
+.certifications-main-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* Left Side - Text Content */
+.certifications-text-content {
+  flex: 0 0 400px;
+  color: white;
+}
+
+.certifications-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 25px;
+  line-height: 1.2;
+}
+
+.certifications-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.certifications-explore-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f9f493; /* Yellow color */
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 2px solid #f9f493;
+  transition: all 0.3s ease;
+}
+
+.certifications-explore-link:hover {
+  color: white;
+  border-bottom-color: white;
+  transform: translateY(-2px);
+}
+
+/* Right Side - Cards Grid */
+.certifications-grid {
+  flex: 1;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+/* Certification Card - SMALL and COMPACT */
+.certification-card {
+  background: white;
+  border-radius: 8px;
+  padding: 13px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+}
+
+.certification-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(45, 47, 49, 0.3);
+}
+
+/* Logo Container - SMALLER */
+.certification-logo-container {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.certification-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Content - COMPACT */
+.certification-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.certification-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2d2f31;
+  margin-bottom: 8px;
+}
+
+.certification-categories {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  font-weight: 500;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  min-height: 35px;
+}
+
+.certification-description {
+  display: none; /* Hide description to make cards smaller */
+}
+
+.certification-button {
+  padding: 8px 16px;
+  background-color: #2d2f31;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: auto;
+}
+
+.certification-button:hover {
+  background-color: #1c1d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(45, 47, 49, 0.2);
+}
+
+/* Career Reimagine Section */
+.career-reimagine-section {
+  background: #f7f9fa;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  margin-top: 30px;
+  border: 1px solid #e0e0e0;
+}
+
+.career-reimagine-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.career-reimagine-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d2f31;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.career-reimagine-subtitle {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.career-reimagine-button {
+  display: inline-block;
+  background: #2d2f31;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.career-reimagine-button:hover {
+  background: #1c1d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(45, 47, 49, 0.2);
+}
+
+/* Responsive Design for Certifications */
+@media (max-width: 1024px) {
+  .certifications-main-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .certifications-text-content {
+    flex: 1;
+    width: 100%;
+  }
+  
+  .certifications-grid {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .certification-card {
+    width: 200px;
+  }
+}
+
+
+
+@media (max-width: 480px) {
+  .certifications-title {
+    font-size: 1.5rem;
+  }
+  
+  .certification-card {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  
+  .certification-logo-container {
+    height: 80px;
+  }
+  
+  .certification-title {
+    font-size: 1.2rem;
+  }
+  
+  .career-reimagine-title {
+    font-size: 1.4rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* ========== TRENDING COURSES SECTION - FIXED ========== */
+.trending-courses-section {
+  max-width: 1400px;
+  margin: 10px auto 40px;
+  padding: 10px 20px;
+}
+
+.trending-courses-header {
+  margin-bottom: 15px;
+}
+
+.trending-courses-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 10px;
+}
+
+/* Trending Carousel Container */
+.trending-carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 0 50px;
+}
+
+.trending-carousel-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Desktop: Show 6 cards */
+.trending-courses-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.trending-course-card {
+   
+flex: 0 0 calc((100% - (16px * 3)) / 4);/* 6 cards on desktop */
+min-width: calc((100% - (16px * 3)) / 4);
+  background: white;
+  border: 1px solid #d1d7dc;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.trending-course-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+.trending-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.trending-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.trending-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.trending-course-card:hover .trending-play-overlay {
+  opacity: 1;
+}
+
+.trending-play-icon {
+  font-size: 48px;
+  color: white;
+}
+
+.trending-course-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+}
+
+.trending-course-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 2px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.trending-course-description {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+  min-height: 25px;
+}
+
+/* Trending Course Pricing */
+.trending-course-pricing {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.trending-course-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.trending-rating-star {
+  color: #ffb900;
+  font-size: 0.9rem;
+}
+
+.trending-rating-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1c1d1f;
+}
+
+.trending-students-count {
+  font-size: 0.8rem;
+  color: #6a6f73;
+  margin-left: 5px;
+}
+
+.trending-price-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.trending-original-price {
+  font-size: 0.9rem;
+  color: #6a6f73;
+  text-decoration: line-through;
+}
+
+.trending-discounted-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #22013a;
+}
+
+.trending-current-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #22013a;
+}
+
+/* Carousel Arrows for Trending */
+.trending-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d1d7dc;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+.trending-carousel-arrow:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.trending-carousel-arrow.left {
+  left: 0;
+}
+
+.trending-carousel-arrow.right {
+  right: 0;
+}
+
+.trending-carousel-arrow svg {
+  width: 24px;
+  height: 24px;
+  color: #1c1d1f;
+}
+
+.trending-carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design for Trending Courses */
+/* Tablet: 3 cards */
+@media (max-width: 1200px) {
+  .trending-course-card {
+    flex: 0 0 calc((100% - (16px * 2)) / 3);
+    min-width: calc((100% - (16px * 2)) / 3);
+  }
+}
+
+/* Small Tablet: 2 cards */
+@media (max-width: 900px) {
+  .trending-course-card {
+    flex: 0 0 calc((100% - 16px) / 2);
+    min-width: calc((100% - 16px) / 2);
+  }
+}
+
+/* Mobile: 1 card */
+@media (max-width: 600px) {
+  .trending-courses-section {
+    padding: 0 10px;
+  }
+  
+  .trending-carousel-wrapper {
+    padding: 0 40px;
+  }
+  
+  .trending-course-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+  
+  .trending-carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+
+
+
+/* AI Era Section - Unique classes */
+.ai-era-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.ai-era-feature-icon {
+  color: #f9f493;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Trusted Section - Unique classes */
+.trusted-section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+    color: #22013a;
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.trusted-section-subtitle {
+  font-size: 1.3rem;
+  color: #383737;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Deployment Plans - Unique classes */
+.plan-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #1c1d1f;
+  line-height: 1.4;
+}
+
+.plan-feature-check-icon {
+  color: #5cb85c;
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.plan-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+    color: #22013a;
+  background: linear-gradient(135deg, #22013a 20%, #8e5203 100%);
+  margin-bottom: 14px;
+    -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: left;
+}
+
+.plan-section-audience {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-audience::before {
+  content: "👥";
+}
+
+.section-description {
+  font-size: 0.9rem;
+  color: #1c1d1f;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .deployment-plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .deployment-plan-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .deployment-main-title {
+    font-size: 1.75rem;
+  }
+  
+  .plan-name {
+    font-size: 1.3rem;
+  }
+  
+  .plan-cta-button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
+/* ========== GLOBAL LEARNING & SKILLS TRENDS REPORT SECTION ========== */
+.trends-report-section {
+  padding: 10px 20px;
+  max-width: 1460px;
+  margin: 20px 40px;
+  border-radius: 12px;
+}
+
+.trends-report-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.trends-report-content {
+  flex: 1;
+  max-width: 300px;
+  text-align: justify;
+}
+
+.trends-report-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-align: left;
+  
+}
+
+.trends-report-description {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.trends-report-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background-color:#2a043b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.trends-report-button:hover {
+  background-color: #8710d8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(164, 53, 240, 0.3);
+}
+
+.trends-report-image {
+  flex: 1;
+  max-width: 1000px;
+}
+
+.report-cover-image {
+  width: 800px;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .trends-report-container {
+    gap: 40px;
+  }
+  
+  .trends-report-title {
+    font-size: 2rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .trends-report-title {
+    font-size: 1.6rem;
+  }
+  
+  .trends-report-button {
+    width: 100%;
+    justify-content: center;
+  }
+     .popular-skills-section {
+    padding: 25px 10px 35px;
+    margin: 15px 5px;
+  }
+  
+  .popular-skills-title {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+  
+  .skills-content-wrapper {
+    gap: 30px;
+  }
+  
+  .chatgpt-title {
+    font-size: 1.4rem;
+  }
+  
+  .trending-skills-button {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+  
+  .skills-categories-wrapper {
+    gap: 30px;
+  }
+  
+  .category-tiitle {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+  
+  .skill-link {
+    font-size: 0.95rem;
+  }
+  
+  .skill-learners-count {
+    font-size: 0.75rem;
+  }
+  
+  .category-skills-list {
+    gap: 15px;
+  }
+  }
+
+
+
+
+/* ========== POPULAR SKILLS SECTION ========== */
+.popular-skills-section {
+background: #e6ecf0;
+  max-width: 1400px;
+  margin: 30px auto 40px;
+  padding: 0 20px;
+  
+   padding-bottom: 40px;
+  border-radius: 12px;
+}
+
+.popular-skills-title {
+  font-size: 2.0rem;
+  font-weight: 620;
+  color: #22013a;
+  margin: 0 0 40px 0;
+  line-height: 1.2;
+  padding-top: 40px;
+  text-align: left;
+}
+
+/* MAIN LAYOUT - Left ChatGPT, Right 3 Columns */
+.skills-content-wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  align-items: start;
+   text-align: left;
+}
+
+/* LEFT SIDE - ChatGPT Section */
+.chatgpt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chatgpt-title {
+  font-size: 2.0rem;
+  font-weight: 600;
+  color: #868528;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.see-chatgpt-link {
+  color: #22013a;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.see-chatgpt-link:hover {
+  color: #401b9c;
+}
+
+.learners-count {
+  font-size: 0.95rem;
+  color: #6a6f73;
+  margin-bottom: 25px;
+}
+
+.trending-skills-button {
+  width: 250px;
+  padding: 12px 10px;
+  background: white;
+  color: #22013a;
+  border: 1px solid #22013a;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.trending-skills-button:hover {
+  background: #f7f9fa;
+}
+
+/* RIGHT SIDE - 3 Column Grid */
+.skills-categories-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.skill-category-column {
+  display: flex;
+  flex-direction: column;
+   align-items: flex-start;
+}
+
+.category-tiitle {
+ font-size: 1.7rem;
+  font-weight: 600;
+  color: #868528;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.category-skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%; /* ADD THIS LINE */
+  align-items: flex-start;
+}
+
+.skill-link-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+   text-align: left; /* ADD THIS LINE */
+  width: 100%; 
+}
+
+.skill-link {
+  color: #22013a;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s ease;
+  text-align: left;
+}
+
+.skill-link:hover {
+  color: #401b9c;
+}
+
+.skill-link::after {
+  content: "›";
+  font-size: 1.2rem;
+}
+
+.skill-learners-count {
+  font-size: 0.875rem;
+  color: #6a6f73;
+  margin: 0;
+  text-align: left;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .skills-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .skills-categories-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========== TRENDING COURSE PRICING STYLES ========== */
+.trending-course-pricing {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.trending-course-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.trending-rating-star {
+  color: #ffb900;
+  font-size: 0.9rem;
+}
+
+.trending-rating-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1c1d1f;
+}
+
+.trending-students-count {
+  font-size: 0.8rem;
+  color: #6a6f73;
+  margin-left: 5px;
+}
+
+.trending-price-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trending-original-price {
+  font-size: 0.9rem;
+  color: #6a6f73;
+  text-decoration: line-through;
+}
+
+.trending-discounted-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #22013a;
+}
+
+.trending-current-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #22013a;
+}
+
+/* Adjust trending course card height to accommodate pricing */
+.trending-course-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 160px; /* Increased from previous to fit pricing */
+}
+
+.trending-course-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.trending-course-description {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+  min-height: 40px;
+}
+
+/* Make trending thumbnail slightly smaller to maintain overall card height */
+.trending-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 150px; /* Reduced from 158px */
+  overflow: hidden;
+}
+
+
+/* ========== SMALL MOBILE (Phones under 480px) ========== */
+@media (max-width: 480px) {
+ .purple-recommendation-box.full-width {
+    height: auto !important;
+    min-height: 250px;
+    padding: 12px 0 !important;
+  }
+
+  .purple-box-content {
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .purple-box-text {
+    width: 60%;
+    padding: 5px;
+  }
+
+  .purple-box-title {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .purple-box-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .purple-box-image.full-height {
+    width: 40% !important;
+    max-width: 40%;
+  }
+
+  /* FIXED IMAGE - NO BOTTOM GAP */
+  .student-image.full-height {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom; /* This is key */
+    margin-bottom: 0; /* Remove any bottom margin */
+  }
+  .skill-card {
+    height: 360px;
+  }
+
+
+  .demo-lectures-title,
+  .trending-courses-title {
+    font-size: 1.4rem;
+  }
+
+
+}
+
+
+@media (max-width: 768px) {
+  /* 1. Purple Recommendation Box FIRST */
+ .purple-recommendation-box.full-width {
+    height: auto !important;
+    min-height: 180px;
+    padding: 30px 20px !important;
+  }
+
+.purple-box-content {
+    flex-direction: column;
+    gap: 0;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: center;
+  }.purple-box-text {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  .purple-box-title {
+    font-size: 1.8rem !important;
+    line-height: 1.3;
+    margin-bottom: 15px;
+  }
+
+  .purple-box-subtitle {
+    font-size: 1.1rem !important;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Hide the image on mobile */
+  .purple-box-image.full-height {
+    display: none !important;
+  }
+  /* 2. Skills Section */
+ .skills-certifications-section {
+    padding: 20px 15px !important;
+    margin: 20px 10 !important;
+    border-radius: 20px !important;
+  }
+  
+  .skills-container {
+    flex-direction: column !important;
+    gap: 30px !important;
+    min-height: auto !important;
+    width: 100% !important;
+  }
+  
+  .skills-content {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+  }
+  
+  .skills-main-title {
+    font-size: 1.2rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+  }
+  
+  .skills-subtitle {
+    font-size: 0.9rem !important;
+    line-height: 1.5rem !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+  }
+.skills-carousel-container {
+    width: 100% !important;
+    padding: 0 5px !important;
+    min-width: 0 !important;
+  }
+  /* Ensure carousel track shows full cards */
+  .skills-carousel-track {
+    gap: 0 !important; /* Remove gap between cards */
+  }
+  /* Carousel Wrapper */
+  .carousel-wrapper {
+    width: 100% !important;
+    gap: 5px !important;
+  }
+  
+  /* Skills Carousel */
+   .skills-carousel {
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  
+  /* Skill Card - Single card per view on mobile */
+   .skill-card {
+    flex: 0 0 100% !important; /* Show one card at full width */
+    height: 280px !important; /* Adjust height as needed */
+    margin: 0 auto !important;
+    min-width: 0 !important;
+  }
+
+  .skill-card-header {
+    padding: 15px 10px !important;
+    min-height: 50px !important;
+  }
+  
+  .skill-icon-container {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .skill-icon {
+    font-size: 1.3rem !important;
+  }
+  
+    .skill-card-content {
+    padding: 10px !important;
+    min-height: 100px !important;
+  }
+ .skill-title {
+    font-size: 1.0rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .skill-description {
+    font-size: 0.7rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 15px !important;
+  }
+  
+  .courses-count {
+    font-size: 0.67rem !important;
+    padding: 5px 10px !important;
+  }
+  
+  .explore-button {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  /* Carousel Controls */
+  .carousel-controls {
+    margin-top: 20px !important;
+    gap: 15px !important;
+    min-height: 40px !important;
+  }
+  
+  .carousel-arrow {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .carousel-arrow svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .carousel-dots {
+    gap: 5px !important;
+    margin: 0 5px !important;
+  }
+  
+  .carousel-dot {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  .ai-era-section {
+    margin: 20px 10px; /* Even smaller margin */
+    padding: 25px 20px; /* Compact padding */
+    border-radius: 15px; /* Smaller radius */
+  }
+  
+  .ai-era-container {
+    flex-direction: column; /* Stack vertically */
+    gap: 25px;
+    text-align: center; /* Center align everything */
+  }
+  
+  .ai-era-title {
+    font-size: 1.2rem; /* Much smaller title */
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  
+  .ai-era-subtitle {
+    font-size: 1rem; /* Smaller text */
+    line-height: 1.5rem;
+    margin: 0 auto 20px; /* Center and reduce margin */
+    max-width: 100%; /* Full width */
+  }
+  
+  .ai-era-features {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align features */
+    margin-bottom: 20px;
+  }
+  
+  .ai-era-feature-item {
+    justify-content: center; /* Center features */
+    font-size: 0.95rem;
+  }
+  
+  .ai-era-image {
+    flex: 0 0 auto; /* Reset flex */
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto; /* Center image */
+  }
+  
+  .image-placeholder {
+    height: 250px; /* Appropriate mobile height */
+  }
+  
+  .ai-era-button {
+    padding: 8px 15px;
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+  
+  .ai-era-pricing {
+    font-size: 0.7rem;
+  }
+  
+  .ai-era-pricing .price {
+    font-size: 1.1rem;
+  }
+
+  /* 4. Videos Grid */
+  .videos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .recommendations-subheader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* 5. Courses Grid */
+  .courses-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .course-buttons {
+    flex-direction: column;
+  }
+
+  .course-title {
+    font-size: 1.6rem;
+  }
+
+  /* 6. Certifications Section */
+  .certifications-section {
+    padding: 30px 15px;
+    margin: 30px 15px;
+  }
+
+  .certifications-title {
+    font-size: 1.8rem;
+  }
+
+  .certifications-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .certifications-grid {
+    gap: 12px;
+  }
+
+  .certification-card {
+    width: calc(50% - 10px);
+    min-width: 180px;
+  }
+
+  .career-reimagine-section {
+    padding: 25px 20px;
+  }
+
+  .career-reimagine-title {
+    font-size: 1.6rem;
+  }
+  .demo-lectures-section {
+    margin: 40px auto 30px;
+    padding: 0 10px;
+  }
+  
+  .demo-lectures-header {
+    text-align: center;
+    padding: 0 5px;
+    margin-bottom: 30px;
+  }
+  
+  .demo-lectures-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .demo-lectures-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    padding: 0 5px;
+  }
+  
+  .youtube-channel-link {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+  
+  /* Adjust carousel for mobile */
+  .demo-lectures-carousel-wrapper {
+    padding: 0 50px;
+  }
+  .trending-courses-track,
+  .demo-lectures-track {
+    gap: 4px;
+  }
+  
+  .demo-lecture-card,
+  .trending-course-card {
+    flex: 0 0 calc(50% - 8px) !important;
+    min-width: calc(50% - 8px) !important;
+  }
+
+
+  
+  .demo-lecture-thumbnail {
+    height: 140px;
+  }
+  
+  .demo-lecture-title {
+    font-size: 0.95rem;
+    min-height: 38px;
+  }
+  
+  .demo-lecture-description {
+    font-size: 0.8rem;
+    min-height: 35px;
+  }
+  
+  .demo-watch-button {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  
+  .demo-lectures-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .demo-lectures-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+  .popular-skills-section {
+    padding: 0px 15px 20px;
+    margin: 10px 10px;
+  }
+  
+  .popular-skills-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  /* MOBILE: Stack ChatGPT and Categories Vertically */
+  .skills-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* ChatGPT Section - Centered on Mobile */
+  .chatgpt-section {
+    align-items: left;
+    text-align: left;
+  }
+  
+  .chatgpt-title {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  
+  .see-chatgpt-link {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .learners-count {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+  
+  .trending-skills-button {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+  
+  /* Categories - 1 Column on Mobile */
+  .skills-categories-wrapper {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  
+  .skill-category-column {
+    align-items: left;
+    text-align: left;
+  }
+  
+  .category-tiitle {
+    font-size: 1.4rem;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+  
+  .category-skills-list {
+    align-items: left;
+    gap: 18px;
+  }
+  
+  .skill-link-item {
+    text-align: left;
+    align-items: left;
+  }
+  
+  .skill-link {
+    font-size: 1rem;
+    justify-content: left;
+  }
+  
+  .skill-learners-count {
+    font-size: 0.8rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  /* SMALL MOBILE */
+  .demo-lectures-title {
+    font-size: 1.3rem;
+  }
+  
+  .demo-lectures-subtitle {
+    font-size: 0.85rem;
+    padding: 0;
+  }
+ 
+  
+ .demo-lectures-carousel-wrapper,
+  .trending-carousel-wrapper {
+    padding: 0 50px;
+  }
+
+  
+  .demo-lecture-thumbnail {
+    height: 120px;
+  }
+  
+  /* Improve touch targets for mobile */
+  .demo-watch-button,
+  .youtube-channel-link {
+    min-height: 44px; /* Minimum touch target size */
+  }
+  /* 8. Trending Courses */
+  .trending-courses-section {
+    padding: 0 10px;
+  }
+
+  
+
+    .demo-lecture-card,
+  .trending-course-card {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+  }
+  .trending-carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* 9. Trends Report */
+  .trends-report-section {
+    padding: 40px 15px;
+    margin: 30px 15px;
+  }
+
+  .trends-report-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .trends-report-content {
+    max-width: 100%;
+  }
+
+  .trends-report-title {
+    font-size: 1.8rem;
+  }
+
+  .trends-report-description {
+    font-size: 1rem;
+  }
+
+  .trends-report-image {
+    max-width: 100%;
+  }
+
+  /* 10. Popular Skills */
+  
+
+  .skills-categories-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  /* 11. Deployment Plans */
+  .deployment-strategies-section {
+    padding: 40px 15px;
+    margin: 30px 15px;
+  }
+
+  .deployment-main-title {
+    font-size: 2rem;
+  }
+
+  .deployment-subtitle {
+    font-size: 1rem;
+  }
+
+  .deployment-plans-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .deployment-plan-card:last-child {
+    grid-column: auto;
+    max-width: 100%;
+  }
+
+  /* 12. Container Fix */
+  .youtube-recommendations-container {
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Fix horizontal overflow */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow-x: hidden;
+    position: relative;
+  }
+}
+
+/* ========== SMALL MOBILE (480px and below) ========== */
+@media (max-width: 480px) {
+  /* Purple Box */
+  .purple-recommendation-box.full-width {
+    height: 250px !important;
+    min-height: 250px;
+    max-height: 250px;
+  }
+
+  .purple-box-content {
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .purple-box-text {
+    width: 60%;
+    padding: 5px !important;
+  }
+
+  .purple-box-title {
+    font-size: 1.3rem !important;
+    line-height: 1.2;
+  }
+
+  .purple-box-subtitle {
+    font-size: 0.85rem !important;
+    line-height: 1.3;
+  }
+
+  .purple-box-image.full-height {
+    width: 40% !important;
+    min-width: 100px;
+  }
+
+  /* Skills */
+  .skill-card {
+    height: 360px;
+  }
+
+  .skills-main-title {
+    font-size: 1.8rem;
+  }
+
+  .skill-card-header {
+    padding: 20px;
+    min-height: 100px;
+  }
+
+  .skill-card-content {
+    padding: 20px;
+    min-height: 100px;
+  }
+
+  .skill-title {
+    font-size: 1.2rem;
+  }
+
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-dots {
+    gap: 10px;
+  }
+
+  /* AI Era */
+  .ai-era-section {
+    margin: 30px 10px;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .ai-era-title {
+    font-size: 1.6rem;
+  }
+
+  .ai-era-button {
+    padding: 14px 25px;
+    font-size: 0.95rem;
+  }
+
+  .ai-era-pricing .price {
+    font-size: 1.4rem;
+  }
+
+  .image-placeholder {
+    height: 200px;
+  }
+
+  /* Demo & Trending Titles */
+  .demo-lectures-title,
+  .trending-courses-title {
+    font-size: 1.4rem;
+  }
+
+  /* Certifications */
+  .certifications-title {
+    font-size: 1.5rem;
+  }
+
+  .certification-card {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .certification-logo-container {
+    height: 80px;
+  }
+
+  .certification-title {
+    font-size: 1.2rem;
+  }
+
+  .career-reimagine-title {
+    font-size: 1.4rem;
+  }
+
+  /* Trends Report */
+  .trends-report-title {
+    font-size: 1.6rem;
+  }
+
+  .trends-report-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Deployment */
+  .deployment-main-title {
+    font-size: 1.75rem;
+  }
+
+  .plan-name {
+    font-size: 1.3rem;
+  }
+
+  .plan-cta-button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* FORCE FIX FOR SKILLS CAROUSEL - ADD THIS AT THE BOTTOM OF YOUR CSS FILE */
+.skills-carousel {
+  width: 100%;
+  overflow: hidden !important;
+}
+
+.skills-carousel-track {
+  display: flex !important;
+  transition: transform 0.5s ease !important;
+  width: 100% !important;
+}
+
+.skill-card {
+  flex: 0 0 calc(50% - 20px) !important;
+  min-width: calc(50% - 20px) !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+  .skill-card {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+  }
+  
+  .skills-carousel-track {
+    gap: 0 !important;
+  }
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden !important;
+}
+
+/* ===================================================
+   PROFESSIONAL HERO SLIDER  — iTechSkill
+   =================================================== */
+.hs-root {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: visible;        /* ← KEY CHANGE: was hidden */
+}
+
+.hs-bg {
+  position: absolute;
+  inset: 0;
+  transition: background 0.7s ease;
+  z-index: 0;
+}
+
+.hs-shapes { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+
+.hs-shape {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid;
+  opacity: 0.15;
+  transition: border-color 0.6s ease;
+}
+.hs-shape-1 { width: 500px; height: 500px; top: -180px; right: -100px; }
+.hs-shape-2 { width: 200px; height: 200px; bottom: -80px; left: 30%; opacity: 0.08; border-radius: 50%; }
+.hs-shape-3 { width: 300px; height: 300px; top: 50px; right: 35%; }
+
+/* FIND AND REPLACE: hs-inner */
+.hs-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 80px;
+  height: 480px;
+  display: flex;
+  align-items: stretch;
+  gap: 60px;
+}
+
+/* LEFT CARD — self-align to center */
+.hs-card {
+  flex: 0 0 440px;
+  align-self: center;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 16px;
+  padding: 36px 40px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  animation: hsSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  max-height: 440px;      /* increased from 420px */
+  overflow: hidden;
+}
+
+@keyframes hsSlideIn {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 5px 12px;
+  border-radius: 30px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.hs-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+}
+
+.hs-subtitle {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+
+.hs-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hs-btn-primary {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hs-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.hs-btn-secondary {
+  padding: 11px 22px;
+  border: 2px solid #22013a;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #22013a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hs-btn-secondary:hover {
+  background: #22013a;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.hs-image-wrap {
+  flex: 1;
+  position: relative;      /* ← needed for absolute child */
+  overflow: visible;
+  animation: hsImageIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+@keyframes hsImageIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hs-student-img {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  height: 110% !important;
+  max-width: 520px !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: bottom center !important;
+  aspect-ratio: auto !important;  /* remove the 3/4 constraint causing crop */
+}
+
+/* Floating tag */
+.hs-float-tag {
+  position: absolute;
+  bottom: 20px;
+  left: -15px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  animation: hsFloat 3s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes hsFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ARROW BUTTONS */
+.hs-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s, transform 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.hs-arrow:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hs-arrow-left  { left: 16px; }
+.hs-arrow-right { right: 16px; }
+
+.hs-footer {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hs-dots { display: flex; gap: 8px; align-items: center; }
+
+.hs-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.hs-dot-active {
+  width: 24px;
+  border-radius: 4px;
+}
+
+.hs-counter {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 1024px) {
+  .hs-root { height: 420px; overflow: visible; }
+  .hs-inner { padding: 0 50px; gap: 30px; height: 420px; }
+  .hs-card { flex: 0 0 360px; padding: 28px 30px; max-height: 390px; }
+  .hs-title { font-size: 1.4rem; }
+  .hs-student-img { height: 100%; }
+}
+
+@media (max-width: 768px) {
+  .hs-root { height: auto; min-height: 300px; }
+  .hs-inner {
+    padding: 30px 20px 50px;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    height: auto;
+  }
+  .hs-card {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+    padding: 24px 20px;
+    align-self: auto;
+  }
+  .hs-title { font-size: 1.3rem; }
+  .hs-subtitle { font-size: 0.88rem; margin-bottom: 18px; }
+  .hs-image-wrap { display: none; }
+  .hs-arrow { width: 38px; height: 38px; font-size: 1.4rem; }
+  .hs-arrow-left { left: 6px; }
+  .hs-arrow-right { right: 6px; }
+}
+
+@media (max-width: 480px) {
+  .hs-card { padding: 20px 16px; }
+  .hs-title { font-size: 1.15rem; }
+  .hs-btn-primary, .hs-btn-secondary { padding: 10px 16px; font-size: 0.82rem; }
+}
+
+
+
+
+
+
+/* ── HERO SLIDER FINAL FIX ── */
+.hs-root {
+  overflow: hidden !important;
+  height: 380px !important;
+}
+.hs-inner {
+  height: 380px !important;
+  align-items: stretch !important;
+}
+.purple-recommendation-box.full-width {
+  overflow: hidden !important;
+}
+.hs-image-wrap {
+  position: relative !important;
+  flex: 1 !important;
+  height: 380px !important;
+  overflow: hidden !important;
+}
+
+.hs-student-img {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  height: 130% !important;        /* ← slightly overflow to fill nicely */
+  max-width: 600px !important;    /* ← was 380px, now much wider */
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: bottom center !important;
+  aspect-ratio: 3 / 4 !important;
+}
+
+@media (max-width: 1024px) {
+  .hs-root { height: 320px !important; }
+  .hs-inner { height: 320px !important; }
+  .hs-image-wrap { height: 320px !important; }
+  .hs-student-img {
+    height: 105% !important;
+    max-width: 460px !important;  /* ← was 280px */
+  }
+}
+
+
+
+/* ── HERO IMAGE FINAL OVERRIDE ── */
+.hs-student-img {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: auto !important;
+}
+
+@media (max-width: 1024px) {
+  .hs-student-img {
+    height: 100% !important;
+    max-width: 100% !important;
+  }
+}

@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Lora:ital,wght@0,700;1,600&display=swap');
+  .am-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,0,22,0.72);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .am-modal {
+    background: #fff; border-radius: 18px;
+    width: 100%; max-width: 520px; max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(34,1,58,0.45);
+    font-family: 'Outfit', sans-serif;
+    scrollbar-width: thin;
+  }
+  .am-modal::-webkit-scrollbar { width: 4px; }
+  .am-modal::-webkit-scrollbar-thumb { background: #ede9f8; border-radius: 4px; }
+
+  .am-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 22px 24px 16px;
+    background: linear-gradient(135deg, #22013a 0%, #7c1abd 55%, #8e5203 100%);
+    border-radius: 18px 18px 0 0;
+  }
+  .am-header-left { display: flex; align-items: flex-start; gap: 14px; }
+  .am-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .am-title { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0 0 4px; }
+  .am-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.78); margin: 0; font-weight: 500; }
+  .am-close {
+    background: rgba(255,255,255,0.15); border: none;
+    width: 32px; height: 32px; border-radius: 8px;
+    color: #fff; font-size: 0.9rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s; flex-shrink: 0;
+  }
+  .am-close:hover { background: rgba(255,255,255,0.28); }
+
+  .am-fee-strip {
+    display: flex; align-items: center; flex-wrap: wrap;
+    background: #faf5ff; border-bottom: 1px solid #ede9f8;
+    padding: 11px 24px; font-size: 0.78rem; color: #4b3f6b; gap: 4px;
+  }
+  .am-fee-item { display: flex; align-items: center; gap: 5px; padding: 2px 0; }
+  .am-fee-item strong { color: #1a1228; }
+  .am-fee-usd { color: #9b8db0; font-size: 0.72rem; }
+  .am-fee-discount strong { color: #059669; }
+  .am-fee-divider { width: 1px; height: 18px; background: #ddd5f0; margin: 0 14px; flex-shrink: 0; }
+
+  .am-body { padding: 22px 24px 24px; }
+  .am-form { display: flex; flex-direction: column; gap: 14px; }
+
+  .am-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) { .am-row { grid-template-columns: 1fr; } }
+
+  .am-field { display: flex; flex-direction: column; gap: 5px; }
+  .am-label { font-size: 0.8rem; font-weight: 700; color: #22013a; }
+  .am-required { color: #e11d48; }
+  .am-optional { color: #9b8db0; font-weight: 400; font-size: 0.75rem; }
+
+  .am-input {
+    width: 100%; box-sizing: border-box; padding: 11px 14px;
+    border: 1.5px solid #e5e7eb; border-radius: 9px;
+    font-size: 0.88rem; font-family: 'Outfit', sans-serif;
+    color: #1a1228; background: #fff; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: auto;
+  }
+  .am-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+  .am-input:disabled { background: #f7f5ff; color: #6b21a8; font-weight: 600; cursor: default; border-color: #ddd5f0; }
+  .am-textarea { resize: vertical; min-height: 80px; }
+  .am-field.has-error .am-input { border-color: #e11d48; }
+  .am-error { font-size: 0.74rem; color: #e11d48; font-weight: 600; }
+  .am-error::before { content: '⚠ '; }
+
+  /* Fee display box */
+  .am-fee-display {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+    background: linear-gradient(135deg, #faf5ff, #fff8f0);
+    border: 1.5px solid #ddd5f0; border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .am-fee-display-left { display: flex; flex-direction: column; gap: 2px; }
+  .am-fee-display-label { font-size: 0.72rem; color: #9b8db0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .am-fee-display-value { font-size: 1.05rem; font-weight: 800; color: #22013a; font-family: 'Lora', serif; }
+  .am-fee-display-badge {
+    font-size: 0.72rem; font-weight: 600; color: #8e5203;
+    background: #fff8f0; border: 1px solid #f0d9b5;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  .am-submit {
+    margin-top: 4px; padding: 14px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, #22013a 0%, #7c1abd 55%, #8e5203 100%);
+    color: #fff; font-size: 0.95rem; font-weight: 800; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s; box-shadow: 0 4px 16px rgba(124,26,189,0.35);
+  }
+  .am-submit:hover:not(.am-loading) { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(124,26,189,0.45); }
+  .am-submit.am-loading { pointer-events: none; opacity: 0.85; }
+  .am-spinner {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    animation: am-spin 0.7s linear infinite;
+  }
+  @keyframes am-spin { to { transform: rotate(360deg); } }
+  .am-privacy { font-size: 0.73rem; color: #9b8db0; text-align: center; line-height: 1.5; margin: 0; }
+
+  /* ── Success screen ── */
+  .am-success { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 8px 0 4px; gap: 12px; }
+  .am-success-icon { font-size: 3rem; }
+  .am-success-title { font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 700; color: #22013a; margin: 0; }
+  .am-success-msg { font-size: 0.85rem; color: #4b3f6b; line-height: 1.6; margin: 0; }
+
+  /* ── Next Steps ── */
+  .am-steps {
+    width: 100%; background: #faf5ff;
+    border: 1.5px solid #ede9f8; border-radius: 12px;
+    padding: 16px; text-align: left;
+  }
+  .am-steps-title {
+    font-size: 0.78rem; font-weight: 700; color: #7c3aed;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 0 0 14px; padding-bottom: 10px;
+    border-bottom: 1px solid #ede9f8;
+  }
+  .am-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 8px 0; position: relative;
+  }
+  .am-step:not(:last-child)::after {
+    content: '';
+    position: absolute; left: 13px; top: 32px;
+    width: 2px; height: calc(100% - 8px);
+    background: #ede9f8;
+  }
+  .am-step-num {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #22013a, #7c1abd);
+    color: #fff; font-size: 0.75rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .am-step-num-last {
+    background: linear-gradient(135deg, #7c1abd, #8e5203) !important;
+  }
+  .am-step-text { display: flex; flex-direction: column; gap: 2px; padding-top: 4px; }
+  .am-step-text strong { font-size: 0.83rem; color: #1a1228; font-weight: 700; }
+  .am-step-text span { font-size: 0.76rem; color: #6b7280; line-height: 1.5; }
+
+  /* ── Actions ── */
+  .am-success-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .am-whatsapp-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 13px; border-radius: 10px; text-decoration: none;
+    background: #25d366; color: #fff;
+    font-size: 0.9rem; font-weight: 700; font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+  }
+  .am-whatsapp-btn:hover { color: #fff; text-decoration: none; filter: brightness(1.05); }
+  .am-close-btn {
+    padding: 12px; border-radius: 10px; border: 1.5px solid #ede9f8;
+    background: #faf5ff; color: #7c3aed;
+    font-size: 0.88rem; font-weight: 700; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  @media (max-width: 540px) {
+    .am-modal { border-radius: 14px; }
+    .am-header { padding: 18px 18px 14px; border-radius: 14px 14px 0 0; }
+    .am-body { padding: 18px 18px 20px; }
+    .am-fee-strip { padding: 10px 18px; flex-direction: column; align-items: flex-start; }
+    .am-fee-divider { display: none; }
+    .am-fee-display { flex-direction: column; align-items: flex-start; }
+  }

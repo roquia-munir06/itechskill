@@ -1,0 +1,198 @@
+/* DiscountOfferPopup.css */
+.d-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.d-modal {
+  background: white;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: d-slideIn 0.3s ease-out;
+}
+
+@keyframes d-slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.d-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.d-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.d-split-layout {
+  display: flex;
+  min-height: 480px; /* Reduced height */
+}
+
+/* Left Side - Image */
+.d-image-side {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.d-graduation-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 350px; /* Reduced image height */
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+/* Right Side - Form */
+.d-form-side {
+  flex: 1.2; /* Slightly larger for form */
+  padding: 25px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.d-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 5px;
+  text-align: center;
+}
+
+.d-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 15px;
+  text-align: center;
+}
+
+.d-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.d-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.d-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.d-input,
+.d-select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  background: white;
+  width: 100%;
+}
+
+.d-input:focus,
+.d-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.d-input::placeholder {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.d-submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+
+.d-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .d-split-layout {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .d-image-side {
+    min-height: 180px;
+    padding: 15px;
+  }
+
+  .d-graduation-image {
+    max-height: 140px;
+  }
+
+  .d-form-side {
+    padding: 20px;
+  }
+
+  .d-close {
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,376 @@
+/* OpenPositions.css */
+.open-positions-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+/* Hero Section */
+.open-positions-hero {
+  background: linear-gradient(135deg, #2a043b 20%, #868528 100%);
+  padding: 80px 0px;
+  margin-bottom: 40px;
+  text-align: center;
+  color: white;
+}
+
+.open-positions-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.open-positions-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.open-positions-subtitle {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Filters Section */
+.open-positions-filters {
+  margin-bottom: 40px;
+}
+
+.filters-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #22013a;
+  color: white;
+  border-color: #22013a;
+}
+
+/* Jobs Grid Section */
+.open-positions-grid-section {
+  margin-bottom: 60px;
+}
+
+.open-positions-grid-title {
+  font-size: 2rem;
+  color: #22013a;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.open-positions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+}
+
+.open-position-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.open-position-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: #22013a;
+}
+
+.position-card-header {
+  margin-bottom: 20px;
+}
+
+.position-title {
+  font-size: 1.4rem;
+  color: #22013a;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.position-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.position-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.position-tag.department {
+  background: rgba(34, 1, 58, 0.1);
+  color: #22013a;
+}
+
+.position-tag.type {
+  background: rgba(142, 82, 3, 0.1);
+  color: #8e5203;
+}
+
+.position-tag.location {
+  background: rgba(0, 123, 255, 0.1);
+  color: #007bff;
+}
+
+.position-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.position-requirements {
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.position-requirements h4 {
+  font-size: 1.1rem;
+  color: #22013a;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.position-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.position-requirements li {
+  color: #666;
+  padding: 5px 0 5px 20px;
+  position: relative;
+}
+
+.position-requirements li:before {
+  content: "•";
+  color: #22013a;
+  position: absolute;
+  left: 0;
+}
+
+.position-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.apply-btn,
+.details-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.apply-btn {
+  background: #22013a;
+  color: white;
+  border: none;
+}
+
+.apply-btn:hover {
+  background: #2a0250;
+  transform: translateY(-2px);
+}
+
+.details-btn {
+  background: white;
+  color: #22013a;
+  border: 2px solid #22013a;
+}
+
+.details-btn:hover {
+  background: rgba(34, 1, 58, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Why Join Section */
+.open-positions-why-join {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+  border-radius: 12px;
+  padding: 60px 40px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.open-positions-why-join h2 {
+  font-size: 2.2rem;
+  color: #22013a;
+  margin-bottom: 40px;
+  font-weight: 700;
+}
+
+.why-join-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.why-join-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.why-join-card:hover {
+  transform: translateY(-5px);
+}
+
+.why-join-card h3 {
+  font-size: 1.3rem;
+  color: #22013a;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.why-join-card p {
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* CTA Section */
+.open-positions-cta {
+  background: #f8f9ff;
+  border-radius: 12px;
+  padding: 60px 40px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.open-positions-cta h2 {
+  font-size: 2.2rem;
+  color: #22013a;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.open-positions-cta p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.open-positions-cta-btn {
+  background: #22013a;
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.open-positions-cta-btn:hover {
+  background: #2a0250;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(34, 1, 58, 0.2);
+}
+
+.open-positions-email {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.open-positions-email a {
+  color: #22013a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.open-positions-email a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .open-positions-title {
+    font-size: 2rem;
+  }
+  
+  .open-positions-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .open-positions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .why-join-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .open-positions-why-join h2,
+  .open-positions-cta h2 {
+    font-size: 1.8rem;
+  }
+  
+  .position-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .open-positions-hero {
+    padding: 50px 15px;
+  }
+  
+  .open-positions-title {
+    font-size: 1.6rem;
+  }
+  
+  .filters-wrapper {
+    flex-direction: column;
+  }
+  
+  .filter-btn {
+    width: 100%;
+  }
+  
+  .open-position-card {
+    padding: 20px 15px;
+  }
+}
