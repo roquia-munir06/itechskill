@@ -1,8 +1,9 @@
 # .env
 # node_modules/
 
-
-
+.env.development
+.env.production
+.node_modules
 
 
 
