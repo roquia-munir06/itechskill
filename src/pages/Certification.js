@@ -33,9 +33,9 @@ const features = [
 ];
 
 const steps = [
-  { number: "01", title: "Enroll in a course", description: "Select your certification program and get started" },
+  { number: "01", title: "Enroll in a course", description: "Select your certification program and get started." },
   { number: "02", title: "Complete assignments/projects", description: "Engage on real projects that are meaningful and build skill." },
-  { number: "03", title: "Pass course evaluations", description: "Demonstrate your knowledge through assessments" },
+  { number: "03", title: "Pass course evaluations", description: "Demonstrate your knowledge through assessments." },
   { number: "04", title: "Obtain digital certificate", description: "Get your certified digital signatured certificate." },
   { number: "05", title: "Build Credibility. Boost Your Career", description: "Put Your certification on display and advance professionally." },
 ];
@@ -195,9 +195,10 @@ const Certification = () => {
       <div className="certification-cta-section full-width">
         <div className="certification-cta-content">
           <div className="certification-cta-badge">
-            <FaAward className="certification-badge-icon" />
-            <span>Get Certified Today</span>
-          </div>
+  <FaAward className="certification-badge-icon" />
+  <span>Get Certified Today</span>
+</div>
+
           <h2 className="certification-cta-title">Build Credibility. Boost Your Career.</h2>
           <p className="certification-cta-description">
             Become one of the thousands of practitioners whose careers have changed with an iTechSkill certification.

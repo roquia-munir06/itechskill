@@ -30,7 +30,7 @@ const PlanPrice = () => {
       pricing: "$25.00 per month each user annually billed.",
       billingNote: "Billed annually. Cancel anytime.",
       features: [
-        "Access to 13,000+ top courses",
+        "Access to 30+ top courses",
         "Certification prep",
         "Goals-focused recommendations",
         "AI-powered coaching",
@@ -46,7 +46,7 @@ const PlanPrice = () => {
       pricing: "Contact sales for prices.",
       billingNote: null,
       features: [
-        "Access to 30,000+ top courses",
+        "Access to 30+ top courses and 15+ top diplomas",
         "Certification prep",
         "Goals-focused recommendations",
         "AI-powered coaching",

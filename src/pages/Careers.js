@@ -141,8 +141,30 @@ function JobApplicationModal({ job, onClose }) {
                   <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#22013a' }}>
                     Phone <span style={{ color: '#e11d48' }}>*</span>
                   </label>
-                  <input name="phone" placeholder="e.g. 0330-9998880" type="tel"
-                    value={form.phone} onChange={handleChange} style={inp(errors.phone)} />
+                 <input
+  name="phone"
+  placeholder="e.g. 0330-9998880"
+  type="tel"
+  value={form.phone}
+  onChange={(e) => {
+    const value = e.target.value;
+    // Only allow numbers, dashes, spaces, and + sign
+    if (/^[0-9\s\-\+]*$/.test(value)) {
+      handleChange(e);
+    }
+  }}
+  onKeyDown={(e) => {
+    // Allow: backspace, delete, tab, escape, enter, arrow keys
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (allowedKeys.includes(e.key)) return;
+    // Allow: + at start, numbers, dashes, spaces
+    if (!/^[0-9\-\+\s]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  }}
+  maxLength={15}
+  style={inp(errors.phone)}
+/>
                   {errors.phone && <span style={{ fontSize: '0.73rem', color: '#e11d48' }}>⚠ {errors.phone}</span>}
                 </div>
               </div>

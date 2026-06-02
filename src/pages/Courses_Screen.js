@@ -32,8 +32,7 @@ function normaliseProgram(prog) {
     displayOrder:     prog.displayOrder     ?? 999,
   };
 }
-
-const Courses_Screen = () => {
+const Courses_Screen = ({ showFooter = true }) => {
   useScrollToTop();
   const navigate = useNavigate();
 const { user } = useContext(AuthContext);
@@ -216,10 +215,14 @@ if (apiError) return (
   </div>
 )}
       </div>
+ {selectedCourse && (
+      <EnrollmentModal
+        course={selectedCourse}
+        onClose={() => setSelectedCourse(null)}
+      />
+    )}
 
-      
-{selectedCourse && <EnrollmentModal course={selectedCourse} onClose={() => setSelectedCourse(null)} />}
-  {/* <Footer /> */}
+    {showFooter && <Footer />}
     </>
   );
 };

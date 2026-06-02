@@ -320,18 +320,46 @@ const fetchCourses = async () => {
     setFormVisible(true);
   };
 
-  const handleEdit = (user) => {
-    setEditingUser(user);
-    setFormData({
-      fullName: user.fullName || "", email: user.email || "", role: user.role || "Student",
-      phone: user.phone || "", address: user.address || "", password: "", confirmPassword: "",
-      status: user.status || "Active", courses: user.courses?.map(c => c._id) || [],
-      country: user.country || "", dob: user.dob ? new Date(user.dob).toISOString().split("T")[0] : "",
-      gender: user.gender || "Male", selectDate: user.selectDate ? new Date(user.selectDate).toISOString().split("T")[0] : "",
-    });
-    setFormVisible(true);
-  };
-
+ const handleEdit = (user) => {
+  setEditingUser(user);
+  
+  // ✅ SAFELY extract course IDs - handle null/undefined values
+  let courseIds = [];
+  if (user.courses && Array.isArray(user.courses)) {
+    courseIds = user.courses
+      .filter(c => c !== null && c !== undefined) // Remove null/undefined
+      .map(c => {
+        // If it's an object with _id, return _id
+        if (c && typeof c === 'object' && c._id) {
+          return c._id;
+        }
+        // If it's already a string ID, return it
+        if (typeof c === 'string') {
+          return c;
+        }
+        return null;
+      })
+      .filter(id => id !== null); // Remove any nulls
+  }
+  
+  setFormData({
+    fullName: user.fullName || "",
+    email: user.email || "",
+    role: user.role || "Student",
+    phone: user.phone || "",
+    address: user.address || "",
+    password: "",
+    confirmPassword: "",
+    status: user.status || "Active",
+    courses: courseIds, // Store only valid IDs
+    country: user.country || "",
+    dob: user.dob ? new Date(user.dob).toISOString().split("T")[0] : "",
+    gender: user.gender || "Male",
+    selectDate: user.selectDate ? new Date(user.selectDate).toISOString().split("T")[0] : "",
+  });
+  
+  setFormVisible(true);
+};
   const handleShowDetails = (user) => setSelectedUser(user);
   const handleCloseDetails = () => setSelectedUser(null);
   const handleShowSessions = (user) => setSessionUser(user);
@@ -343,13 +371,15 @@ const fetchCourses = async () => {
   };
 
   const handleCheckbox = (courseId) => {
-    setFormData(prev => ({
-      ...prev,
-      courses: prev.courses.includes(courseId)
-        ? prev.courses.filter(c => c !== courseId)
-        : [...prev.courses, courseId],
-    }));
-  };
+  if (!courseId) return; // Skip if no ID
+  
+  setFormData(prev => ({
+    ...prev,
+    courses: prev.courses.includes(courseId)
+      ? prev.courses.filter(c => c !== courseId)
+      : [...prev.courses, courseId],
+  }));
+};
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
@@ -419,12 +449,17 @@ const fetchCourses = async () => {
     } catch { alert("Failed to logout device"); }
   };
 
-  const getCourseNames = (userCourses) => {
-    if (!Array.isArray(userCourses)) return [];
-    return userCourses
-      .map(c => (typeof c === "string" ? courses.find(cr => cr._id === c)?.title : c.title))
-      .filter(Boolean);
-  };
+const getCourseNames = (courseIds) => {
+  if (!courseIds || !Array.isArray(courseIds)) return [];
+  
+  return courseIds
+    .filter(id => id !== null && id !== undefined) // Filter out null/undefined
+    .map(id => {
+      const c = courses.find(course => course && course._id === id);
+      return c ? c.title : "Unknown Course";
+    })
+    .filter(Boolean); // Remove any empty strings
+};
 
   // ── Role summary counts ──
   const roleCounts = useMemo(() => {
@@ -541,12 +576,17 @@ const coursesDisabled = ["Admin", "Manager"].includes(formData.role);
                       </td>
                       <td style={{ padding: isMobile ? "14px 16px" : "16px 20px", color: COLORS.textGray, fontSize: "13px" }}>{user.phone || "-"}</td>
                       <td style={{ padding: isMobile ? "14px 16px" : "16px 20px" }}>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                          {getCourseNames(user.courses).map((course, i) => (
-                            <span key={i} style={{ background: COLORS.goldBadge, color: "#3D2817", padding: "3px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "600" }}>{course}</span>
-                          ))}
-                        </div>
-                      </td>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+    {getCourseNames(user.courses).map((course, i) => (
+      <span key={i} style={{ background: COLORS.goldBadge, color: "#3D2817", padding: "3px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "600" }}>
+        {course}
+      </span>
+    ))}
+    {(!user.courses || user.courses.length === 0) && (
+      <span style={{ color: COLORS.darkGray, fontSize: "12px" }}>No courses assigned</span>
+    )}
+  </div>
+</td>
                       <td style={{ padding: isMobile ? "14px 16px" : "16px 20px" }}>
                         {/* Show device sessions button for Student, Teacher, Manager */}
                         {user.role !== "Admin" ? (

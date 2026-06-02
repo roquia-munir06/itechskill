@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StudentSidebar from "../components/StudentSidebar";
+import Sidebar from "../components/Sidebar";
 import { getAllExams, getAttemptsByUser, checkExamAccess } from "../api/api";
 import { 
   FaClipboardList, FaClock, FaCheckCircle, FaTimesCircle,
@@ -390,7 +390,7 @@ const StudentExamsPage = () => {
   if (loading) {
     return (
       <div style={{ display: "flex", minHeight: "100vh" }}>
-        <StudentSidebar />
+        <Sidebar />
         <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", background: COLORS.bgGray }}>
           <div style={{ textAlign: "center" }}>
             <div style={{
@@ -414,8 +414,7 @@ const StudentExamsPage = () => {
   if (!studentId) {
     return (
       <div style={{ display: "flex", minHeight: "100vh" }}>
-        <StudentSidebar />
-        <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", background: COLORS.bgGray }}>
+<Sidebar />           <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", background: COLORS.bgGray }}>
           <div style={{
             textAlign: "center", background: COLORS.white,
             padding: "40px", borderRadius: "20px",
@@ -444,8 +443,7 @@ const StudentExamsPage = () => {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: COLORS.bgGray }}>
-      <StudentSidebar />
-
+<Sidebar />
       <div style={{
         flex: 1,
         marginLeft: isMobile ? "0" : (isTablet ? "80px" : "280px"),

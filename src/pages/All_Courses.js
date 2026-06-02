@@ -26,7 +26,7 @@ const All_Courses = () => {
         <p className="all-courses-page-subtitle">Select from our wide range of industry-related courses</p>
       </div>
 
-      <Courses_Screen/>
+     <Courses_Screen showFooter={false} />
       <div className="all-courses-why-learn-section">
         <h2 className="all-courses-section-title">Why Learn With iTechSkill?</h2>
         <div className="all-courses-features-grid">

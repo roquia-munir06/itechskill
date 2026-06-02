@@ -4,17 +4,21 @@ import Footer from '../components/Footer';
 import { useScrollToTop } from '../hooks/useScrollToTop';
 import { getDiplomaBySlug } from "../api/api";  
 import EnrollmentModal from '../components/EnrollmentModal';
+import { Helmet } from 'react-helmet-async';
+
 
 const BENEFITS = [
-  {  title: "Learning Management System", desc: "Access your full course content, recorded sessions, assignments, and progress tracking anytime through our advanced LMS platform." },
-  {  title: "Live & Recorded Sessions", desc: "Attend live instructor-led classes or watch recorded sessions at your own pace. Never miss a lesson with lifetime access to recordings." },
-  { title: "Internship Opportunity", desc: "Get guaranteed real-world internship placement after completing the program to build your professional portfolio and hands-on experience." },
-  {  title: "Job Cell Support", desc: "Our dedicated Job Cell team actively connects graduates with top companies and helps you land your first or next role in the industry." },
-  {  title: "Instructor Support", desc: "24/7 direct access to industry expert instructors. Get your questions answered, code reviewed, and projects guided throughout the program." },
-  {  title: "NEXT Community Access", desc: "Join our exclusive alumni and student community network. Connect with peers, industry professionals, and graduates from around the world." },
-  {  title: "Recognized Certificate", desc: "Receive an industry-recognized diploma certificate upon completion that is valued by employers across Pakistan and internationally." },
-  { title: "Free Seminar Access", desc: "Get free access to premium tech seminars, workshops, and bootcamps hosted by ITechSkill and industry partners throughout the year." },
+  {  title: "Learning Management System", desc: "Access all course material, recorded sessions, assignments and progress tracking anywhere, anytime, with our advanced LMS platform." },
+  {  title: "Live & Recorded Sessions ", desc: "attend live class with an instructor or watch them at your own pace, no one will miss a class of lessons with recordings that you can access for life." },
+  { title: "Internship Opportunity", desc: "guaranteed internship placement in real world after completion of program to develop professional portfolio and hands on experience." },
+  {  title: "Job Cell Support", desc: "  Our dedicated Job Cell team actively links our graduates with top companies and assists you to get your first or next job in the industry." },
+  {  title: "Instructor Support", desc: "Get your questions answered, code reviewed and project guided throughout the program." },
+  {  title: "NEXT Community Access", desc: "Become a part of the exclusive alumni and student Community network, connect with peers, industry professional and students from all over the world." },
+  {  title: "Recognized Certificate", desc: "Upon completion, receive a diploma certificate that is valued by employers all over Pakistan and globally." },
+  { title: "Free Seminar Access", desc: "  Participate in ITechSkill's complimentary top tech seminars, workshops and bootcamps throughout the year, hosted by ITechSkill and industry partners." },
 ];
+
+
 
 // const FALLBACK_TOOLS = [
 //   { name: "VS Code"},
@@ -77,28 +81,14 @@ const BENEFITS = [
 // ];
 
 const FAQS = [
-  { q: "Do I need prior experience to enroll?", a: "No prior experience is required. This program is designed to take you from beginner to professional, starting from the absolute basics." },
-  { q: "Are classes online or on-campus?", a: "We offer both options ” you can attend on-campus at any of our branches, or join live online sessions from anywhere in Pakistan." },
-  { q: "What happens if I miss a class?", a: "Every class is recorded and uploaded to the LMS within 24 hours. You can watch missed sessions anytime at your convenience." },
-  { q: "Will I get a certificate after completion?", a: "Yes. Upon successfully completing the program and assessments, you will receive an industry-recognized diploma certificate." },
-  { q: "Is there any installment plan available?", a: "Yes, we offer flexible installment plans. Please contact our admissions team or visit your nearest branch for details." },
-  { q: "How does the Job Cell help me find a job?", a: "Our Job Cell team actively works with partner companies, shares CVs, arranges interviews, and provides career counseling to help you get hired." },
+  { q: "Do I need prior experience to enroll?", a: "You do not need any background before joining. The course begins at zero, guiding you step by step until skills reach a working level." },
+  { q: "Are classes online or on-campus?", a: "Some folks come in person. Others log in from home across Pakistan, tuning into real-time lessons online. Start wherever feels right - step into a campus, or keep still and join from your screen." },
+  { q: "What happens if I miss a class?", a: "If you miss a workout, it won’t matter much. One pause doesn’t ruin anything.Each meeting gets saved automatically. These recordings show up on the learning platform by the next day. Access them whenever suits you best." },
+  { q: "Will I get a certificate after completion?", a: "Finish the course along with the required tasks, then a widely respected diploma arrives by mail. That document shows others what skills were built during training." },
+  { q: "Is there any installment plan available?", a: "Payment options include split schedules. These can ease the process. For specifics, reach out to the enrollment staff. Another way is stopping by a local office nearby. " },
+  { q: "How does the Job Cell help me find a job?", a: "Start by reaching out through our Job Cell, where staff connect you directly with hiring firms. Instead of waiting, they send your resume to employers who are looking. Interviews show up after that step happens." },
 ];
 
-// const toolIcon = (name = "") => {
-//   const n = name.toLowerCase();
-//   if (n.includes("vs code")) ;
-//   if (n.includes("git")) ;
-//   if (n.includes("figma")) ;
-//   if (n.includes("postman")) ;
-//   if (n.includes("mongo")) ;
-//   if (n.includes("docker"));
-//   if (n.includes("react")) ;
-//   if (n.includes("node")) ;
-//   if (n.includes("python")) ;
-//   if (n.includes("mysql") || n.includes("sql")) 
-//   return "";
-// };
 
 const S = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,600;0,700;1,600&display=swap');
@@ -132,7 +122,7 @@ const S = `
     color: #22013a; border: none; padding: 13px 28px; border-radius: 11px;
     font-size: 0.9rem; font-weight: 800;
     font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer;
-    box-shadow: 0 4px 20px rgba(252,211,77,0.35); transition: all 0.25s ease;
+    box-shadow: 0 4px 20px rgba(49, 43, 21, 0.35); transition: all 0.25s ease;
     display: flex; align-items: center; gap: 7px; white-space: nowrap;
   }
   .dd-enroll-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(252,211,77,0.5); }
@@ -284,8 +274,12 @@ const DiplomaDetail = () => {
   }, [slug]);
 
   if (loading) return (
-    <><style>{S}</style>
-    <div className="dd-root"><div className="dd-center"><div className="dd-spin" /><p>Loading programâ€¦</p></div></div>
+    <>
+      <Helmet>
+        <title>Loading... | ITechSkill</title>
+      </Helmet>
+      <style>{S}</style>
+    <div className="dd-root"><div className="dd-center"><div className="dd-spin" /><p>Loading program</p></div></div>
     <Footer /></>
   );
 
@@ -312,9 +306,41 @@ const DiplomaDetail = () => {
   };
 
   return (
-    <><style>{S}</style>
-    <div className="dd-root">
-      <div className="dd-body">
+    <>
+      <Helmet>
+  <title>{diploma?.title} | ITechSkill</title>
+  <link rel="canonical" href={`https://itechskill.com/diplomas/${slug}`} />
+  <meta name="robots" content="index, follow" />
+<meta property="og:title" content={`${diploma?.title} | ITechSkill`} />
+<meta property="og:url" content={`https://itechskill.com/diplomas/${slug}`} />
+<meta property="og:type" content="website" />
+<meta property="og:image" content={diploma?.image || 'https://itechskill.com/logo.png'} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${diploma?.title} | ITechSkill`} />
+  <meta name="description"  content={
+  diploma?.metaDescription ||
+  (diploma?.description
+    ? diploma.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+    : `Enroll in ${diploma?.title} at ITechSkill. ${diploma?.duration} program in ${diploma?.category} with internship and certificate.`)
+} />
+<meta property="og:description" content={
+  diploma?.metaDescription ||
+  (diploma?.description
+    ? diploma.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+    : `Enroll in ${diploma?.title} at ITechSkill.`)
+} />
+
+<meta name="twitter:description" content={
+  diploma?.metaDescription ||
+  (diploma?.description
+    ? diploma.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+    : `Enroll in ${diploma?.title} at ITechSkill.`)
+} />
+      </Helmet>
+
+      <style>{S}</style>
+      <div className="dd-root">
+        <div className="dd-body">
 
         {/* Title */}
         <div style={{ paddingBottom: "8px", borderBottom: "2px solid #ede8f8" }}>
@@ -330,13 +356,13 @@ const DiplomaDetail = () => {
   color: "#fcd34d", padding: "8px 16px", borderRadius: "8px",
   fontSize: "0.82rem", fontWeight: "700", letterSpacing: "0.3px"
 }}>
-   Includes 3-Month Guaranteed Internship Placement
+Internship placement with 100% guarantee for 3 months.
 </div>
         </div>
         {/* Overview */}
         <div className="dd-block">
           <h2 className="dd-block-title"> Program Overview</h2>
-          <div className="dd-overview-text">
+          {/* <div className="dd-overview-text">
             <p>
               This <strong>{diploma.duration}</strong> diploma program in <strong>{diploma.category}</strong> is built for anyone ready to turn ambition into a professional career. You'll follow a structured, industry-aligned curriculum that blends foundational concepts with hands-on, real-world application.
             </p>
@@ -346,7 +372,7 @@ const DiplomaDetail = () => {
             <p>
               Graduates receive a recognized diploma certificate and gain full access to our Job Cell a dedicated team that actively connects you with top hiring companies in <strong>{diploma.category}</strong> across Pakistan and beyond.
             </p>
-          </div>
+          </div> */}
           <div className="dd-stat-row">
             <div className="dd-stat-pill"><span className="dd-stat-val">{diploma.duration}</span><span className="dd-stat-label">Program Duration</span></div>
             <div className="dd-stat-pill"><span className="dd-stat-val">{diploma.learningOutcomes?.length || 0}+</span><span className="dd-stat-label">Learning Outcomes</span></div>
@@ -371,21 +397,28 @@ const DiplomaDetail = () => {
         )}
 
         {/* What You'll Learn */}
-        {diploma.learningOutcomes?.length > 0 && (
-          <div className="dd-block">
-            <h2 className="dd-block-title"> What You'll Learn</h2>
-            <div className="dd-outcomes-grid">
-              {diploma.learningOutcomes.map((o, i) => (
-                <div key={i} className="dd-outcome-item">
-                  <div className="dd-outcome-check">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                  </div>
-                  {o}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+  {/* What You'll Learn */}
+<div className="dd-block">
+  <h2 className="dd-block-title"> What You'll Learn</h2>
+  <div className="dd-outcomes-grid">
+    {[
+      "Develop skills recognised by top employers that are industry-employable.",   
+   "Construct real world projects to enhance portfolio.",
+      "Become proficient in tools and technologies used by the professionals.",
+      "Use key concepts in practical application.",
+      "Improve problem solving / analytical thinking skills",
+"Complete a diploma certificate accepted around the world.",    
+"  Free access all year around to ITechSkill and industry sponsored high-end tech seminars, workshops and bootcamps delivered by ITechSkill.",
+    ].map((o, i) => (
+      <div key={i} className="dd-outcome-item">
+        <div className="dd-outcome-check">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        {o}
+      </div>
+    ))}
+  </div>
+</div>
 
         {/* What You'll Get */}
         <div className="dd-block">
@@ -413,7 +446,7 @@ const DiplomaDetail = () => {
           </div>
         )}
 
-        {/* Who is this for */}
+        {/* Who is this for
         <div className="dd-block">
           <h2 className="dd-block-title"> Who Is This Program For?</h2>
           {[
@@ -426,7 +459,7 @@ const DiplomaDetail = () => {
           ].map((item, i) => (
             <div key={i} className="dd-req-item"><div className="dd-req-dot" />{item}</div>
           ))}
-        </div>
+        </div> */}
 
         {/* FAQs */}
         <div className="dd-block">
@@ -445,7 +478,7 @@ const DiplomaDetail = () => {
 
         <div className="dd-cta-block">
           <div>
-            <div className="dd-cta-heading">Ready to enroll in {diploma.title}?</div>
+            <div className="dd-cta-heading">Want to enroll in {diploma.title}?</div>
             <div className="dd-cta-sub">
               {formatPrice(diploma.price)} &nbsp;&nbsp; {diploma.duration} &nbsp;&nbsp; Includes Certificate + Internship
             </div>

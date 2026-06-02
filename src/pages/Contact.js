@@ -40,7 +40,7 @@ const Contact = () => {
       icon: <FaGlobe />, color: "#22013a", link: "https://itechskill.com", target: "_blank"
     },
     {
-  id: 5, title: "Visit Us", info: "Office No. S-10, Malikabad Shopping Mall, Rahmanabad, Rawalpindi, Pakistan",
+  id: 5, title: "Visit Us", info: "Office No. S-37, Malikabad Shopping Mall, Rahmanabad, Rawalpindi, Pakistan",
   description: "Come visit us in person during business hours",
   icon: <FaMapMarkerAlt />, color: "#8e5203"
 }
@@ -213,13 +213,29 @@ const Contact = () => {
 
               <div className="contact-form-row">
                 <div className="contact-form-group">
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="tel" id="phone" name="phone"
-                    value={formData.phone} onChange={handleChange}
-                    placeholder="+92 XXX XXXXXXX"
-                  />
-                </div>
+  <label htmlFor="phone">Phone Number</label>
+  <input
+    type="tel"
+    id="phone"
+    name="phone"
+    value={formData.phone}
+    onChange={(e) => {
+      const value = e.target.value;
+      if (/^[0-9\s\-\+]*$/.test(value)) {
+        handleChange(e);
+      }
+    }}
+    onKeyDown={(e) => {
+      const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+      if (allowedKeys.includes(e.key)) return;
+      if (!/^[0-9\-\+\s]$/.test(e.key)) {
+        e.preventDefault();
+      }
+    }}
+    maxLength={15}
+    placeholder="+92 XXX XXXXXXX"
+  />
+</div>
                 <div className="contact-form-group">
                   <label htmlFor="country">Country</label>
                   <input

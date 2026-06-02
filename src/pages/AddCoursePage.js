@@ -56,6 +56,7 @@ const EMPTY_FORM = {
   technologies: '',
   projects: '5 Capstone Projects',
   description: '',
+  outline: '', 
   overview: '',
   learningOutcomes: '',
   targetAudience: '',
@@ -68,6 +69,7 @@ const EMPTY_FORM = {
   coverImage: '',
   isActive: true,
   displayOrder: 0,
+  metaDescription: '',
 };
 
 const Modal = ({ children, onClose }) => (
@@ -138,6 +140,8 @@ export default function Addcoursepage() {
   const [form, setForm]               = useState(EMPTY_FORM);
   const [errors, setErrors]           = useState({});
   const [curriculumRows, setCurriculumRows] = useState([{ moduleTitle: '', topics: '' }]);
+const [faqRows, setFaqRows] = useState([{ question: '', answer: '' }]);
+
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth <= 768);
@@ -166,6 +170,7 @@ export default function Addcoursepage() {
     setEditTarget(null);
     setForm(EMPTY_FORM);
     setCurriculumRows([{ moduleTitle: '', topics: '' }]);
+    setFaqRows([{ question: '', answer: '' }]);
     setErrors({});
     setFormVisible(true);
   };
@@ -174,6 +179,7 @@ export default function Addcoursepage() {
     setEditTarget(prog);
     setForm({
       ...prog,
+       outline: prog.outline || '', 
       technologies:     (prog.technologies    || []).join(', '),
       learningOutcomes: (prog.learningOutcomes || []).join('\n'),
       careerPaths:      (prog.careerPaths      || []).join(', '),
@@ -185,6 +191,11 @@ export default function Addcoursepage() {
         ? prog.curriculum.map(m => ({ moduleTitle: m.moduleTitle, topics: (m.topics || []).join(', ') }))
         : [{ moduleTitle: '', topics: '' }]
     );
+    setFaqRows(
+  (prog.faqs || []).length
+    ? prog.faqs.map(f => ({ question: f.question, answer: f.answer }))
+    : [{ question: '', answer: '' }]
+);
     setErrors({});
     setFormVisible(true);
   };
@@ -202,7 +213,6 @@ export default function Addcoursepage() {
 
   const handleCurriculumChange = (i, field, value) =>
     setCurriculumRows(p => p.map((row, idx) => idx === i ? { ...row, [field]: value } : row));
-
   const validate = () => {
     const errs = {};
     if (!form.title.trim())          errs.title          = 'Title is required';
@@ -211,6 +221,15 @@ export default function Addcoursepage() {
     if (!form.duration.trim())       errs.duration       = 'Duration is required';
     return errs;
   };
+
+  const handleFaqChange = (i, field, value) =>
+  setFaqRows(p => p.map((row, idx) => idx === i ? { ...row, [field]: value } : row));
+
+const addFaqRow = () =>
+  setFaqRows(p => [...p, { question: '', answer: '' }]);
+
+const removeFaqRow = (i) =>
+  setFaqRows(p => p.filter((_, idx) => idx !== i));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -225,6 +244,12 @@ export default function Addcoursepage() {
           moduleTitle: r.moduleTitle.trim(),
           topics: r.topics.split(',').map(t => t.trim()).filter(Boolean),
         })),
+         faqs: faqRows
+    .filter(f => f.question.trim())
+    .map(f => ({
+      question: f.question.trim(),
+      answer:   f.answer.trim(),
+    })),
     };
     try {
       const method = editTarget ? 'PUT' : 'POST';
@@ -483,8 +508,6 @@ export default function Addcoursepage() {
           </div>
         </div>
       </div>
-
-      {/* â”€â”€ Add / Edit Modal â”€â”€ */}
       {formVisible && (
         <Modal onClose={() => setFormVisible(false)}>
           {/* Sticky Header */}
@@ -525,160 +548,204 @@ export default function Addcoursepage() {
 
           <form onSubmit={handleSubmit} style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: '22px' }}>
 
-            {/* â”€â”€ Section 1: Basic Info â”€â”€ */}
-            <div>
-              <p style={sectionHeadStyle}>Basic Information</p>
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '14px' }}>
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <label style={labelStyle}>Course Title <span style={{ color: COLORS.danger }}>*</span></label>
-                  <input name="title" placeholder="e.g. Data Science" value={form.title} onChange={handleChange}
-                    style={inputStyle(errors.title)} />
-                  {errors.title && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.title}</span>}
-                </div>
+  {/* Basic Information */}
+  <div>
+    <p style={sectionHeadStyle}>Basic Information</p>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '14px' }}>
+      <div style={{ gridColumn: '1 / -1' }}>
+        <label style={labelStyle}>Course Title <span style={{ color: COLORS.danger }}>*</span></label>
+        <input name="title" placeholder="e.g. Data Science" value={form.title} onChange={handleChange} style={inputStyle(errors.title)} />
+        {errors.title && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.title}</span>}
+      </div>
+      <div>
+        <label style={labelStyle}>Category</label>
+        <select name="category" value={form.category} onChange={handleChange} style={inputStyle()}>
+          <option value="professional">Professional</option>
+          <option value="short">Short Course</option>
+        </select>
+      </div>
+      <div>
+        <label style={labelStyle}>Duration <span style={{ color: COLORS.danger }}>*</span></label>
+        <input name="duration" placeholder="e.g. 3 Months" value={form.duration} onChange={handleChange} style={inputStyle(errors.duration)} />
+        {errors.duration && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.duration}</span>}
+      </div>
+      <div>
+        <label style={labelStyle}>Projects</label>
+        <input name="projects" value={form.projects} onChange={handleChange} style={inputStyle()} />
+      </div>
+      <div>
+        <label style={labelStyle}>Display Order</label>
+        <input type="number" name="displayOrder" value={form.displayOrder} onChange={handleChange} style={inputStyle()} />
+      </div>
+    </div>
 
-                <div>
-                  <label style={labelStyle}>Category</label>
-                  <select name="category" value={form.category} onChange={handleChange} style={inputStyle()}>
-                    <option value="professional">Professional</option>
-                    <option value="short">Short Course</option>
-                  </select>
-                </div>
+    {/* Card Color */}
+    <div style={{ marginTop: '14px' }}>
+      <label style={labelStyle}>Card Header Color</label>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderRadius: '8px', border: '1.5px solid #D1D5DB', background: '#FAFAFA' }}>
+        <input type="color" name="color" value={form.color} onChange={handleChange}
+          style={{ width: '40px', height: '32px', border: 'none', borderRadius: '6px', cursor: 'pointer', padding: '2px' }} />
+        <span style={{ fontSize: '13px', color: COLORS.darkGray, fontFamily: 'monospace' }}>{form.color}</span>
+        <div style={{ display: 'flex', gap: '6px', marginLeft: '4px' }}>
+          {COLOR_PRESETS.map(c => (
+            <button type="button" key={c} onClick={() => setForm(p => ({ ...p, color: c }))}
+              style={{ width: '22px', height: '22px', borderRadius: '5px', border: form.color === c ? '2px solid #3D1A5B' : '2px solid transparent', background: c, cursor: 'pointer' }} />
+          ))}
+        </div>
+      </div>
+    </div>
 
-                <div>
-                  <label style={labelStyle}>Duration <span style={{ color: COLORS.danger }}>*</span></label>
-                  <input name="duration" placeholder="e.g. 3 Months" value={form.duration} onChange={handleChange}
-                    style={inputStyle(errors.duration)} />
-                  {errors.duration && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.duration}</span>}
-                </div>
+    {/* Active checkbox */}
+    <label style={{ display: 'flex', alignItems: 'center', gap: '9px', fontSize: '14px', fontWeight: '600', color: COLORS.textGray, cursor: 'pointer', marginTop: '12px' }}>
+      <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange}
+        style={{ width: '16px', height: '16px', accentColor: COLORS.deepPurple, cursor: 'pointer' }} />
+      Active (visible on frontend)
+    </label>
+  </div>
 
-                <div>
-                  <label style={labelStyle}>Projects</label>
-                  <input name="projects" value={form.projects} onChange={handleChange} style={inputStyle()} />
-                </div>
+  {/* SEO Meta Description */}
+  <div>
+    <p style={sectionHeadStyle}>SEO</p>
+    <label style={labelStyle}>
+      Meta Description
+      <span style={{ fontSize: '11px', color: COLORS.darkGray, fontWeight: '400', marginLeft: '8px' }}>
+        (shown in Google — max 160 chars)
+      </span>
+    </label>
+    <textarea
+      name="metaDescription"
+      value={form.metaDescription}
+      onChange={handleChange}
+      placeholder="e.g. Learn Data Science at ITechSkill — 3-month program covering Python, Machine Learning and AI. Enroll now in Rawalpindi."
+      maxLength={160}
+      rows={3}
+      style={{ ...inputStyle(), resize: 'vertical', fontFamily: 'Segoe UI, sans-serif', lineHeight: '1.6' }}
+    />
+    <div style={{ fontSize: '11px', textAlign: 'right', marginTop: '4px',
+      color: (form.metaDescription?.length || 0) > 150 ? COLORS.danger : COLORS.darkGray }}>
+      {form.metaDescription?.length || 0}/160
+    </div>
+  </div>
 
-                <div>
-                  <label style={labelStyle}>Display Order</label>
-                  <input type="number" name="displayOrder" value={form.displayOrder} onChange={handleChange} style={inputStyle()} />
-                </div>
-              </div>
+  {/* Fee Information */}
+  <div>
+    <p style={sectionHeadStyle}>Fee Information</p>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '14px' }}>
+      <div>
+        <label style={labelStyle}>Installment Fee (PKR) <span style={{ color: COLORS.danger }}>*</span></label>
+        <input name="installmentFee" placeholder="50,000/- PKR" value={form.installmentFee} onChange={handleChange} style={inputStyle(errors.installmentFee)} />
+        {errors.installmentFee && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.installmentFee}</span>}
+      </div>
+      <div>
+        <label style={labelStyle}>Installment Fee (USD approx.)</label>
+        <input name="installmentDollar" placeholder="(Approx. $170)" value={form.installmentDollar} onChange={handleChange} style={inputStyle()} />
+      </div>
+      <div>
+        <label style={labelStyle}>Discounted Fee (PKR) <span style={{ color: COLORS.danger }}>*</span></label>
+        <input name="discountedFee" placeholder="46,000/- PKR" value={form.discountedFee} onChange={handleChange} style={inputStyle(errors.discountedFee)} />
+        {errors.discountedFee && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.discountedFee}</span>}
+      </div>
+      <div>
+        <label style={labelStyle}>Discounted Fee (USD approx.)</label>
+        <input name="discountedDollar" placeholder="(Approx. $160)" value={form.discountedDollar} onChange={handleChange} style={inputStyle()} />
+      </div>
+    </div>
+  </div>
 
-              <div style={{ marginTop: '14px' }}>
-                <label style={labelStyle}>Card Header Color</label>
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: '10px',
-                  padding: '10px 14px', borderRadius: '8px', border: '1.5px solid #D1D5DB',
-                  background: '#FAFAFA',
-                }}>
-                  <input type="color" name="color" value={form.color} onChange={handleChange}
-                    style={{ width: '40px', height: '32px', border: 'none', borderRadius: '6px', cursor: 'pointer', padding: '2px' }} />
-                  <span style={{ fontSize: '13px', color: COLORS.darkGray, fontFamily: 'monospace' }}>{form.color}</span>
-                  <div style={{ display: 'flex', gap: '6px', marginLeft: '4px' }}>
-                    {COLOR_PRESETS.map(c => (
-                      <button type="button" key={c} onClick={() => setForm(p => ({ ...p, color: c }))}
-                        style={{
-                          width: '22px', height: '22px', borderRadius: '5px',
-                          border: form.color === c ? '2px solid #3D1A5B' : '2px solid transparent',
-                          background: c, cursor: 'pointer', transition: 'border 0.15s',
-                        }} />
-                    ))}
-                  </div>
-                </div>
-              </div>
+  {/* Technologies */}
+  <div>
+    <p style={sectionHeadStyle}>Technologies Covered</p>
+    <label style={labelStyle}>Technologies <span style={{ fontSize: '12px', color: COLORS.darkGray, fontWeight: '400' }}>(comma-separated)</span></label>
+    <input name="technologies" placeholder="Python, SQL, TensorFlow, PowerBI, ..." value={form.technologies} onChange={handleChange} style={inputStyle()} />
+  </div>
 
-              <label style={{
-                display: 'flex', alignItems: 'center', gap: '9px',
-                fontSize: '14px', fontWeight: '600', color: COLORS.textGray,
-                cursor: 'pointer', marginTop: '12px',
-              }}>
-                <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange}
-                  style={{ width: '16px', height: '16px', accentColor: COLORS.deepPurple, cursor: 'pointer' }} />
-                Active (visible on frontend)
-              </label>
-            </div>
+  {/* Course Description */}
+  <div>
+    <p style={sectionHeadStyle}>Course Description</p>
+    <label style={labelStyle}>
+      Description / Details
+      <span style={{ fontSize: '12px', color: COLORS.darkGray, fontWeight: '400' }}> paste or type with full formatting support</span>
+    </label>
+    <ReactQuill
+      theme="snow"
+      value={form.description}
+      onChange={(value) => setForm(p => ({ ...p, description: value }))}
+      modules={QUILL_MODULES}
+      formats={QUILL_FORMATS}
+      placeholder="Paste or write your course description here..."
+    />
+  </div>
 
-            {/* â”€â”€ Section 2: Fees â”€â”€ */}
-            <div>
-              <p style={sectionHeadStyle}>Fee Information</p>
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '14px' }}>
-                <div>
-                  <label style={labelStyle}>Installment Fee (PKR) <span style={{ color: COLORS.danger }}>*</span></label>
-                  <input name="installmentFee" placeholder="50,000/- PKR" value={form.installmentFee} onChange={handleChange}
-                    style={inputStyle(errors.installmentFee)} />
-                  {errors.installmentFee && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.installmentFee}</span>}
-                </div>
-                <div>
-                  <label style={labelStyle}>Installment Fee (USD approx.)</label>
-                  <input name="installmentDollar" placeholder="(Approx. $170)" value={form.installmentDollar} onChange={handleChange} style={inputStyle()} />
-                </div>
-                <div>
-                  <label style={labelStyle}>Discounted Fee (PKR) <span style={{ color: COLORS.danger }}>*</span></label>
-                  <input name="discountedFee" placeholder="46,000/- PKR" value={form.discountedFee} onChange={handleChange}
-                    style={inputStyle(errors.discountedFee)} />
-                  {errors.discountedFee && <span style={{ fontSize: '12px', color: COLORS.danger }}>{errors.discountedFee}</span>}
-                </div>
-                <div>
-                  <label style={labelStyle}>Discounted Fee (USD approx.)</label>
-                  <input name="discountedDollar" placeholder="(Approx. $160)" value={form.discountedDollar} onChange={handleChange} style={inputStyle()} />
-                </div>
-              </div>
-            </div>
+<div>
+  <p style={sectionHeadStyle}>Course Outline</p>
+  <label style={labelStyle}>
+    Outline
+    <span style={{ fontSize: '12px', color: COLORS.darkGray, fontWeight: '400' }}>
+      {' '}— detailed topic-by-topic breakdown
+    </span>
+  </label>
+  <ReactQuill
+    theme="snow"
+    value={form.outline}
+    onChange={(value) => setForm(p => ({ ...p, outline: value }))}
+    modules={QUILL_MODULES}
+    formats={QUILL_FORMATS}
+    placeholder="Write the full course outline here..."
+  />
+</div>
+  {/* FAQs */}
+  <div>
+    <p style={sectionHeadStyle}>Frequently Asked Questions</p>
+    {faqRows.map((row, i) => (
+      <div key={i} style={{ background: '#FAFAFA', border: '1.5px solid #E5E7EB', borderRadius: '10px', padding: '14px', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <span style={{ fontSize: '12px', fontWeight: '700', color: COLORS.deepPurple }}>FAQ #{i + 1}</span>
+          {faqRows.length > 1 && (
+            <button type="button" onClick={() => removeFaqRow(i)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: COLORS.danger, fontSize: '13px', fontWeight: '600' }}>
+              Remove
+            </button>
+          )}
+        </div>
+        <div style={{ marginBottom: '8px' }}>
+          <label style={labelStyle}>Question</label>
+          <input placeholder="e.g. What is this course about?" value={row.question}
+            onChange={e => handleFaqChange(i, 'question', e.target.value)} style={inputStyle()} />
+        </div>
+        <div>
+          <label style={labelStyle}>Answer</label>
+          <textarea placeholder="Write the answer here..." value={row.answer}
+            onChange={e => handleFaqChange(i, 'answer', e.target.value)} rows={3}
+            style={{ ...inputStyle(), resize: 'vertical', fontFamily: 'Segoe UI, sans-serif', lineHeight: '1.6' }} />
+        </div>
+      </div>
+    ))}
+    <button type="button" onClick={addFaqRow}
+      style={{ padding: '9px 20px', borderRadius: '8px', border: `1.5px dashed ${COLORS.deepPurple}`, background: 'transparent', color: COLORS.deepPurple, fontWeight: '600', fontSize: '13px', cursor: 'pointer', width: '100%', marginTop: '4px' }}>
+      + Add Another FAQ
+    </button>
+  </div>
 
-            <div>
-              <p style={sectionHeadStyle}>Technologies Covered</p>
-              <label style={labelStyle}>Technologies <span style={{ fontSize: '12px', color: COLORS.darkGray, fontWeight: '400' }}>(comma-separated)</span></label>
-              <input name="technologies" placeholder="Python, SQL, TensorFlow, PowerBI, ..." value={form.technologies} onChange={handleChange} style={inputStyle()} />
-            </div>
+  {/* Submit */}
+  <div style={{ display: 'flex', gap: '12px', paddingTop: '4px', borderTop: `1px solid ${COLORS.lightGray}`, marginTop: '4px' }}>
+    <button type="submit" disabled={saving} style={{
+      flex: 1, padding: '13px 24px', borderRadius: '9px', border: 'none',
+      background: saving ? COLORS.darkGray : 'linear-gradient(135deg, #3D1A5B 0%, #6B3FA0 100%)',
+      color: COLORS.white, fontWeight: '700', cursor: saving ? 'not-allowed' : 'pointer',
+      fontSize: '15px', letterSpacing: '0.3px',
+      boxShadow: saving ? 'none' : '0 4px 15px rgba(61,26,91,0.3)', transition: 'all 0.2s',
+    }}>
+      {saving ? 'Saving...' : editTarget ? 'Update Program' : 'Create Program'}
+    </button>
+    <button type="button" onClick={() => setFormVisible(false)} style={{
+      padding: '13px 20px', borderRadius: '9px', border: `1.5px solid #D1D5DB`,
+      background: COLORS.white, color: COLORS.textGray, fontWeight: '600', cursor: 'pointer', fontSize: '14px',
+    }}>Cancel</button>
+  </div>
 
-            <div>
-              <p style={sectionHeadStyle}>Course Description</p>
-              <label style={labelStyle}>
-                Description / Details
-                <span style={{ fontSize: '12px', color: COLORS.darkGray, fontWeight: '400' }}>  paste or type with full formatting support</span>
-              </label>
-              <ReactQuill
-                theme="snow"
-                value={form.description}
-                onChange={(value) => setForm(p => ({ ...p, description: value }))}
-                modules={QUILL_MODULES}
-                formats={QUILL_FORMATS}
-                placeholder="Paste or write your course description here” bullets, bold, headings, colors all supported..."
-              />
-            </div>
-
-            {/* â”€â”€ Submit Buttons â”€â”€ */}
-            <div style={{
-              display: 'flex', gap: '12px', paddingTop: '4px',
-              borderTop: `1px solid ${COLORS.lightGray}`, marginTop: '4px',
-            }}>
-              <button type="submit" disabled={saving} style={{
-                flex: 1, padding: '13px 24px', borderRadius: '9px', border: 'none',
-                background: saving
-                  ? COLORS.darkGray
-                  : 'linear-gradient(135deg, #3D1A5B 0%, #6B3FA0 100%)',
-                color: COLORS.white, fontWeight: '700', cursor: saving ? 'not-allowed' : 'pointer',
-                fontSize: '15px', letterSpacing: '0.3px',
-                boxShadow: saving ? 'none' : '0 4px 15px rgba(61,26,91,0.3)',
-                transition: 'all 0.2s',
-              }}>
-                {saving ? 'Saving' : editTarget ? 'Update Program' : ' Create Program'}
-              </button>
-              <button type="button" onClick={() => setFormVisible(false)} style={{
-                padding: '13px 20px', borderRadius: '9px',
-                border: `1.5px solid #D1D5DB`,
-                background: COLORS.white, color: COLORS.textGray,
-                fontWeight: '600', cursor: 'pointer', fontSize: '14px',
-              }}>Cancel</button>
-            </div>
-          </form>
+</form>
         </Modal>
       )}
     </div>
   );
 }
-
-
-
-
-
-
-

@@ -1,7 +1,8 @@
 // import React, { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-// import { registerUser } from '../api/api'; 
+// import { registerUser, googleLoginUser, forgotPassword } from '../api/api';
 // import ITSLogo from '../assets/ITS.png';
+// import { GoogleLogin } from '@react-oauth/google';
 // import { FaUser, FaLock, FaPhone, FaEye, FaEyeSlash, FaEnvelope } from 'react-icons/fa';
 
 // const Register = () => {
@@ -17,7 +18,6 @@
 
 //   const [errors, setErrors] = useState({});
 //   const [loading, setLoading] = useState(false);
-//   const [successMessage, setSuccessMessage] = useState('');
 //   const [showPassword, setShowPassword] = useState(false);
 //   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -26,62 +26,29 @@
 //     setFormData(prev => ({ ...prev, [name]: value }));
 //     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
 //     if (errors.general) setErrors(prev => ({ ...prev, general: '' }));
-//     if (successMessage) setSuccessMessage('');
 //   };
 
-//   // const validateForm = () => {
-//   //   const newErrors = {};
-//   //   if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
-//   //   if (!formData.email.trim()) newErrors.email = 'Email is required';
-//   //   else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-//   //   if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-//   //   if (!formData.password) newErrors.password = 'Password is required';
-//   //   if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-//   //   setErrors(newErrors);
-//   //   return Object.keys(newErrors).length === 0;
-//   // };
 //   const validateForm = () => {
-//   const newErrors = {};
+//     const newErrors = {};
 
-//   // Full Name
-//   if (!formData.fullName.trim()) {
-//     newErrors.fullName = "Full name is required";
-//   } else if (formData.fullName.trim().length < 3) {
-//     newErrors.fullName = "Full name must be at least 3 characters";
-//   }
+//     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+//     else if (formData.fullName.trim().length < 3) newErrors.fullName = "Full name must be at least 3 characters";
 
-//   // Email
-//   if (!formData.email.trim()) {
-//     newErrors.email = "Email is required";
-//   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-//     newErrors.email = "Enter a valid email address";
-//   }
+//     if (!formData.email.trim()) newErrors.email = "Email is required";
+//     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Enter a valid email address";
 
-//   // Phone
-//   if (!formData.phone.trim()) {
-//     newErrors.phone = "Phone number is required";
-//   } else if (!/^[0-9]{10,15}$/.test(formData.phone)) {
-//     newErrors.phone = "Phone number must be 10–15 digits";
-//   }
+//     if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+//     else if (!/^[0-9]{10,15}$/.test(formData.phone)) newErrors.phone = "Phone number must be 10–15 digits";
 
-//   // Password
-// if (!formData.password) {
-//   newErrors.password = "Password is required";
-// } else if (formData.password.length < 5) {
-//   newErrors.password = "Password must be at least 5 characters";
-// }
-// //confirm password
-//   if (!formData.confirmPassword) {
-//   newErrors.confirmPassword = "Confirm password is required";
-// } else if (formData.password !== formData.confirmPassword) {
-//   newErrors.confirmPassword = "Passwords do not match";
-// }
+//     if (!formData.password) newErrors.password = "Password is required";
+//     else if (formData.password.length < 5) newErrors.password = "Password must be at least 5 characters";
 
+//     if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required";
+//     else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
 
-//   setErrors(newErrors);
-//   return Object.keys(newErrors).length === 0;
-// };
-
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
 
 //   const handleRegister = async (e) => {
 //     e.preventDefault();
@@ -89,7 +56,6 @@
 
 //     setLoading(true);
 //     setErrors({});
-//     setSuccessMessage('');
 
 //     try {
 //       const payload = {
@@ -100,69 +66,71 @@
 //         confirmPassword: formData.confirmPassword,
 //         role: formData.role.charAt(0).toUpperCase() + formData.role.slice(1)
 //       };
+
 //       const response = await registerUser(payload);
-          
-//       if (response.success === true || response.user) {
+
+//       if (response.success || response.user) {
 //         const user = response.user || response.data?.user || {
 //           fullName: formData.fullName,
 //           email: formData.email,
 //           role: "Student",
 //         };
-
 //         localStorage.setItem("userInfo", JSON.stringify(user));
-
-//         if (response.token) {
-//           localStorage.setItem("token", response.token);
-//         }
+//         if (response.token) localStorage.setItem("token", response.token);
 
 //         alert(`Registration successful! Welcome ${user.fullName}`);
 
 //         setFormData({
-//           fullName: "",
-//           email: "",
-//           phone: "",
-//           password: "",
-//           confirmPassword: "",
-//           role: "Student",
+//           fullName: '',
+//           email: '',
+//           phone: '',
+//           password: '',
+//           confirmPassword: '',
+//           role: 'Student'
 //         });
 
 //         navigate("/student/dashboard", { replace: true });
 //       } else {
-//         const errorMsg = response.message || 'Registration failed';
-//         setErrors({ general: errorMsg });
+//         setErrors({ general: response.message || "Registration failed" });
 //       }
-
 //     } catch (error) {
-//       console.error('❌ Registration error:', error.response?.data || error);
-      
-//       const message = error.response?.data?.message || error.message || 'Registration failed. Please try again.';
-      
-//       if (typeof message === 'string') {
-//         const lowerMessage = message.toLowerCase();
-        
-//         if (lowerMessage.includes('email')) {
-//           setErrors({ email: message });
-//         } else if (lowerMessage.includes('phone')) {
-//           setErrors({ phone: message });
-//         } else if (lowerMessage.includes('password')) {
-//           setErrors({ password: message });
-//         } else if (lowerMessage.includes('all fields')) {
-//           setErrors({ general: message });
-//         } else {
-//           setErrors({ general: message });
-//         }
-//       } else {
-//         setErrors({ general: 'Registration failed. Please try again.' });
-//       }
+//       const message = error.response?.data?.message || error.message || 'Registration failed';
+//       setErrors({ general: message });
 //     } finally {
 //       setLoading(false);
+//     }
+//   };
+
+//   // Google Sign-Up
+//   const handleGoogleSuccess = async (credentialResponse) => {
+//     try {
+//       const response = await googleLoginUser(credentialResponse.credential);
+//       localStorage.setItem("userInfo", JSON.stringify(response.user));
+//       if (response.token) localStorage.setItem("token", response.token);
+//       navigate("/student/dashboard", { replace: true });
+//     } catch (error) {
+//       alert("Google login failed");
+//       console.error(error);
+//     }
+//   };
+
+//   // Forgot password
+//   const handleForgotPassword = async () => {
+//     if (!formData.email) {
+//       alert("Enter your email first");
+//       return;
+//     }
+//     try {
+//       await forgotPassword(formData.email);
+//       alert("Password reset link sent to your email");
+//     } catch (error) {
+//       alert(error.response?.data?.message || "Failed to send reset link");
 //     }
 //   };
 
 //   return (
 //     <div style={styles.container}>
 //       <form onSubmit={handleRegister} style={styles.form}>
-//         {/* Logo Section */}
 //         <div style={styles.logoSection}>
 //           <div style={styles.logoCircle}>
 //             <img src={ITSLogo} alt="ITS Logo" style={styles.logoImg} />
@@ -171,121 +139,123 @@
 
 //         <h2 style={styles.heading}>Create Account</h2>
 
-//         {successMessage && <div style={styles.successMessage}>{successMessage}</div>}
 //         {errors.general && <div style={styles.errorMessage}>{errors.general}</div>}
 
-//         {/* Full Name Input */}
+//         {/* Full Name */}
 //         <div style={styles.inputWrapper}>
 //           <div style={styles.inputContainer}>
 //             <FaUser style={styles.icon} />
-//             <input 
-//               type="text" 
-//               name="fullName" 
-//               value={formData.fullName} 
-//               onChange={handleInputChange} 
-//               placeholder="Full Name" 
-//               style={styles.inputField} 
+//             <input
+//               type="text"
+//               name="fullName"
+//               value={formData.fullName}
+//               onChange={handleInputChange}
+//               placeholder="Full Name"
+//               style={styles.inputField}
 //             />
 //           </div>
 //           {errors.fullName && <span style={styles.error}>{errors.fullName}</span>}
 //         </div>
 
-//         {/* Email Input */}
+//         {/* Email */}
 //         <div style={styles.inputWrapper}>
 //           <div style={styles.inputContainer}>
 //             <FaEnvelope style={styles.icon} />
-//             <input 
-//               type="email" 
-//               name="email" 
-//               value={formData.email} 
-//               onChange={handleInputChange} 
-//               placeholder="Email Address" 
-//               style={styles.inputField} 
+//             <input
+//               type="email"
+//               name="email"
+//               value={formData.email}
+//               onChange={handleInputChange}
+//               placeholder="Email Address"
+//               style={styles.inputField}
 //             />
 //           </div>
 //           {errors.email && <span style={styles.error}>{errors.email}</span>}
 //         </div>
 
-//         {/* Phone Input */}
+//         {/* Phone */}
 //         <div style={styles.inputWrapper}>
 //           <div style={styles.inputContainer}>
 //             <FaPhone style={styles.icon} />
-//             <input 
-//               type="text" 
-//               name="phone" 
-//               value={formData.phone} 
-//               onChange={handleInputChange} 
-//               placeholder="Phone Number" 
-//               style={styles.inputField} 
+//             <input
+//               type="text"
+//               name="phone"
+//               value={formData.phone}
+//               onChange={handleInputChange}
+//               placeholder="Phone Number"
+//               style={styles.inputField}
 //             />
 //           </div>
 //           {errors.phone && <span style={styles.error}>{errors.phone}</span>}
 //         </div>
 
-//         {/* Password Input */}
+//         {/* Password */}
 //         <div style={styles.inputWrapper}>
 //           <div style={styles.inputContainer}>
 //             <FaLock style={styles.icon} />
-//             <input 
-//               type={showPassword ? "text" : "password"} 
-//               name="password" 
-//               value={formData.password} 
-//               onChange={handleInputChange} 
-//               placeholder="Password" 
-//               style={styles.inputField} 
+//             <input
+//               type={showPassword ? "text" : "password"}
+//               name="password"
+//               value={formData.password}
+//               onChange={handleInputChange}
+//               placeholder="Password"
+//               style={styles.inputField}
 //             />
-//             <span 
-//               style={styles.passwordToggle} 
-//               onClick={() => setShowPassword(prev => !prev)}
-//             >
+//             <span style={styles.passwordToggle} onClick={() => setShowPassword(p => !p)}>
 //               {showPassword ? <FaEyeSlash /> : <FaEye />}
 //             </span>
 //           </div>
 //           {errors.password && <span style={styles.error}>{errors.password}</span>}
 //         </div>
 
-//         {/* Confirm Password Input */}
+//         {/* Confirm Password */}
 //         <div style={styles.inputWrapper}>
 //           <div style={styles.inputContainer}>
 //             <FaLock style={styles.icon} />
-//             <input 
-//               type={showConfirm ? "text" : "password"} 
-//               name="confirmPassword" 
-//               value={formData.confirmPassword} 
-//               onChange={handleInputChange} 
-//               placeholder="Confirm Password" 
-//               style={styles.inputField} 
+//             <input
+//               type={showConfirm ? "text" : "password"}
+//               name="confirmPassword"
+//               value={formData.confirmPassword}
+//               onChange={handleInputChange}
+//               placeholder="Confirm Password"
+//               style={styles.inputField}
 //             />
-//             <span 
-//               style={styles.passwordToggle} 
-//               onClick={() => setShowConfirm(prev => !prev)}
-//             >
+//             <span style={styles.passwordToggle} onClick={() => setShowConfirm(p => !p)}>
 //               {showConfirm ? <FaEyeSlash /> : <FaEye />}
 //             </span>
 //           </div>
 //           {errors.confirmPassword && <span style={styles.error}>{errors.confirmPassword}</span>}
 //         </div>
 
-//         {/* Submit Button */}
-//         <button 
-//           type="submit" 
-//           disabled={loading} 
-//           style={{ 
-//             ...styles.button, 
-//             opacity: loading ? 0.7 : 1,
-//             cursor: loading ? "not-allowed" : "pointer"
-//           }}
+//         {/* Forgot Password */}
+//         {/* <div style={{ textAlign: "right", fontSize: "13px" }}>
+//           <span onClick={handleForgotPassword} style={{ cursor: "pointer", color: "#693683" }}>
+//             Forgot Password?
+//           </span>
+//         </div> */}
+
+//         {/* Register Button */}
+//         <button
+//           type="submit"
+//           disabled={loading}
+//           style={{ ...styles.button, opacity: loading ? 0.7 : 1 }}
 //         >
 //           {loading ? "Creating Account..." : "Register"}
 //         </button>
 
+//         {/* OR Google Sign-Up */}
+//         <div style={{ textAlign: "center", marginTop: "10px" }}>
+//           <p>or</p>
+//           <GoogleLogin
+//             onSuccess={handleGoogleSuccess}
+//             onError={() => alert("Google Login Failed")}
+//           />
+//         </div>
+
 //         {/* Login Link */}
 //         <p style={styles.loginText}>
 //           Already have an account?{' '}
-//           <span 
-//             style={styles.loginLink} 
-//             onClick={() => navigate('/login')}
-//           >
+//           <span style={styles.loginLink} onClick={() => navigate('/login')}>
 //             Login here
 //           </span>
 //         </p>
@@ -475,7 +445,15 @@
 //   },
 // };
 
+
 // export default Register;
+
+
+
+
+
+
+
 
 
 

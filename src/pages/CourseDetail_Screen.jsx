@@ -5,9 +5,56 @@ import '../components/Footer.css';
 import EnrollmentModal from '../components/EnrollmentModal';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Helmet } from 'react-helmet-async';
+
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+function FaqItem({ faq }) {
+  const [open, setOpen] = useState(false);
 
+  return (
+    <div style={{
+      border: '1.5px solid #e5e7eb',
+      borderRadius: '10px',
+      overflow: 'hidden',
+      background: '#fff',
+    }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%', textAlign: 'left',
+          padding: '16px 20px',
+          background: open ? '#faf5ff' : '#fff',
+          border: 'none', cursor: 'pointer',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          gap: '12px',
+        }}
+      >
+        <span style={{ fontWeight: '700', color: '#22013a', fontSize: '16px', lineHeight: '1.4' }}>
+          {faq.question}
+        </span>
+        <span style={{
+          fontSize: '20px', color: '#7c1abd', flexShrink: 0,
+          transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+          transition: 'transform 0.2s',
+        }}>
+          +
+        </span>
+      </button>
+
+      {open && (
+        <div style={{
+          padding: '0 20px 16px',
+          color: '#374151', fontSize: '15px', lineHeight: '1.75',
+          borderTop: '1px solid #f0ebf8',
+          background: '#faf5ff',
+        }}>
+          {faq.answer}
+        </div>
+      )}
+    </div>
+  );
+}
 export default function CourseDetail_Screen() {
   const { slug } = useParams();
   const navigate                  = useNavigate();
@@ -56,11 +103,16 @@ useEffect(() => {
 }, [slug]);
 
 if (loading) return (
-    <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <>
+      <Helmet>
+        <title>Loading... | ITechSkill</title>
+      </Helmet>
+      <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ width: '44px', height: '44px', borderRadius: '50%', border: '4px solid #ede9f8', borderTopColor: '#22013a', animation: 'spin 0.8s linear infinite', marginBottom: '14px' }} />
       <p style={{ color: '#8e5203', fontWeight: '600' }}>Loading…</p>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
+    </>
   );
 
   if (error || !course) return (
@@ -85,6 +137,36 @@ if (loading) return (
   const hasContent = description && description.replace(/<[^>]*>/g, '').trim().length > 0;
 return (
     <>
+      <Helmet>
+  <title>{course?.title} | ITechSkill</title>
+<link rel="canonical" href={`https://itechskill.com/course/${slug}`} />
+  <meta name="description"  content={
+    course?.metaDescription ||
+    (course?.description
+      ? course.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+      : `Learn ${course?.title} at ITechSkill — ${course?.duration} program. Fee: ${course?.installmentFee}. Enroll now.`)
+  } />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content={`${course?.title} | ITechSkill`} />
+  <meta property="og:description" content={
+    course?.metaDescription ||
+    (course?.description
+      ? course.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+      : `Learn ${course?.title} at ITechSkill.`)
+  } />
+  <meta property="og:image" content={course?.image || 'https://itechskill.com/logo.png'} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={window.location.href} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={`${course?.title} | ITechSkill`} />
+  <meta name="twitter:description" content={
+    course?.metaDescription ||
+    (course?.description
+      ? course.description.replace(/<[^>]*>/g, '').substring(0, 155).trim()
+      : `Learn ${course?.title} at ITechSkill.`)
+  } />
+</Helmet>
+
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         *, *::before, *::after { box-sizing: border-box; }
@@ -165,56 +247,72 @@ return (
       <div className="cd-page">
         <div className="cd-wrap">
           <h1 className="cd-title">{course.title}</h1>
+          {/* Description */}
           {hasContent
             ? <div className="course-desc" dangerouslySetInnerHTML={{ __html: description }} />
             : <p style={{ color: '#9ca3af', fontStyle: 'italic', fontSize: '17px' }}>No description available for this course yet.</p>
           }
+
+          {/* ── FAQ Section ── */}
+          {course.faqs && course.faqs.length > 0 && (
+            <div style={{ marginTop: '48px' }}>
+              <h2 style={{
+                fontSize: '24px', fontWeight: '800', color: '#22013a',
+                marginBottom: '20px', paddingBottom: '10px',
+                borderBottom: '2px solid #ede9f0',
+              }}>
+                Frequently Asked Questions
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {course.faqs.map((faq, i) => (
+                  <FaqItem key={i} faq={faq} />
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── Enrollment CTA ── */}
-<div style={{
-  marginTop: '48px',
-  padding: '36px 40px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #22013a 0%, #7c1abd 55%, #8e5203 100%)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexWrap: 'wrap',
-  gap: '20px',
-  boxShadow: '0 8px 32px rgba(34,1,58,0.25)',
-}}>
-  <div>
-    <h3 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.3rem', fontWeight: '800' }}>
-      Ready to enroll in {course.title}?
-    </h3>
-    <p style={{ color: 'rgba(255,255,255,0.75)', margin: 0, fontSize: '0.9rem' }}>
-      💰 Fee: <strong style={{ color: '#fff' }}>{course.installmentFee}</strong>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      🏷️ Advance: <strong style={{ color: '#4ade80' }}>{course.discountedFee}</strong>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      ⏱ {course.duration}
-    </p>
-  </div>
- <button
-  onClick={() => setApplyOpen(true)}
-  style={{
-    padding: '14px 32px',
-    borderRadius: '10px',
-    border: '2px solid rgba(255,255,255,0.3)',
-    background: '#fff',
-    color: '#22013a',
-    fontWeight: '800',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    whiteSpace: 'nowrap',
-    transition: 'all 0.2s',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-  }}
-  onMouseEnter={e => { e.target.style.background = '#f3f0ff'; e.target.style.transform = 'translateY(-2px)'; }}
-  onMouseLeave={e => { e.target.style.background = '#fff'; e.target.style.transform = 'translateY(0)'; }}
->
-   Apply Now
-</button>
-</div>
+          <div style={{
+            marginTop: '48px',
+            padding: '36px 40px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #22013a 0%, #7c1abd 55%, #8e5203 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '20px',
+            boxShadow: '0 8px 32px rgba(34,1,58,0.25)',
+          }}>
+            <div>
+              <h3 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.3rem', fontWeight: '800' }}>
+                Ready to enroll in {course.title}?
+              </h3>
+              <p style={{ color: 'rgba(255,255,255,0.75)', margin: 0, fontSize: '0.9rem' }}>
+                💰 Fee: <strong style={{ color: '#fff' }}>{course.installmentFee}</strong>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                🏷️ Advance: <strong style={{ color: '#4ade80' }}>{course.discountedFee}</strong>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                ⏱ {course.duration}
+              </p>
+            </div>
+            <button
+              onClick={() => setApplyOpen(true)}
+              style={{
+                padding: '14px 32px', borderRadius: '10px',
+                border: '2px solid rgba(255,255,255,0.3)',
+                background: '#fff', color: '#22013a',
+                fontWeight: '800', fontSize: '1rem',
+                cursor: 'pointer', whiteSpace: 'nowrap',
+                transition: 'all 0.2s',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+              }}
+              onMouseEnter={e => { e.target.style.background = '#f3f0ff'; e.target.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.target.style.background = '#fff'; e.target.style.transform = 'translateY(0)'; }}
+            >
+              Apply Now
+            </button>
+          </div>
         </div>
       </div>
 
@@ -223,7 +321,7 @@ return (
   <EnrollmentModal
     course={{
       ...course,
-      category: 'professional',       // tells modal this is a Course
+      category: 'professional',       
       installmentFee:  course.installmentFee  || '',
       installmentDollar: course.installmentDollar || '',
       discountedFee:   course.discountedFee   || '',

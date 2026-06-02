@@ -887,3 +887,137 @@
   background: #1da851;
   transform: translateY(-3px);
 }
+/* ===== ADD THESE TO YOUR Terms.css ===== */
+
+/* Refund section header */
+.terms-section-refund {
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border-left: 4px solid #8e5203;
+}
+
+.terms-section-refund .terms-content-icon {
+  color: #f1c58b;
+}
+
+/* Refund Summary Banner */
+.terms-refund-banner {
+   background: linear-gradient(135deg, #2a043b 20%, #868528 100%);
+    border: 1px solid #fed7aa;
+  border-radius: 16px;
+  margin: 32px auto;
+  max-width: 1100px;
+  padding: 32px;
+}
+
+.terms-refund-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.terms-refund-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.terms-refund-banner-icon {
+  color: #f1c58b;
+  font-size: 1.5rem;
+}
+
+.terms-refund-banner-header h2 {
+  color: #f1c58b;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.terms-refund-steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.terms-refund-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+  padding: 16px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.terms-refund-step-highlight {
+  background: #fff7ed;
+  border-color: #8e5203;
+  box-shadow: 0 0 0 2px #fed7aa;
+}
+
+.terms-refund-step-number {
+  background: #8e5203;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.terms-refund-step-highlight .terms-refund-step-number {
+  background: #16a34a;
+}
+
+.terms-refund-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.terms-refund-step-text strong {
+  color: #8e5203;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.terms-refund-step-text span {
+  color: #78716c;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.terms-refund-arrow {
+  color: #8e5203;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terms-refund-steps {
+    flex-direction: column;
+  }
+
+  .terms-refund-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+
+  .terms-refund-step {
+    width: 100%;
+  }
+
+  .terms-refund-banner {
+    padding: 20px 16px;
+    margin: 20px 16px;
+  }
+}

@@ -876,7 +876,7 @@ const Lectures = () => {
                   <span>Course: <strong style={{ color: COLORS.deepPurple }}>{course.title}</strong></span>
                   <span style={{ color: COLORS.darkGray }}>•</span>
                   <span>Price: <strong style={{ color: course.price > 0 ? COLORS.deepPurple : COLORS.brightGreen }}>
-                    ₹{course.price || 0}{course.price === 0 && " (FREE)"}
+                    {course.price || 0}{course.price === 0 && " (FREE)"}
                   </strong></span>
                   <span style={{ color: COLORS.darkGray }}>•</span>
                   <span>Category: <strong style={{ color: COLORS.deepPurple }}>{course.category || "Uncategorized"}</strong></span>
@@ -1117,12 +1117,12 @@ const Lectures = () => {
                 <p style={{ color: COLORS.textGray, marginBottom: "20px", lineHeight: "1.6" }}>{selectedLecture.description}</p>
               </div>
               <div>
-                <h4 style={{ marginBottom: "12px", color: COLORS.deepPurple }}>📁 Lecture Resource</h4>
+                <h4 style={{ marginBottom: "12px", color: COLORS.deepPurple }}> Lecture Resource</h4>
                 {renderFile(selectedLecture)}
               </div>
               {selectedLecture.notes && (
                 <div style={{ marginTop: "20px", padding: "16px", background: COLORS.bgGray, borderRadius: "8px" }}>
-                  <h4 style={{ marginBottom: "8px", color: COLORS.deepPurple }}>📝 Notes</h4>
+                  <h4 style={{ marginBottom: "8px", color: COLORS.deepPurple }}> Notes</h4>
                   <p style={{ color: COLORS.textGray, margin: 0, whiteSpace: "pre-wrap" }}>{selectedLecture.notes}</p>
                 </div>
               )}
@@ -1210,7 +1210,7 @@ const Lectures = () => {
                   <div style={{ fontSize: "12px", color: COLORS.darkGray, marginTop: "4px", marginLeft: "26px" }}>{formData.isFreePreview ? "Anyone can view" : "Paid students only"}</div>
                 </div>
                 <div>
-                  <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: 600, color: COLORS.textGray }}>Price Required (₹)</label>
+                  <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: 600, color: COLORS.textGray }}>Price Required ()</label>
                   <input type="number" name="priceRequired" value={formData.priceRequired} onChange={handleChange} min="0" step="0.01" placeholder="0.00" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${COLORS.darkGray}`, fontSize: "14px", boxSizing: "border-box" }} />
                 </div>
               </div>

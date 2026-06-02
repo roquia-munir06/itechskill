@@ -359,7 +359,7 @@ const Courses = () => {
                 { icon: "📚", value: stats.paidCourses,  label: "Paid Courses"      },
                 { icon: "🎓", value: stats.freeCourses,  label: "Free Courses"      },
                 { icon: "👥", value: stats.totalStudents,label: "Enrolled Students" },
-                { icon: "💰", value: `₹${stats.totalRevenue.toLocaleString()}`, label: "Total Revenue" },
+                { icon: "💰", value: `${stats.totalRevenue.toLocaleString()}`, label: "Total Revenue" },
               ].map((s, i) => (
                 <div key={i} style={styles.statCard}>
                   <div style={styles.statIcon}>{s.icon}</div>
@@ -384,7 +384,7 @@ const Courses = () => {
           {isAdmin && (
             <div style={styles.buttonGroup}>
               <button onClick={() => setShowFreeAccessModal(true)} style={styles.grantButton} onMouseEnter={(e) => e.currentTarget.style.background = "#0f766e"} onMouseLeave={(e) => e.currentTarget.style.background = COLORS.teal}>
-                <FaUnlock /> {isMobile ? "Grant" : "Grant Access"}
+                <FaUnlock /> {isMobile ? "Grant" : "Allow Courses"}
               </button>
               <button onClick={openAddForm} style={styles.addButton} onMouseEnter={(e) => e.currentTarget.style.background = "#5E427B"} onMouseLeave={(e) => e.currentTarget.style.background = COLORS.primaryButton}>
                 <FaPlus /> {isMobile ? "Add" : "New Course"}
@@ -431,14 +431,14 @@ const Courses = () => {
                       <td style={styles.td}>{course.category || "Uncategorized"}</td>
                       {!isMobile && <td style={styles.td}><SubcategoryBadge subcategories={course.subCategories} isMobile={isMobile} /></td>}
                       <td style={styles.td}>
-                        <div style={styles.priceValue}>₹{course.price || 0}</div>
+                        <div style={styles.priceValue}>{course.price || 0}</div>
                         <div style={{ ...styles.typeBadge, background: course.price > 0 ? COLORS.yellowLight : COLORS.greenLight, color: course.price > 0 ? "#92400e" : "#065f46" }}>
                           {course.price > 0 ? <FaLock style={styles.typeIcon} /> : <FaUnlock style={styles.typeIcon} />}
                           {course.price > 0 ? "Paid" : "Free"}
                         </div>
                       </td>
                       {isAdmin && !isMobile && <td style={styles.td}><div>{enrollmentsCount} total</div><div style={styles.paidCount}>{paidEnrollmentsCount} paid</div></td>}
-                      {isAdmin && !isMobile && <td style={styles.td}><span style={styles.revenue}>₹{courseRevenue}</span></td>}
+                      {isAdmin && !isMobile && <td style={styles.td}><span style={styles.revenue}>{courseRevenue}</span></td>}
                       <td style={styles.td}><span style={styles.status}>{course.status || "Active"}</span></td>
                       <td style={styles.td}>
                         <div style={styles.actionButtons}>
@@ -515,7 +515,7 @@ const Courses = () => {
               <div style={styles.formRow}>
                 <div style={{ flex: 1 }}><label style={styles.label}>Duration (hours) *</label><input type="number" name="duration" value={formData.duration} onChange={handleChange} required min="1" style={styles.input} /></div>
                 <div style={{ flex: 1 }}><label style={styles.label}>Level *</label><select name="level" value={formData.level} onChange={handleChange} style={styles.select}><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option><option value="All Levels">All Levels</option></select></div>
-                <div style={{ flex: 1 }}><label style={styles.label}>Price (₹) *</label><input type="number" name="price" value={formData.price} onChange={handleChange} required min="0" style={styles.input} placeholder="0 for free" /></div>
+                <div style={{ flex: 1 }}><label style={styles.label}>Price () *</label><input type="number" name="price" value={formData.price} onChange={handleChange} required min="0" style={styles.input} placeholder="0 for free" /></div>
               </div>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Status</label>
@@ -569,7 +569,7 @@ const Courses = () => {
                             {hasAccess && <span style={styles.hasAccessBadge}><FaCheckCircle size={10} />Already Has Access</span>}
                           </div>
                           <div style={styles.courseInfoMeta}>{course.category} • {course.duration}h • {course.level}</div>
-                          <div style={styles.courseInfoFooter}><span style={{ ...styles.coursePriceTag, background: course.price > 0 ? COLORS.yellowLight : COLORS.greenLight, color: course.price > 0 ? "#92400e" : "#065f46" }}>₹{course.price || 0}</span><SubcategoryBadge subcategories={course.subCategories} isMobile={true} /></div>
+                          <div style={styles.courseInfoFooter}><span style={{ ...styles.coursePriceTag, background: course.price > 0 ? COLORS.yellowLight : COLORS.greenLight, color: course.price > 0 ? "#92400e" : "#065f46" }}>{course.price || 0}</span><SubcategoryBadge subcategories={course.subCategories} isMobile={true} /></div>
                         </div>
                       </div>
                     );

@@ -30,14 +30,52 @@ const YouTubeRecommendations = () => {
   const [showDiscountOffer, setShowDiscountOffer] = useState(false);
 
 
+
 const handleCloseSpinner = () => {
   setShowSpinner(false);
   sessionStorage.setItem("spinnerShown", "true");
-  setShowDiscountOffer(true);  // ← JUST ADD THIS ONE LINE
+  setShowDiscountOffer(true);
+  // Don't restore overflow — discount popup takes over
 };
- const handleCloseDiscountOffer = () => {
-    setShowDiscountOffer(false);
+useEffect(() => {
+  const isAnyPopupOpen = showSpinner || showDiscountOffer;
+
+  if (isAnyPopupOpen) {
+    // Save current scroll position
+    const scrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.documentElement.style.overflow = 'hidden';
+  } else {
+    // Restore scroll position
+    const scrollY = document.body.style.top;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.documentElement.style.overflow = '';
+    // Restore the scroll position
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  }
+
+  return () => {
+    const scrollY = document.body.style.top;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.documentElement.style.overflow = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
   };
+}, [showSpinner, showDiscountOffer]);
+
+// ✅ Only restore scroll when the LAST popup closes
+const handleCloseDiscountOffer = () => {
+  document.body.style.overflow = ''; // ← restore here, only once
+  setShowDiscountOffer(false);
+};
 
 
   useScrollToTop();
@@ -54,7 +92,17 @@ const [programs, setPrograms] = useState(() => {
   const cached = sessionStorage.getItem('cachedPrograms');
   return cached ? JSON.parse(cached) : [];
 });
+const [certificationsData, setCertificationsData] = useState([]);
 
+useEffect(() => {
+  const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  fetch(`${API_BASE}/vendor-certifications`)
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.success) setCertificationsData(data.data);
+    })
+    .catch(() => {});
+}, []);
 
 useEffect(() => {
   const handleResize = () => {
@@ -147,16 +195,8 @@ const getProgramLink = (keyword) => {
     color: "#8e5203",
     coursesCount: "9+ courses",
   },
-  {
+    {
     id: 5,
-    title: "Data Science",
-    description: "Study data analysis, machine learning and visualization. Become a data-oriented decision maker.",
-    icon: <FaChartLine className="skill-icon" />,
-    color: "#22013a",
-    coursesCount: "15+ courses",
-  },
-  {
-    id: 6,
     title: "WordPress Development",
     description: "Full stack development using the latest frameworks. Build responsive websites and they look as good on smart phones or tablets as they do on a desktop.",
     icon: <FaLaptopCode className="skill-icon" />,
@@ -164,7 +204,7 @@ const getProgramLink = (keyword) => {
     coursesCount: "10+ courses",
   },
   {
-    id: 7,
+    id: 6,
     title: "Cloud Computing",
     description: "Master in the cloud and get skilled in Amazon AWS! you'll study property, deployment, management of your cloud architectures.",
     icon: <FaCloud className="skill-icon" />,
@@ -172,23 +212,15 @@ const getProgramLink = (keyword) => {
     coursesCount: "7+ courses",
   },
   {
-    id: 8,
+    id: 7,
     title: "Database Management",
     description: "SQL, NoSQL, data modeling and administration. Essential skills for backend developers.",
     icon: <FaDatabase className="skill-icon" />,
     color: "#8e5203",
     coursesCount: "5+ courses",
   },
-  {
-    id: 9,
-    title: "Mobile App Development",
-    description: "Build native and cross-platform mobile apps for iOS and Android.",
-    icon: <FaLaptopCode className="skill-icon" />,
-    color: "#22013a",
-    coursesCount: "6+ courses",
-  },
-  {
-    id: 10,
+    {
+    id: 8,
     title: "Cyber Security",
     description: "Get qualified in Amazon Web Services, Google Cloud, Cisco and more Besides, with internationally recognized certifications your IT career will be strengthened further still.",
     icon: <FaCertificate className="skill-icon" />,
@@ -208,7 +240,7 @@ const getProgramLink = (keyword) => {
     },
     {
       id: 2,
-      title: "Data Science and and Engineering",
+      title: "Data Science and Engineering",
       description: "Start out on a data scientist's journey with this full introductory course.",
       link: "https://youtu.be/e3LZNYqsJ_Q",
       thumbnail: "https://i.ytimg.com/vi/e3LZNYqsJ_Q/hqdefault.jpg"
@@ -243,37 +275,6 @@ const getProgramLink = (keyword) => {
     }
   ];
 const demoMaxIndex = Math.max(0, demoLectures.length - (demoCardsPerView || 1));
-const certificationsData = [
-  {
-    id: 1,
-    title: "Microsoft",
-    categories: "Cloud, Networking, Cybersecurity",
-    description: "Industry-standard IT certifications for building foundational tech skills",
-    color: "#22013a",
-    image: MS,
-    alt: "CompTIA Certification",
-    logoWidth: "250px"
-  },
-  {
-    id: 2,
-    title: "AWS",
-    categories: "Cloud, AI, Coding, Networking",
-    description: "Amazon Web Services certifications for cloud professionals",
-    color: "#8e5203",
-    image: awsImage,
-    alt: "AWS Certification"
-  },
-  {
-    id: 3,
-    title: "PMI",
-    categories: "Project & Program Management",
-    description: "Project Management Institute certifications for project leaders",
-    color: "#22013a",
-    image: pmiImage,
-    alt: "PMI Certification",
-    logoWidth: "250px"
-  }
-];
 const cardsPerView = isMobile ? 1 : 2;
 const totalSlides = Math.ceil(skillsData.length / cardsPerView);
 const maxIndex = totalSlides - 1;
@@ -369,7 +370,7 @@ const heroSlides = [
     id: 1,
     badge: " Industry-Led Training",
     title: "Master data analysis in your own way",
-    subtitle: "Learn from leading figures in the industry — turn your career around! Start at the starter stage and culminate at the ultimate expert level.",
+    subtitle: "Learn from leading figures in the industry turn your career around! Start at the starter stage and culminate at the ultimate expert level.",
     cta: "Explore Courses",
     link: "/trainings",
     image: student,           // ← ADD (keep existing image)
@@ -384,7 +385,7 @@ const heroSlides = [
     id: 2,
     badge: " 1-Year Diploma Program",
     title: "Earn a Professional Diploma in 12 Months",
-    subtitle: "Our 1-Year Diploma covers Data Science, AI, Web Development & more — with live mentorship, real projects, and a globally recognized certificate.",
+    subtitle: "Our 1-Year Diploma covers Data Science, AI, Web Development & more with live mentorship, real projects, and a globally recognized certificate.",
     cta: "View Diploma Programs",
     link: "/diplomas",
     image: student2,          // ← ADD
@@ -434,8 +435,7 @@ const HeroSlider = () => {
   return (
     <div className="hs-root">
       {/* Animated background */}
-      <div className="hs-bg" style={{ background: slide.bg }} />
-
+<div className="hs-bg" style={{ background: slide.bg, borderRadius: 'inherit' }} />
       {/* Decorative shapes */}
       <div className="hs-shapes">
         <div className="hs-shape hs-shape-1" style={{ borderColor: slide.accent }} />
@@ -817,38 +817,53 @@ const HeroSlider = () => {
 <Review/>
 
 
-      {/* Certifications Section */}
-      <div className="certifications-section">
-        <div className="certifications-container">
-          <div className="certifications-main-content">
-            <div className="certifications-text-content">
-              <h2 className="certifications-title">
-              Get certified and advance your career
-              </h2>
-              <p className="certifications-subtitle">
-               Perform well in certifications with expert training, in-depth practice tests, and special deals on certification vouchers. </p>
-            </div>
+{/* Certifications Section */}
+<div className="certifications-section">
+  <div className="certifications-container">
+    <div className="certifications-main-content">
 
-            <div className="certifications-grid">
+      {/* LEFT: text stays fixed width */}
+      <div className="certifications-text-content">
+        <h2 className="certifications-title">
+          Get certified and advance your career
+        </h2>
+        <p className="certifications-subtitle">
+          Perform well in certifications with expert training, in-depth
+          practice tests, and special deals on certification vouchers.
+        </p>
+      </div>
 
-{certificationsData.map((cert) => (
-  <div key={cert.id} className="certification-card">
-    <div className="certification-logo-container">
-      <img src={cert.image} alt={cert.alt}
-        style={{ width: cert.logoWidth, maxWidth: '100%' }}
-        className="certification-logo"
-      />
-    </div>
-    <div className="certification-content">
-      <h3 className="certification-title">{cert.title}</h3>
-      <div className="certification-categories">{cert.categories}</div>
+      {/* RIGHT: marquee fills the rest */}
+      <div className="certifications-marquee-outer">
+        {[0, 1].map(copyIdx => (
+          <div
+            className="certifications-marquee-track"
+            key={copyIdx}
+            aria-hidden={copyIdx === 1}
+          >
+            {certificationsData.map((cert) => (
+              <div key={`${copyIdx}-${cert._id}`} className="certification-card">
+                <div className="certification-logo-container">
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    style={{ width: cert.logoWidth || '160px', maxWidth: '100%' }}
+                    className="certification-logo"
+                  />
+                </div>
+                <div className="certification-content">
+                  <h3 className="certification-title">{cert.title}</h3>
+                  <div className="certification-categories">{cert.categories}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
     </div>
   </div>
-))}
-            </div>
-          </div>
-        </div>
-      </div>
+</div>
 
  <TrendingCourses courses={TRENDING_COURSES} />
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Sidebar from "../components/Sidebar";
+// ✅ REPLACE WITH THIS:
 import {
   getLectures,
   getAssignments,
   getAllExams,
-  getCourses,
   getCurrentUser,
 } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 /* ─── stat card ─── */
 const StatCard = ({ icon, label, value, sub, accent }) => (
@@ -52,10 +53,9 @@ const TeacherDashboard = () => {
   const [lectures, setLectures] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [exams, setExams] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+const navigate = useNavigate();
   const user = getCurrentUser();
 
   useEffect(() => {
@@ -64,20 +64,19 @@ const TeacherDashboard = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  useEffect(() => {
+  // ✅ REPLACE WITH THIS:
+useEffect(() => {
     const fetchAll = async () => {
       try {
         setLoading(true);
-        const [lec, asgn, exm, crs] = await Promise.all([
+        const [lec, asgn, exm] = await Promise.all([
           getLectures().catch(() => []),
           getAssignments().catch(() => []),
           getAllExams().catch(() => []),
-          getCourses().catch(() => []),
         ]);
         setLectures(Array.isArray(lec) ? lec : lec?.lectures || []);
         setAssignments(Array.isArray(asgn) ? asgn : []);
         setExams(Array.isArray(exm) ? exm : exm?.exams || []);
-        setCourses(Array.isArray(crs) ? crs : crs?.courses || []);
       } catch (err) {
         console.error("TeacherDashboard Error:", err);
       } finally {
@@ -87,9 +86,24 @@ const TeacherDashboard = () => {
     fetchAll();
   }, []);
 
-  const myLectures = useMemo(() => lectures.filter(l => l.uploadedBy?._id === user?._id || l.uploadedBy === user?._id), [lectures, user]);
-  const myAssignments = useMemo(() => assignments.filter(a => a.uploadedBy?._id === user?._id || a.uploadedBy === user?._id), [assignments, user]);
-  const myExams = useMemo(() => exams.filter(e => e.createdBy?._id === user?._id || e.createdBy === user?._id), [exams, user]);
+ // ✅ REPLACE WITH THIS:
+const myLectures = useMemo(() => lectures.filter(l => l.uploadedBy?._id === user?._id || l.uploadedBy === user?._id), [lectures, user]);
+const myAssignments = useMemo(() => assignments.filter(a => a.uploadedBy?._id === user?._id || a.uploadedBy === user?._id), [assignments, user]);
+const myExams = useMemo(() => exams.filter(e => e.createdBy?._id === user?._id || e.createdBy === user?._id), [exams, user]);
+
+// Derive unique courses only from the teacher's own lectures
+const myCourses = useMemo(() => {
+  const seen = new Set();
+  return myLectures
+    .filter(l => l.course)
+    .map(l => l.course)
+    .filter(c => {
+      const id = c?._id?.toString() || c?.toString();
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+}, [myLectures]);
 
   const recentLectures = [...myLectures].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
   const recentAssignments = [...myAssignments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
@@ -111,11 +125,25 @@ const TeacherDashboard = () => {
         </div>
 
         <div style={grid4}>
-          <StatCard icon="🎬" label="My Lectures" value={myLectures.length} sub={`${courses.length} courses available`} accent="#7c3aed" />
-          <StatCard icon="📋" label="My Assignments" value={myAssignments.length} sub="Total created" accent="#10b981" />
+
+<div onClick={() => {
+  // Navigate to the first course's lectures, or show a message if no courses
+  if (myCourses.length > 0) {
+    const firstCourseId = myCourses[0]?._id || myCourses[0];
+    navigate(`/lectures/${firstCourseId}`);
+  } else {
+    alert("You haven't uploaded any lectures yet.");
+  }
+}} style={{ cursor: myCourses.length > 0 ? "pointer" : "default" }}>
+  <StatCard icon="🎬" label="My Lectures" value={myLectures.length} sub={`${myCourses.length} courses`} accent="#7c3aed" />
+</div>
+
+        
+        <StatCard icon="📋" label="My Assignments" value={myAssignments.length} sub="Total created" accent="#10b981" />
           <StatCard icon="📝" label="My Exams" value={myExams.length} sub="Mock exams created" accent="#f59e0b" />
-          <StatCard icon="📚" label="Total Courses" value={courses.length} sub="Available to assign" accent="#3b82f6" />
-        </div>
+      
+<StatCard icon="📚" label="My Courses" value={myCourses.length} sub="Courses I teach" accent="#3b82f6" />
+           </div>
 
         <div style={grid2}>
           <div style={tableBox}>
@@ -205,3 +233,4 @@ const restrictionItem = { padding: "8px 14px", borderRadius: 8, fontSize: 13, fo
 const spinner = { width: 44, height: 44, border: "3px solid #e5e7eb", borderTop: "3px solid #3D1A5B", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto" };
 
 export default TeacherDashboard;
+

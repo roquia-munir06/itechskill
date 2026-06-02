@@ -10,8 +10,8 @@ const Review = () => {
       quote: "iTechSkill was rated in our 2025 graduate survey as one of the most comprehensive and practical online learning platforms for mastering AI, Data Science, and emerging technologies in general.",
       initials: "IA",
       name: "iTechSkill Alumni",
-      role: "45,320 responses collected",
-      company: null
+    role: "45,320 total responses",
+company: "collected"
     },
     {
       id: 2,

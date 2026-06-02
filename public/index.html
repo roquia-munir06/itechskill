@@ -2,25 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="%PUBLIC_URL%/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Mobile Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- Theme -->
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
+
+    <!-- Google Verification -->
     <meta name="google-site-verification" content="Z4UnLD5i5bSXCAb4r14D_8oHa3hI1InM8hYchmwDp6U" />
+
+    <!-- Default SEO Meta Tags (overridden by react-helmet-async on each page) -->
+    <meta name="description" content="ITechSkill — Professional IT Diploma Programs, Courses and Training in Pakistan. Learn Web Development, AI, Cyber Security and more." />
+
+    <!-- Open Graph (important for Google + social) -->
+    <meta property="og:title" content="ITechSkill | Online Courses & Skill Development" />
+    <meta property="og:description" content="ITechSkill — Professional IT Diploma Programs, Courses and Training in Pakistan." />
+    <meta property="og:image" content="https://itechskill.com/logo.png" />
+    <meta property="og:url" content="https://itechskill.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ITechSkill | Online Courses & Skill Development" />
+    <meta name="twitter:description" content="ITechSkill — Professional IT Diploma Programs, Courses and Training in Pakistan." />
+    <meta name="twitter:image" content="https://itechskill.com/logo.png" />
+
+    <!-- Google Logo Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ITechSkill",
+      "url": "https://itechskill.com",
+      "logo": "https://itechskill.com/logo.png"
+    }
+    </script>
+
+    <!-- Apple Icon -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Lora:ital,wght@0,700;1,600&display=swap">
-
+    <!-- Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Lora:ital,wght@0,700;1,600&display=swap" />
+
+    <!-- Title -->
     <title>ITechSkill: Online Courses & Skill Development Platform</title>
+
+    <!-- Base Styles -->
     <style>
-      * {
-        font-family: 'Segoe UI', 'Apple Color Emoji', 'Segoe UI Emoji', 
+      *, *::before, *::after {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        overscroll-behavior: none;
+        overflow-x: hidden;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        overscroll-behavior: none;
+        overflow-x: hidden;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        font-family: 'Segoe UI', 'Apple Color Emoji', 'Segoe UI Emoji',
                      'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+      }
+      #root {
+        min-height: 100vh;
+        overflow-x: hidden;
       }
     </style>
   </head>

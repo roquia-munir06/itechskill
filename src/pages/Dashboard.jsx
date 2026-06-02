@@ -2,8 +2,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DashboardCards from "../components/DashboardCards";
 import Sidebar from "../components/Sidebar";
-import { getAllUsers, getCourses, getLecturesByCourse, getAllExams } from "../api/api";
-
+import { getAllUsers, getCourses, getLecturesByCourse, getAllExams , getAllProgramsAdmin, getDiplomas} from "../api/api";
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -11,7 +10,8 @@ const Dashboard = () => {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+const [programs, setPrograms] = useState([]);
+const [diplomas, setDiplomas] = useState([]);
   // Responsive handling
   useEffect(() => {
     const handleResize = () => {
@@ -82,21 +82,20 @@ const Dashboard = () => {
   });
 };
 
- useEffect(() => {
+useEffect(() => {
   const fetchData = async () => {
     try {
       setLoading(true);
 
-      // Fetch independently so one failure doesn't break everything
-      const [usersData, coursesData, examsData] = await Promise.all([
-        getAllUsers().catch(err => { console.warn("Users fetch failed:", err.message); return []; }),
-        getCourses().catch(err => { console.warn("Courses fetch failed:", err.message); return []; }),
-        getAllExams().catch(err => { console.warn("Exams fetch failed:", err.message); return []; }),
+      const [usersData, coursesData, examsData, programsData, diplomasData] = await Promise.all([
+        getAllUsers().catch(() => []),
+        getCourses().catch(() => []),
+        getAllExams().catch(() => []),
+        getAllProgramsAdmin().catch(() => []),
+        getDiplomas().catch(() => []),
       ]);
 
-      const processedUsers = Array.isArray(usersData) 
-        ? usersData 
-        : (usersData?.users || []);
+      const processedUsers = Array.isArray(usersData) ? usersData : (usersData?.users || []);
 
       let processedCourses = [];
       if (Array.isArray(coursesData)) {
@@ -107,32 +106,31 @@ const Dashboard = () => {
 
       let allLectures = [];
       if (processedCourses.length > 0) {
-        const lecturePromises = processedCourses.map(course => 
+        const lecturePromises = processedCourses.map(course =>
           getLecturesByCourse(course._id).catch(() => ({ lectures: [] }))
         );
         const lectureArrays = await Promise.all(lecturePromises);
-        allLectures = lectureArrays.flatMap(result => 
+        allLectures = lectureArrays.flatMap(result =>
           Array.isArray(result) ? result : (result?.lectures || [])
         );
       }
 
-      const processedExams = Array.isArray(examsData) 
-        ? examsData 
-        : (examsData?.exams || []);
+      const processedExams = Array.isArray(examsData) ? examsData : (examsData?.exams || []);
 
       setUsers(processedUsers);
       setCourses(processedCourses);
       setLectures(allLectures);
       setExams(processedExams);
+      setPrograms(Array.isArray(programsData?.data) ? programsData.data : Array.isArray(programsData) ? programsData : []);
+      setDiplomas(Array.isArray(diplomasData) ? diplomasData : []);
 
     } catch (err) {
       console.error("Dashboard Error:", err);
-      // Remove the alert — just log it, don't annoy the user
     } finally {
       setLoading(false);
     }
   };
-  
+
   fetchData();
 }, []);
   const metrics = useMemo(() => {
@@ -267,21 +265,23 @@ const Dashboard = () => {
               </h2>
             </div>
             
-            <DashboardCards 
-              totalStudents={metrics.students || 0}
-              totalCourses={courses.length}
-              totalLectures={lectures.length}
-              totalExams={exams.length}
-              todayUsers={metrics.todayActiveUsers || 0}
-              weeklyStudents={metrics.weeklyStudents || 0}
-              monthlyStudents={metrics.monthlyStudents || 0}
-              quarterlyStudents={metrics.quarterlyStudents || 0}
-              studentGrowth={metrics.studentGrowth || 0}
-              courseGrowth={metrics.courseGrowth || 0}
-              lectureGrowth={metrics.lectureGrowth || 0}
-              examGrowth={metrics.examGrowth || 0}
-              userGrowth={metrics.userGrowth || 0}
-            />
+          <DashboardCards 
+  totalStudents={metrics.students || 0}
+  totalCourses={courses.length}
+  totalLectures={lectures.length}
+  totalExams={exams.length}
+  totalPrograms={programs.length}   
+  totalDiplomas={diplomas.length}    
+  todayUsers={metrics.todayActiveUsers || 0}
+  weeklyStudents={metrics.weeklyStudents || 0}
+  monthlyStudents={metrics.monthlyStudents || 0}
+  quarterlyStudents={metrics.quarterlyStudents || 0}
+  studentGrowth={metrics.studentGrowth || 0}
+  courseGrowth={metrics.courseGrowth || 0}
+  lectureGrowth={metrics.lectureGrowth || 0}
+  examGrowth={metrics.examGrowth || 0}
+  userGrowth={metrics.userGrowth || 0}
+/>
           </div>
         </div>
       </div>

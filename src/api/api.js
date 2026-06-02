@@ -4,13 +4,23 @@ import axios from "axios";
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 const getDeviceId = () => {
-  let deviceId = localStorage.getItem("deviceId");
+let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
     deviceId = crypto.randomUUID();
     localStorage.setItem("deviceId", deviceId);
   }
   return deviceId;
 };
+
+// const getDeviceId = () => {
+//   return localStorage.getItem("deviceId") || null; // ✅ return null, don't generate
+// };
+
+
+
+
+
+
 
 const API = axios.create({
   baseURL: BASE_URL,
@@ -22,24 +32,40 @@ const API = axios.create({
 /* ================= TOKEN INTERCEPTOR ================= */
 API.interceptors.request.use((req) => {
   const token    = localStorage.getItem("token");
-  const deviceId = getDeviceId();
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  req.headers["x-device-id"] = deviceId;
+  const deviceId = localStorage.getItem("deviceId"); // ✅ direct read
+  console.log("📡 Sending deviceId:", deviceId);
+  if (token)    req.headers.Authorization  = `Bearer ${token}`;
+  if (deviceId) req.headers["x-device-id"] = deviceId; // ✅ only send if exists
   return req;
 });
 
 /* ================= RESPONSE INTERCEPTOR ================= */
+// ✅ REPLACE WITH THIS:
 API.interceptors.response.use(
   (response) => response,
   (error) => {
     const status  = error.response?.status;
     const message = error.response?.data?.message || "Something went wrong. Please try again.";
+
     if (status === 401) {
-      alert(message);
-      localStorage.removeItem("token");
-      localStorage.removeItem("userInfo");
-      if (window.location.pathname !== "/login") window.location.href = "/login";
+      // Only clear session for real token failures, NOT session/device issues
+      const hardLogoutMessages = [
+        "Token expired or invalid",
+        "Not authorized, no token",
+        "User not found",
+      ];
+
+      if (hardLogoutMessages.includes(message)) {
+        // Real auth failure — clear everything and redirect
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
+        if (window.location.pathname !== "/login") window.location.href = "/login";
+      }
+      // For "Session expired or logged out from this device" or 
+      // "Device not recognized" — just reject the promise silently
+      // DO NOT clear localStorage or redirect
     }
+
     if (status === 403) alert(message);
     return Promise.reject(error);
   }
@@ -51,15 +77,34 @@ export const registerUser = async (userData) => {
   return data;
 };
 
+// export const loginUser = async (credentials) => {
+//   const deviceId = getDeviceId();
+//   const { data } = await API.post("/auth/login", {
+//     email: credentials.email, password: credentials.password, deviceId,
+//   });
+//   localStorage.setItem("token",    data.token);
+//   localStorage.setItem("userInfo", JSON.stringify(data));
+//   return data;
+// };
+
+
+
+// ❌ CURRENT - getDeviceId() might create a new ID that gets sent to login
+// but then a DIFFERENT call to getDeviceId() creates yet another ID
 export const loginUser = async (credentials) => {
-  const deviceId = getDeviceId();
+  const deviceId = getDeviceId(); // captures the ID used for login
   const { data } = await API.post("/auth/login", {
     email: credentials.email, password: credentials.password, deviceId,
   });
   localStorage.setItem("token",    data.token);
   localStorage.setItem("userInfo", JSON.stringify(data));
+  // ✅ ADD THIS LINE - explicitly save the deviceId used during login:
+  localStorage.setItem("deviceId", deviceId);
   return data;
 };
+
+
+
 
 export const logoutUser = async () => {
   try {
@@ -118,10 +163,20 @@ export const deleteUser   = async (id)     => { const { data } = await API.delet
 
 /* ================= COURSES ================= */
 export const getCourses = async () => {
-  const { data } = await API.get("/courses");
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.courses)) return data.courses;
-  return [];
+  console.log("🔍 Fetching courses...");
+  console.log("🔍 Token exists:", !!localStorage.getItem("token"));
+  
+  try {
+    const { data } = await API.get("/courses");
+    console.log("🔍 Courses API response:", data);
+    
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.courses)) return data.courses;
+    return [];
+  } catch (error) {
+    console.error("❌ getCourses error:", error.response?.status, error.response?.data);
+    throw error;
+  }
 };
 
 export const getCourseBySlug = async (slug) => {
@@ -150,12 +205,19 @@ export const getAdminAllCourses = async () => {
   return Array.isArray(data) ? data : data?.courses || [];
 };
 /* ================= DIPLOMAS (ADMIN) ================= */
-export const getDiplomas    = async ()       => { try { const { data } = await API.get("/diplomas/admin/all"); return Array.isArray(data) ? data : []; } catch { return []; } };
+
+export const getDiplomas = async () => {
+  try {
+    const { data } = await API.get("/diplomas"); // ← change from /diplomas/admin/all
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+};
+
 export const createDiploma  = async (dd)     => { const { data } = await API.post("/diplomas", dd);           return data; };
 export const getDiplomaById = async (id)     => { const { data } = await API.get(`/diplomas/${id}`);          return data; };
 export const updateDiploma  = async (id, dd) => { const { data } = await API.put(`/diplomas/${id}`, dd);      return data; };
 export const deleteDiploma  = async (id)     => { const { data } = await API.delete(`/diplomas/${id}`);       return data; };
-
+export const reorderDiplomas = async (orderedIds) => { const { data } = await API.put("/diplomas/reorder", { orderedIds }); return data; }; // ← ADD THIS
 /* ================= ENROLLMENTS ================= */
 export const enrollStudentInCourse   = async (studentId, courseId) => { const { data } = await API.post("/enrollments/enroll", { studentId, courseId }); return data; };
 export const getAdminEnrollments     = async ()                    => { const { data } = await API.get("/enrollments/admin/all"); return data; };
@@ -213,28 +275,12 @@ export const grantFullCourseAccess = async (studentId, courseId) => {
 //     throw error;
 //   }
 // };
-export const grantLimitedLectureAccess = async (enrollmentId, data) => {
-  console.log('Calling API with:', enrollmentId, data);
-  
-  // Try karo POST method se
-  try {
-    const response = await axios.post(`/api/admin/enrollment/grant-limited-access/${enrollmentId}`, data);
-    return response.data;
-  } catch (error) {
-    console.log('POST failed, trying PUT...');
-    
-    // Agar POST fail ho to PUT try karo
-    try {
-      const response = await axios.put(`/api/admin/enrollment/grant-limited-access/${enrollmentId}`, data);
-      return response.data;
-    } catch (err) {
-      console.log('PUT also failed, trying different URL...');
-      
-      // Different URL try karo
-      const response = await axios.post(`/api/admin/grant-access/${enrollmentId}`, data);
-      return response.data;
-    }
-  }
+export const grantLimitedLectureAccess = async (enrollmentId, payload) => {
+  const { data } = await API.patch(
+    `/admin/enrollment/grant-limited-access/${enrollmentId}`,
+    payload
+  );
+  return data;
 };
 
 
@@ -430,19 +476,8 @@ export const deleteLead = async (id) => {
 // export const getLectures          = async ()       => { const { data } = await API.get("/lectures"); return Array.isArray(data) ? data : data?.lectures || []; };
 export const getLectures = async () => {
   try {
-    // First get teacher's courses
-    const courses = await getCourses();
-    const courseIds = courses.map(c => c._id);
-    
-    // Fetch lectures for each course
-    const lecturePromises = courseIds.map(courseId => 
-      API.get(`/lectures/course/${courseId}`)
-    );
-    
-    const results = await Promise.all(lecturePromises);
-    const allLectures = results.flatMap(res => res.data.lectures || []);
-    
-    return allLectures;
+    const { data } = await API.get("/lectures");
+    return Array.isArray(data) ? data : data?.lectures || [];
   } catch (error) {
     console.error("Get lectures error:", error);
     return [];
@@ -746,9 +781,23 @@ export const getExamStatus     = async (sid, eid) => { const { data } = await AP
 
 /* ================= MESSAGES ================= */
 export const sendMessage          = async (md)     => { const { data } = await API.post("/messages", md);      return data; };
-export const getMessages          = async (userId) => { const { data } = await API.get(`/messages/${userId}`); return data; };
-export const getUsersForMessaging = async ()       => { const { data } = await API.get("/messages");            return data; };
+export const getMessages = async (userId) => { 
+  // ✅ adds ?t=123456 to URL so browser never caches it
+  const { data } = await API.get(`/messages/${userId}?t=${Date.now()}`); 
+  return data; 
+};
+export const markMessagesAsRead = async (userId) => {
+  const { data } = await API.put(`/messages/read/${userId}`);
+  return data;
+};
+export const getUsersForMessaging = async () => { const { data } = await API.get("/messages/users"); return data; };
+//                                                                                        ^^^^^^^ add /users
 export const deleteMessage        = async (id)     => { const { data } = await API.delete(`/messages/${id}`);  return data; };
+
+export const clearChatMessages = async (userId) => {
+  const { data } = await API.delete(`/messages/clear/${userId}`);
+  return data;
+};
 
 /* ================= EXAM RESULTS ================= */
 export const getAllExamResults = async () => { const { data } = await API.get("/admin/exam-results"); return data; };
@@ -845,6 +894,14 @@ export const getBlogStats = async () => {
   } catch { return null; }
 };
 
+
+
+export const managerGetAllUsers = ()          => API.get("/manager/users").then(r => r.data);
+export const managerCreateUser  = (data)      => API.post("/manager/users", data).then(r => r.data);
+export const managerUpdateUser  = (id, data)  => API.put(`/manager/users/${id}`, data).then(r => r.data);
+export const managerDeleteUser  = (id)        => API.delete(`/manager/users/${id}`).then(r => r.data);
+export const managerResetPwd    = (id, pwd)   => API.put(`/manager/users/${id}/reset-password`, { password: pwd }).then(r => r.data);
+export const managerSetCourses  = (id, ids)   => API.put(`/manager/users/${id}/courses`, { courses: ids }).then(r => r.data);
 /* ── Manager blog aliases ── */
 export const getManagerBlogs   = getAllBlogsAdmin;
 export const createManagerBlog = createBlog;
@@ -860,7 +917,7 @@ export const updateManagerDiplomaProgram = async (id, pd) => { const { data } = 
 /* ================= PROGRAMS (PUBLIC) ================= */
 export const getAllPrograms = async (category = "") => { const { data } = await API.get(category ? `/programs?category=${category}` : "/programs"); return data; };
 export const getProgramById = async (id)           => { const { data } = await API.get(`/programs/${id}`); return data; };
-
+export const getProgramBySlug = async (slug) => { const { data } = await API.get(`/programs/slug/${slug}`); return data; };
 /* ================= PROGRAMS (ADMIN) ================= */
 export const getAllProgramsAdmin = async ()       => { const { data } = await API.get("/programs/admin/all");      return data; };
 export const createProgram       = async (pd)     => { const { data } = await API.post("/programs", pd);           return data; };

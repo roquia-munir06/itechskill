@@ -4,6 +4,7 @@ import {
   createDiploma,
   updateDiploma,
   deleteDiploma,
+  reorderDiplomas,
 } from "../api/api";
 import Sidebar from "../components/Sidebar";
 import {
@@ -50,7 +51,7 @@ const VideoInsertModal = ({ onInsert, onClose }) => {
   const [urlInput, setUrlInput] = useState("");
   const [urlError, setUrlError] = useState("");
   const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
+    const fileInputRef = useRef(null);
 
   // Converts YouTube / Vimeo watch URLs → embed URLs
   const parseVideoUrl = (raw) => {
@@ -620,7 +621,7 @@ const AdminDiplomas = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [selectedDiploma, setSelectedDiploma] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+const [metaDescription, setMetaDescription] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -628,7 +629,9 @@ const AdminDiplomas = () => {
   const [duration, setDuration] = useState("12 Months");
   const [level, setLevel] = useState("All Levels");
   const [price, setPrice] = useState(0);
-  
+  const [draggedId, setDraggedId] = useState(null);
+const [dragOverId, setDragOverId] = useState(null);
+const [technologies, setTechnologies] = useState("");
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -646,10 +649,12 @@ const resetForm = () => {
   setTitle("");
   // DELETE: setShortTitle("");
   setDescription("");
+  setMetaDescription("");
   setCategory("");
   setDuration("12 Months");
   setLevel("All Levels");
   setPrice(0);
+  setTechnologies("");
   // DELETE: setLearningOutcomes([""]);
   // DELETE: setRequirements([""]);
 };
@@ -688,26 +693,26 @@ const resetForm = () => {
     }
 
    const STATIC_LEARNING_OUTCOMES = [
-  "Gain industry-relevant skills recognized by top employers",
-  "Build real-world projects to strengthen your portfolio",
-  "Master tools and technologies used by professionals",
-  "Understand core concepts through hands-on practice",
-  "Develop problem-solving and analytical thinking skills",
-  "Earn a globally recognized diploma certificate",
-  "Get mentorship from experienced industry instructors",
-  "Prepare for professional certifications in your field",
-];
+"Develop skills recognised by top employers that are industry-employable.",   
+   "Construct real world projects to enhance portfolio.",
+      "Become proficient in tools and technologies used by the professionals.",
+      "Use key concepts in practical application.",
+      "Improve problem solving / analytical thinking skills",
+"Complete a diploma certificate accepted around the world.",    
+"  Free access all year around to ITechSkill and industry sponsored high-end tech seminars, workshops and bootcamps delivered by ITechSkill."];
 
 const payload = {
   title,
-  shortTitle: title.substring(0, 30), // DELETE shortTitle state, derive from title
+  technologies: technologies.split(",").map(t => t.trim()).filter(Boolean),
+  shortTitle: title.substring(0, 30),
   description,
+  metaDescription: metaDescription.trim(), // ← ADD THIS
   category,
   duration,
   level,
   price: Number(price),
-  learningOutcomes: STATIC_LEARNING_OUTCOMES, // ← static, always same
-  requirements: [],                            // ← empty, removed
+learningOutcomes: STATIC_LEARNING_OUTCOMES,
+  requirements: [],
   status: "Active",
   isFeatured: false,
 };
@@ -747,10 +752,13 @@ const handleEdit = (diploma) => {
   setTitle(diploma.title || "");
   // DELETE: setShortTitle(...)
   setDescription(diploma.description || "");
+  setMetaDescription(diploma.metaDescription || "");
   setCategory(diploma.category || "");
   setDuration(diploma.duration || "12 Months");
   setLevel(diploma.level || "All Levels");
   setPrice(diploma.price || 0);
+  setTechnologies((diploma.technologies || []).join(", "));
+
   // DELETE: setLearningOutcomes(...)
   // DELETE: setRequirements(...)
   setFormVisible(true);
@@ -815,54 +823,94 @@ const handleEdit = (diploma) => {
               <table style={{ width: "100%", borderCollapse: "collapse", minWidth: isMobile ? "900px" : "auto" }}>
                 <thead>
                   <tr style={{ background: COLORS.headerPurple, color: COLORS.white }}>
-                    {["#", "Title", "Short Title", "Category", "Duration", "Level", "Price", "Actions"].map((h, i) => (
+                    {["⠿", "#", "Title", "Short Title", "Category", "Duration", "Level", "Price", "Actions"].map((h, i) => (
                       <th key={i} style={{ padding: isMobile ? "14px 16px" : "18px 24px", textAlign: i === 7 ? "center" : "left", fontSize: isMobile ? "13px" : "15px", fontWeight: "700" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
-                <tbody>
-                  {filtered.length > 0 ? filtered.map((diploma, index) => (
-                    <tr key={diploma._id} style={{ borderBottom: `1px solid ${COLORS.lightGray}`, background: index % 2 === 0 ? COLORS.white : COLORS.bgGray }}>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.textGray, fontWeight: "600", fontSize: isMobile ? "13px" : "15px" }}>{index + 1}</td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.deepPurple, fontWeight: "600", fontSize: isMobile ? "13px" : "15px" }}>{diploma.title}</td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.textGray, fontSize: isMobile ? "13px" : "15px" }}>{diploma.shortTitle || "—"}</td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
-                        <span style={{ background: COLORS.goldBadge, color: "#3D2817", padding: "4px 12px", borderRadius: "6px", fontSize: isMobile ? "12px" : "13px", fontWeight: "600" }}>{diploma.category}</span>
-                      </td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
-                        <span style={{ display: "flex", alignItems: "center", gap: "4px", color: COLORS.textGray, fontSize: isMobile ? "13px" : "14px" }}>
-                          <FaClock size={12} /> {diploma.duration}
-                        </span>
-                      </td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
-                        <span style={{ display: "flex", alignItems: "center", gap: "4px", color: COLORS.textGray, fontSize: isMobile ? "13px" : "14px" }}>
-                          <FaSignal size={12} /> {diploma.level}
-                        </span>
-                      </td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
-                       <span style={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "600", color: diploma.price === 0 ? COLORS.brightGreen : COLORS.textGray, fontSize: isMobile ? "13px" : "14px" }}>
-  {diploma.price === 0 ? "Free" : `PKR ${Number(diploma.price).toLocaleString()}`}
-</span>
-                      </td>
-                      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
-                        <div style={{ display: "flex", justifyContent: "center", gap: isMobile ? "6px" : "8px" }}>
-                          {[
-                            { onClick: () => handleViewDetails(diploma), icon: <FaEye size={isMobile ? 12 : 14} />, bg: "#10B981", title: "View" },
-                            { onClick: () => handleEdit(diploma), icon: <FaEdit size={isMobile ? 12 : 14} />, bg: COLORS.warning, title: "Edit" },
-                            { onClick: () => handleDelete(diploma._id), icon: <FaTrash size={isMobile ? 12 : 14} />, bg: COLORS.danger, title: "Delete" },
-                          ].map((btn, i) => (
-                            <button key={i} onClick={btn.onClick} title={btn.title}
-                              style={{ background: btn.bg, color: COLORS.white, border: "none", padding: isMobile ? "6px 8px" : "8px 10px", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center" }}>
-                              {btn.icon}
-                            </button>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                  )) : (
-                    <tr><td colSpan="8" style={{ padding: "40px", textAlign: "center", color: COLORS.darkGray }}>No diploma programs found</td></tr>
-                  )}
-                </tbody>
+               <tbody>
+  {filtered.length > 0 ? filtered.map((diploma, index) => (
+    <tr
+      key={diploma._id}
+      draggable
+      onDragStart={() => setDraggedId(diploma._id)}
+      onDragOver={(e) => { e.preventDefault(); setDragOverId(diploma._id); }}
+      onDragEnd={async () => {
+        if (!draggedId || !dragOverId || draggedId === dragOverId) {
+          setDraggedId(null); setDragOverId(null); return;
+        }
+        const ids = filtered.map(d => d._id);
+        const fromIdx = ids.indexOf(draggedId);
+        const toIdx   = ids.indexOf(dragOverId);
+        const reordered = [...ids];
+        reordered.splice(fromIdx, 1);
+        reordered.splice(toIdx, 0, draggedId);
+        setDraggedId(null); setDragOverId(null);
+        // Optimistic UI update
+        const newOrder = reordered.map(id => diplomas.find(d => d._id === id));
+        setDiplomas(newOrder);
+        try {
+          await reorderDiplomas(reordered);
+          showToast("Order saved.");
+        } catch {
+          showToast("Failed to save order.", "error");
+          fetchDiplomas(); // revert on error
+        }
+      }}
+      style={{
+        borderBottom: `1px solid ${COLORS.lightGray}`,
+        background: dragOverId === diploma._id
+          ? "#EDE9FE"
+          : index % 2 === 0 ? COLORS.white : COLORS.bgGray,
+        cursor: "grab",
+        opacity: draggedId === diploma._id ? 0.4 : 1,
+        transition: "background 0.15s, opacity 0.15s",
+      }}
+    >
+      {/* Drag handle column */}
+      <td style={{ padding: "14px 8px", textAlign: "center", color: "#ccc", fontSize: "18px", userSelect: "none" }}>
+        ⠿
+      </td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.textGray, fontWeight: "600" }}>{index + 1}</td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.deepPurple, fontWeight: "600" }}>{diploma.title}</td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px", color: COLORS.textGray }}>{diploma.shortTitle || "—"}</td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
+        <span style={{ background: COLORS.goldBadge, color: "#3D2817", padding: "4px 12px", borderRadius: "6px", fontSize: "13px", fontWeight: "600" }}>{diploma.category}</span>
+      </td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "4px", color: COLORS.textGray }}>
+          <FaClock size={12} /> {diploma.duration}
+        </span>
+      </td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "4px", color: COLORS.textGray }}>
+          <FaSignal size={12} /> {diploma.level}
+        </span>
+      </td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
+        <span style={{ fontWeight: "600", color: diploma.price === 0 ? COLORS.brightGreen : COLORS.textGray }}>
+          {diploma.price === 0 ? "Free" : `PKR ${Number(diploma.price).toLocaleString()}`}
+        </span>
+      </td>
+      <td style={{ padding: isMobile ? "14px 16px" : "18px 24px" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "8px" }}>
+          {[
+            { onClick: () => handleViewDetails(diploma), icon: <FaEye size={14} />, bg: "#10B981", title: "View" },
+            { onClick: () => handleEdit(diploma),        icon: <FaEdit size={14} />, bg: COLORS.warning, title: "Edit" },
+            { onClick: () => handleDelete(diploma._id),  icon: <FaTrash size={14} />, bg: COLORS.danger, title: "Delete" },
+          ].map((btn, i) => (
+            <button key={i} onClick={btn.onClick} title={btn.title}
+              style={{ background: btn.bg, color: COLORS.white, border: "none", padding: "8px 10px", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center" }}>
+              {btn.icon}
+            </button>
+          ))}
+        </div>
+      </td>
+    </tr>
+  )) : (
+    <tr><td colSpan="9" style={{ padding: "40px", textAlign: "center", color: COLORS.darkGray }}>No diploma programs found</td></tr>
+  )}
+</tbody>
               </table>
             )}
           </div>
@@ -894,7 +942,28 @@ const handleEdit = (diploma) => {
                 <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g., Web Development, AI, Data Science" required
                   style={{ padding: "12px", borderRadius: "8px", border: `1px solid #D1D5DB`, width: "100%", boxSizing: "border-box", fontSize: "14px", outline: "none" }} />
               </div>
-
+<div>
+  <label style={{ display: "block", marginBottom: "6px", color: COLORS.textGray, fontWeight: "600", fontSize: "14px" }}>
+    Technologies Covered{" "}
+    <span style={{ fontSize: "11px", color: COLORS.darkGray, fontWeight: "400" }}>
+      (comma-separated, e.g. Kali Linux, Wireshark, Metasploit)
+    </span>
+  </label>
+  <input
+    value={technologies}
+    onChange={(e) => setTechnologies(e.target.value)}
+    placeholder="Kali Linux, Wireshark, Metasploit, OWASP..."
+    style={{
+      padding: "12px",
+      borderRadius: "8px",
+      border: "1px solid #D1D5DB",
+      width: "100%",
+      boxSizing: "border-box",
+      fontSize: "14px",
+      outline: "none"
+    }}
+  />
+</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                 <div>
                   <label style={{ display: "block", marginBottom: "6px", color: COLORS.textGray, fontWeight: "600", fontSize: "14px" }}>Duration</label>
@@ -918,12 +987,32 @@ const handleEdit = (diploma) => {
                 </div>
               </div>
 
-              <div>
-                <label style={{ display: "block", marginBottom: "6px", color: COLORS.textGray, fontWeight: "600", fontSize: "14px" }}>Price (PKR)</label>
-                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} min="0" step="0.01"
-                  style={{ padding: "12px", borderRadius: "8px", border: `1px solid #D1D5DB`, width: "100%", boxSizing: "border-box", fontSize: "14px", outline: "none" }} />
-              </div>
-
+            
+<div>
+  <label style={{ display: "block", marginBottom: "6px", color: COLORS.textGray, fontWeight: "600", fontSize: "14px" }}>
+    SEO Meta Description
+    <span style={{ fontSize: "11px", color: COLORS.darkGray, fontWeight: "400", marginLeft: "8px" }}>
+      (shown in Google search results — max 160 chars)
+    </span>
+  </label>
+  <textarea
+    value={metaDescription}
+    onChange={(e) => setMetaDescription(e.target.value.slice(0, 160))}
+    placeholder="e.g. Enroll in our 12-month Cyber Security Diploma. Learn ethical hacking, SOC operations, and network security with hands-on training."
+    rows={3}
+    style={{
+      padding: "12px", borderRadius: "8px",
+      border: `1px solid #D1D5DB`, width: "100%",
+      boxSizing: "border-box", fontSize: "14px",
+      outline: "none", fontFamily: "inherit",
+      resize: "vertical", lineHeight: "1.6",
+    }}
+  />
+  <div style={{ fontSize: "11px", textAlign: "right", marginTop: "4px",
+    color: metaDescription.length > 150 ? COLORS.danger : COLORS.darkGray }}>
+    {metaDescription.length}/160
+  </div>
+</div>
               <div>
                 <label style={{ display: "block", marginBottom: "6px", color: COLORS.textGray, fontWeight: "600", fontSize: "14px" }}>Description *</label>
                 <RichTextEditor

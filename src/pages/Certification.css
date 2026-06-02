@@ -28,6 +28,18 @@
   color: white;
 }
 
+
+
+
+
+.certification-cta-badge span {
+  font-size: 1.0rem;
+  font-weight: 650;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .certification-hero-badge {
   display: inline-flex;
   align-items: center;
@@ -462,7 +474,7 @@
   margin-left: -50vw;
   margin-right: -50vw;
   background: linear-gradient(135deg, #868528 20%, #2a043b 100%);
-  padding: 60px 20px;
+  padding: 30px 20px;
   box-sizing: border-box;
 }
 
@@ -479,12 +491,12 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #22013a;
   padding: 10px 25px;
   border-radius: 50px;
-  margin-bottom: 30px;
+  margin-bottom: -10px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid #f9f493;
 }
 
 .certification-cta-title {
@@ -497,13 +509,13 @@
   font-size: 1.2rem;
   line-height: 1.6;
   max-width: 700px;
-  margin: 0 auto 40px;
+  margin: 0 auto 10px;
   opacity: 0.95;
 }
 
 .certification-cta-buttons {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   justify-content: center;
   margin-bottom: 50px;
   flex-wrap: wrap;
@@ -513,7 +525,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 35px;
+  padding: 16px 15px;
   font-size: 1rem;
   font-weight: 600;
   border-radius: 10px;

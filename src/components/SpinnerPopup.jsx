@@ -23,7 +23,9 @@ const SpinnerPopup = ({ onClose }) => {
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [allCourses, setAllCourses] = useState([]);       // ← renamed
+  const [allCourses,  setAllCourses]  = useState([]);
+const [allDiplomas, setAllDiplomas] = useState([]);
+const [activeTab,   setActiveTab]   = useState('courses'); 
   const [selectedCourse, setSelectedCourse] = useState(null); // ← renamed, stores full object
   const [showEnrollment, setShowEnrollment] = useState(false);
   const [enrollmentCourse, setEnrollmentCourse] = useState(null);
@@ -35,17 +37,24 @@ const SpinnerPopup = ({ onClose }) => {
     drawWheel(rotation);
   }, [rotation]);
 
-  useEffect(() => {
-    fetch(`${API_BASE}/programs`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setAllCourses(data.data.filter(p => p.isActive !== false));
-        }
-      })
-      .catch((err) => console.error("Failed to load courses:", err));
-  }, []);
+ // Replace the existing useEffect fetch block with:
+useEffect(() => {
+  // Fetch programs
+  fetch(`${API_BASE}/programs`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) setAllCourses(data.data.filter(p => p.isActive !== false));
+    })
+    .catch(err => console.error('Failed to load courses:', err));
 
+  // Fetch diplomas
+  fetch(`${API_BASE}/diplomas`)
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) setAllDiplomas(data);
+    })
+    .catch(err => console.error('Failed to load diplomas:', err));
+}, []);
   const drawWheel = (currentRotation) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -144,29 +153,49 @@ const SpinnerPopup = ({ onClose }) => {
     if (dist <= 60) handleSpin();
   };
 
-  const filteredCourses = allCourses.filter((c) =>
-    c.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Replace existing getDiscountedFee with:
+const getDiscountedFee = (item) => {
+  if (!item) return null;
 
-  const getDiscountedFee = (course) => {
-    if (!course) return null;
-    const raw = course.installmentFee || course.discountedFee || "";
-    const numeric = parseFloat(raw.replace(/[^0-9.]/g, ""));
-    if (isNaN(numeric)) return null;
-    return Math.round(numeric * 0.80); // 20% off
-  };
+  // Diplomas use numeric `price` field
+  if (item.price !== undefined) {
+    if (item.price === 0) return 0;
+    return Math.round(item.price * 0.80);
+  }
+
+  // Programs use string `installmentFee`
+  const raw = item.installmentFee || item.discountedFee || '';
+  const numeric = parseFloat(raw.replace(/[^0-9.]/g, ''));
+  if (isNaN(numeric)) return null;
+  return Math.round(numeric * 0.80);
+};
+
+// Helper to display original fee for any item type
+const getOriginalFeeLabel = (item) => {
+  if (!item) return '';
+  if (item.price !== undefined)
+    return item.price === 0 ? 'Free' : `PKR ${item.price.toLocaleString()}`;
+  return item.installmentFee || '';
+};
 
   const handleApply = () => {
-    if (!selectedCourse) return;
-    setEnrollmentCourse({
-      ...selectedCourse,
-      discountPercent: 20,
-      discountLabel: "🎉 Spin Wheel 20% Discount Applied!",
-      // Override fee display with discounted amount
-      spinDiscountedFee: getDiscountedFee(selectedCourse),
-    });
-    setShowEnrollment(true);
-  };
+  if (!selectedCourse) return;
+
+  const isDiploma = selectedCourse.price !== undefined;
+
+  setEnrollmentCourse({
+    ...selectedCourse,
+    // normalize fields EnrollmentModal expects
+    installmentFee: isDiploma
+      ? (selectedCourse.price === 0 ? 'Free' : `PKR ${selectedCourse.price.toLocaleString()}`)
+      : selectedCourse.installmentFee,
+    category: isDiploma ? 'diploma' : selectedCourse.category,
+    discountPercent: 20,
+    discountLabel: '🎉 Spin Wheel 20% Discount Applied!',
+    spinDiscountedFee: getDiscountedFee(selectedCourse),
+  });
+  setShowEnrollment(true);
+};
 
   if (showEnrollment && enrollmentCourse) {
     return (
@@ -215,87 +244,162 @@ const SpinnerPopup = ({ onClose }) => {
               </p>
             </div>
 
-            {/* Search */}
-            <div className="sp-search-wrap">
-              <input
-                type="text"
-                className="sp-search-input"
-                placeholder="Search courses..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-              />
-            </div>
+          {/* Replace everything from the search input down to sp-result-footer with: */}
 
-            <div className="sp-diploma-list">
-              {filteredCourses.length === 0 ? (
-                <p className="sp-no-results">No courses found.</p>
-              ) : (
-                filteredCourses.map((course) => (
-                  <label
-                    key={course._id}
-                    className={`sp-diploma-item ${selectedCourse?._id === course._id ? "selected" : ""}`}
-                  >
-                    <input
-                      type="radio"
-                      name="course"
-                      value={course._id}
-                      checked={selectedCourse?._id === course._id}
-                      onChange={() => setSelectedCourse(course)}  
-                      className="sp-radio"
-                    />
-                    <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-                      <span className="sp-diploma-name">{course.title}</span>
-                      {course.installmentFee && (
-                        <span style={{ fontSize: "0.78rem", color: "#888", marginLeft: 8, whiteSpace: "nowrap" }}>
-                          {course.installmentFee}
-                        </span>
-                      )}
-                    </div>
-                  </label>
-                ))
-              )}
-            </div>
+{/* Tabs */}
+<div style={{ display: 'flex', gap: '8px', padding: '0 16px', marginBottom: '10px' }}>
+  {['courses', 'diplomas'].map(tab => (
+    <button
+      key={tab}
+      type="button"
+      onClick={() => { setActiveTab(tab); setSelectedCourse(null); setSearchQuery(''); }}
+      style={{
+        flex: 1, padding: '9px', borderRadius: '8px', border: 'none',
+        background: activeTab === tab
+          ? 'linear-gradient(135deg,#22013a,#7c1abd)'
+          : '#f3f4f6',
+        color: activeTab === tab ? '#fff' : '#6b7280',
+        fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer',
+        fontFamily: 'Outfit, sans-serif', transition: 'all 0.2s',
+      }}>
+      {tab === 'courses' ? `📚 Courses (${allCourses.length})` : `🎓 Diplomas (${allDiplomas.length})`}
+    </button>
+  ))}
+</div>
 
-            {selectedCourse && getDiscountedFee(selectedCourse) && (
-              <div style={{
-                margin: "0 16px 12px",
-                padding: "10px 14px",
-                background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-                border: "1.5px solid #86efac",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-                <div>
-                  <div style={{ fontSize: "0.72rem", color: "#15803d", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                     20% Discount Applied
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-                    <span style={{ fontSize: "0.85rem", color: "#9ca3af", textDecoration: "line-through" }}>
-                      {selectedCourse.installmentFee}
+{/* Search */}
+<div className="sp-search-wrap">
+  <input
+    type="text"
+    className="sp-search-input"
+    placeholder={`Search ${activeTab}...`}
+    value={searchQuery}
+    onChange={e => setSearchQuery(e.target.value)}
+    autoFocus
+  />
+</div>
+
+{/* List */}
+<div className="sp-diploma-list">
+  {activeTab === 'courses' && (() => {
+    const filtered = allCourses.filter(c =>
+      c.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Group by category
+    const professional = filtered.filter(c => c.category === 'professional');
+    const short        = filtered.filter(c => c.category === 'short');
+
+    if (filtered.length === 0)
+      return <p className="sp-no-results">No courses found.</p>;
+
+    return (
+      <>
+        {professional.length > 0 && (
+          <>
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9b8db0', textTransform: 'uppercase', letterSpacing: '0.5px', padding: '4px 2px', margin: '4px 0' }}>
+              Professional Courses
+            </p>
+            {professional.map(course => (
+              <label key={course._id} className={`sp-diploma-item ${selectedCourse?._id === course._id ? 'selected' : ''}`}>
+                <input type="radio" name="course" value={course._id}
+                  checked={selectedCourse?._id === course._id}
+                  onChange={() => setSelectedCourse(course)} className="sp-radio" />
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                  <span className="sp-diploma-name">{course.title}</span>
+                  {course.installmentFee && (
+                    <span style={{ fontSize: '0.78rem', color: '#888', marginLeft: 8, whiteSpace: 'nowrap' }}>
+                      {course.installmentFee}
                     </span>
-                    <span style={{ fontSize: "1.05rem", fontWeight: 800, color: "#15803d" }}>
-                      PKR {getDiscountedFee(selectedCourse).toLocaleString()}
-                    </span>
-                  </div>
+                  )}
                 </div>
-              </div>
-            )}
-
-            {/* Footer */}
-            <div className="sp-result-footer">
-              <button className="sp-not-now" onClick={onClose}>Not now</button>
-              <button
-                className={`sp-apply-btn ${selectedCourse ? "active" : ""}`}
-                onClick={handleApply}
-                disabled={!selectedCourse}
-              >
-                🎓 Enroll Now with 20% Off
-              </button>
-            </div>
+              </label>
+            ))}
           </>
+        )}
+        {short.length > 0 && (
+          <>
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9b8db0', textTransform: 'uppercase', letterSpacing: '0.5px', padding: '4px 2px', margin: '8px 0 4px' }}>
+              Short Courses
+            </p>
+            {short.map(course => (
+              <label key={course._id} className={`sp-diploma-item ${selectedCourse?._id === course._id ? 'selected' : ''}`}>
+                <input type="radio" name="course" value={course._id}
+                  checked={selectedCourse?._id === course._id}
+                  onChange={() => setSelectedCourse(course)} className="sp-radio" />
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                  <span className="sp-diploma-name">{course.title}</span>
+                  {course.installmentFee && (
+                    <span style={{ fontSize: '0.78rem', color: '#888', marginLeft: 8, whiteSpace: 'nowrap' }}>
+                      {course.installmentFee}
+                    </span>
+                  )}
+                </div>
+              </label>
+            ))}
+          </>
+        )}
+      </>
+    );
+  })()}
+
+  {activeTab === 'diplomas' && (() => {
+    const filtered = allDiplomas.filter(d =>
+      d.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    if (filtered.length === 0)
+      return <p className="sp-no-results">No diplomas found.</p>;
+    return filtered.map(diploma => (
+      <label key={diploma._id} className={`sp-diploma-item ${selectedCourse?._id === diploma._id ? 'selected' : ''}`}>
+        <input type="radio" name="course" value={diploma._id}
+          checked={selectedCourse?._id === diploma._id}
+          onChange={() => setSelectedCourse(diploma)} className="sp-radio" />
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+          <span className="sp-diploma-name">{diploma.title}</span>
+          <span style={{ fontSize: '0.78rem', color: '#888', marginLeft: 8, whiteSpace: 'nowrap' }}>
+            {diploma.price === 0 ? 'Free' : `PKR ${diploma.price?.toLocaleString()}`}
+          </span>
+        </div>
+      </label>
+    ));
+  })()}
+</div>
+
+{/* Discount preview */}
+{selectedCourse && getDiscountedFee(selectedCourse) !== null && (
+  <div style={{
+    margin: '0 16px 12px', padding: '10px 14px',
+    background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
+    border: '1.5px solid #86efac', borderRadius: '10px',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+  }}>
+    <div>
+      <div style={{ fontSize: '0.72rem', color: '#15803d', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        🎉 20% Discount Applied
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+        <span style={{ fontSize: '0.85rem', color: '#9ca3af', textDecoration: 'line-through' }}>
+          {getOriginalFeeLabel(selectedCourse)}
+        </span>
+        <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#15803d' }}>
+          PKR {getDiscountedFee(selectedCourse).toLocaleString()}
+        </span>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Footer */}
+<div className="sp-result-footer">
+  <button className="sp-not-now" onClick={onClose}>Not now</button>
+  <button
+    className={`sp-apply-btn ${selectedCourse ? 'active' : ''}`}
+    onClick={handleApply}
+    disabled={!selectedCourse}>
+    🎓 Enroll Now with 20% Off
+  </button>
+</div>
+         </>
         )}
       </div>
     </div>

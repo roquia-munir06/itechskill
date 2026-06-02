@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import StudentSidebar from "../components/StudentSidebar";
+import Sidebar from "../components/Sidebar";
 import { getExamById, getQuestionsByExam, submitAttempt, getExamStatus } from "../api/api";
 import { 
   FaClock, 
@@ -410,8 +410,7 @@ const StudentExamAttemptPage = () => {
   if (loading) {
     return (
       <div style={{ display: "flex", minHeight: "100vh", background: COLORS.bgGray }}>
-        <StudentSidebar />
-        <div style={{ 
+<Sidebar />        <div style={{ 
           flex: 1, 
           marginLeft: isMobile ? "0" : (isTablet ? "80px" : "280px"),
           display: "flex", 
@@ -445,8 +444,7 @@ const StudentExamAttemptPage = () => {
   if (!exam) {
     return (
       <div style={{ display: "flex", minHeight: "100vh", background: COLORS.bgGray }}>
-        <StudentSidebar />
-        <div style={{ 
+<Sidebar />        <div style={{ 
           flex: 1, 
           marginLeft: isMobile ? "0" : (isTablet ? "80px" : "280px"),
           display: "flex", 
@@ -512,7 +510,7 @@ const StudentExamAttemptPage = () => {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: COLORS.bgGray }}>
-      <StudentSidebar />
+      <Sidebar />
       
       <div style={{ 
         flex: 1,

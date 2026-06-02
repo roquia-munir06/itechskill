@@ -261,6 +261,11 @@ const CSS = `
     padding: 13px 13px 14px;
     display: flex; flex-direction: column; gap: 6px; flex: 1;
   }
+
+  .cart-suggestion-cart-btn {
+    margin-top: auto !important;
+  }
+  }
   .cart-suggestion-name {
     font-size: 0.87rem; font-weight: 700; color: #1a1228; line-height: 1.35; margin: 0;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -411,11 +416,21 @@ const CSS = `
   }
 
   /* ── Responsive ── */
-  @media (max-width: 900px) {
+ @media (max-width: 900px) {
     .cart-page-inner  { grid-template-columns: 1fr; padding: 24px 20px 0; gap: 28px; }
     .cart-summary     { position: static; margin-top: 0; }
     .cart-suggestions { padding: 32px 20px 0; }
     .cp-popup         { display: none; }
+
+    /* Keep horizontal scroll but fix button alignment */
+    .cart-suggestions-row {
+      align-items: stretch; /* make all cards same height */
+    }
+
+    .cart-suggestion-card {
+      display: flex;
+      flex-direction: column;
+    }
   }
   @media (max-width: 480px) {
     .cart-page-title   { font-size: 1.5rem; }
@@ -424,6 +439,7 @@ const CSS = `
     .cart-summary-total { font-size: 1.8rem; }
     .cart-suggestion-card { width: 200px; }
   }
+    
 `;
 
 

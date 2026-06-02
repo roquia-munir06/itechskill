@@ -22,10 +22,11 @@ const FloatingButtons = ({ whatsappNumber = "923001234567" }) => {
   const waQuestion = waBase + "?text=I have a question";
   const waMore = waBase + "?text=Tell me more about your courses";
 
+  const isMobileView = window.innerWidth <= 768;
   const circleStyle = {
     borderRadius: '50%',
-    width: '50px',
-    height: '50px',
+    width: isMobileView ? '36px' : '50px',
+    height: isMobileView ? '36px' : '50px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -34,7 +35,7 @@ const FloatingButtons = ({ whatsappNumber = "923001234567" }) => {
     border: '2px solid #22013a',
     background: '#fff',
     color: '#22013a',
-    fontSize: '22px',
+    fontSize: isMobileView ? '16px' : '22px',
   };
 
   return (
@@ -48,14 +49,14 @@ const FloatingButtons = ({ whatsappNumber = "923001234567" }) => {
   rel="noopener noreferrer"
   style={{
     position: 'fixed',
-    bottom: '20px',
-    right: '20px',
+  bottom: isMobileView ? '14px' : '20px',
+    right: isMobileView ? '10px' : '20px',
     zIndex: 9999,
     textDecoration: 'none',
     ...circleStyle,
     border: '2px solid #25D366',
     color: '#25D366',
-    fontSize: '26px',
+    fontSize: isMobileView ? '18px' : '26px',
   }}
   aria-label="Chat on WhatsApp"
 >
@@ -67,8 +68,8 @@ const FloatingButtons = ({ whatsappNumber = "923001234567" }) => {
         onClick={() => setChatOpen(function(o) { return !o; })}
         style={{
           position: 'fixed',
-          bottom: '82px',
-          right: '20px',
+                 bottom: isMobileView ? '60px' : '82px',
+        right: isMobileView ? '10px' : '20px',
           zIndex: 9999,
           ...circleStyle,
         }}
@@ -83,8 +84,8 @@ const FloatingButtons = ({ whatsappNumber = "923001234567" }) => {
           onClick={handleScrollTop}
           style={{
             position: 'fixed',
-            bottom: '144px',
-            right: '20px',
+bottom: isMobileView ? '106px' : '144px',
+        right: isMobileView ? '10px' : '20px',
             zIndex: 9999,
             ...circleStyle,
           }}

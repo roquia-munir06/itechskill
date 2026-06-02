@@ -1,6 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import {
-  FiUser, FiMenu, FiX, FiBookOpen, FiDollarSign,
+import { FiMenu, FiX, FiBookOpen, FiDollarSign,
   FiLogIn, FiUserPlus, FiLogOut, FiAward, FiSearch, FiShoppingCart, FiTrash2, FiPhone, FiMail, FiBriefcase
 } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -43,14 +42,41 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+// Add this after your existing useEffects
+useEffect(() => {
+  if (isMobileMenuOpen) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = `-${window.scrollY}px`;
+  } else {
+    const scrollY = document.body.style.top;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+  }
+  return () => {
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
+  };
+}, [isMobileMenuOpen]);
+
   const fetchSuggestions = (q) => {
     if (!q.trim()) { setSuggestions([]); setShowSuggestions(false); return; }
     setLoadingSuggestions(true);
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       try {
-        const BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
-        const res  = await fetch(`${BASE}/api/search/suggestions?q=${encodeURIComponent(q)}&limit=6`);
+        const BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000/api")
+             .replace(/\/api$/, "");
+const res = await fetch(`${BASE}/api/search/suggestions?q=${encodeURIComponent(q)}&limit=6`);
         if (res.ok) {
           const data = await res.json();
           setSuggestions(data.suggestions || []);
@@ -66,16 +92,24 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
     const q = searchQuery.trim();
     if (!q) return;
     setShowSuggestions(false);
+    setSearchQuery(""); 
     navigate(`/search?q=${encodeURIComponent(q)}`);
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion.title);
-    setShowSuggestions(false);
-    if (suggestion.type === "course")       navigate(`/courses/${suggestion._id}`);
-    else if (suggestion.type === "diploma") navigate(`/diplomas/${suggestion._id}`);
-    else                                    navigate(`/search?q=${encodeURIComponent(suggestion.title)}`);
-  };
+ const handleSuggestionClick = (suggestion) => {
+    setSearchQuery("");
+  setSearchQuery(suggestion.title);
+  setShowSuggestions(false);
+  if (suggestion.type === "course") {
+    navigate(`/course/${suggestion.slug || suggestion._id}`);
+  } else if (suggestion.type === "diploma") {
+    navigate(`/diplomas/${suggestion.slug || suggestion._id}`);
+  } else if (suggestion.type === "program") {
+    navigate(`/programs/${suggestion.slug || suggestion._id}`);
+  } else {
+    navigate(`/search?q=${encodeURIComponent(suggestion.title)}`);
+  }
+};
 
   const handleKeyDown = (e) => {
     if (!showSuggestions || suggestions.length === 0) return;
@@ -105,11 +139,7 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
     <>
       <div className="topbar-links">
   <a href="https://arteanalytics.com/services/">Digital Services</a>
-  
-  <a className="coming-soon-link">
-    Junior Academy
-    <span className="coming-soon-badge">Coming Soon</span>
-  </a>
+  <a href='https://markazai.cloud/'>AI Academy</a>
   
   <a className="coming-soon-link">
     She Learns
@@ -175,7 +205,9 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
             <Link to="/diplomas" className="diploma-nav-button desktop-only" onClick={closeMobileMenu}>
               <FiAward className="diploma-icon" /><span>Diplomas</span>
             </Link>
-
+<Link to="/course-outline" className="diploma-nav-button desktop-only" onClick={closeMobileMenu}>
+  <FiBookOpen className="courses-icon" /><span>Outlines</span>
+</Link>
             {/* Search bar */}
             <div className={`search-bar ${isSearchFocused ? "focused" : ""}`} ref={searchRef}>
               <form onSubmit={handleSearch} className="search-form">
@@ -188,6 +220,7 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
                     onBlur={() => setIsSearchFocused(false)}
                     onKeyDown={handleKeyDown}
                     className="search-input" autoComplete="off"
+style={{ fontSize: "13px" }}
 />
                   <button type="submit" className="search-submit-btn"><FiSearch size={16} /></button>
                 </div>
@@ -330,44 +363,106 @@ const [showEnrollModal, setShowEnrollModal] = useState(false);
             </button>
           </div>
         </div>
+{/* Mobile Menu */}
+<div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
+  <div className="mobile-menu-content">
 
-        {/* Mobile Menu */}
-        <div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
-          <div className="mobile-menu-content">
-            <div className="mobile-divider" />
-            <Link to="/trainings" className="mobile-menu-item" onClick={closeMobileMenu}><FiBookOpen className="menu-item-icon"/><span>Trainings</span></Link>
-            <Link to="/diplomas"       className="mobile-menu-item diploma-mobile-item" onClick={closeMobileMenu}><FiAward className="menu-item-icon"/><span>Diplomas</span></Link>
-            <Link to="/cart"           className="mobile-menu-item cart-mobile-item"    onClick={closeMobileMenu}>
-              <div className="cart-icon-wrapper">
-                <FiShoppingCart className="menu-item-icon" />
-                {cartCount > 0 && <span className="cart-badge">{cartCount > 99 ? "99+" : cartCount}</span>}
-              </div>
-              <span>Cart {cartCount > 0 && `(${cartCount})`}</span>
-            </Link>
-            <Link to="/pricing" className="mobile-menu-item" onClick={closeMobileMenu}><FiDollarSign className="menu-item-icon"/><span>Pricing</span></Link>
-            <div className="mobile-divider" />
-            {user ? (
-              <>
-                <div className="mobile-user-info clickable" onClick={handleUserClick} role="button" tabIndex={0}
-                  onKeyPress={(e) => { if (e.key === "Enter" || e.key === " ") handleUserClick(); }}>
-                  <FiUser className="user-icon" />
-                  <div className="user-details">
-                    <span className="user-greeting">Welcome back!</span>
-                    <span className="user-name-mobile">{user.fullName || user.name || "User"}</span>
-                  </div>
-                </div>
-                <button onClick={() => { logout(); closeMobileMenu(); }} className="mobile-menu-button logout">
-                  <FiLogOut style={{ marginRight: "8px" }} /><span>Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login"    className="mobile-menu-button login"  onClick={closeMobileMenu}><FiLogIn    style={{ marginRight: "8px" }}/><span>Login</span></Link>
-                <Link to="/register" className="mobile-menu-button signup" onClick={closeMobileMenu}><FiUserPlus style={{ marginRight: "8px" }}/><span>Sign Up</span></Link>
-              </>
-            )}
-          </div>
+    {/* User / Auth Hero */}
+    {user ? (
+      <div className="mm-user-hero">
+        <div className="mm-u-avatar">{(user.fullName || user.name || "U").charAt(0).toUpperCase()}</div>
+        <div className="mm-u-info">
+          <div className="mm-u-name">{user.fullName || user.name || "User"}</div>
+          <div className="mm-u-tag">{user.email || "Welcome back!"}</div>
         </div>
+        <button className="mm-u-logout" onClick={() => { logout(); closeMobileMenu(); }}>Logout</button>
+      </div>
+    ) : (
+      <div className="mm-auth-hero">
+        <div className="mm-auth-hero-text">
+          <p>Welcome to ITechSkill</p>
+          <span>Sign in to access your dashboard</span>
+        </div>
+        <div className="mm-auth-pair">
+          <Link to="/login" className="mm-auth-btn ab-l" onClick={closeMobileMenu}><FiLogIn size={13}/> Login</Link>
+          <Link to="/register" className="mm-auth-btn ab-s" onClick={closeMobileMenu}><FiUserPlus size={13}/> Sign Up</Link>
+        </div>
+      </div>
+    )}
+
+  {/* Enroll Strip */}  
+    <div className="mm-enroll-strip">
+      <span className="mm-es-text">Start learning today</span>
+      <button className="mm-es-btn" onClick={() => { setShowEnrollModal(true); closeMobileMenu(); }}>Enroll Now</button>
+    </div>
+
+    {/* Navigate */}
+    <div className="mm-section">
+    
+      <div className="mm-nav-list">
+        <Link to="/trainings" className="mm-nav-row" onClick={closeMobileMenu}>
+          <div className="mm-nav-ic ni-p"><FiBookOpen size={15}/></div>
+          <div className="mm-nav-text"><div className="mm-nav-title">Trainings</div><div className="mm-nav-sub">All courses & workshops</div></div>
+          <span className="mm-chev">›</span>
+        </Link>
+        <Link to="/diplomas" className="mm-nav-row" onClick={closeMobileMenu}>
+          <div className="mm-nav-ic ni-a"><FiAward size={15}/></div>
+          <div className="mm-nav-text"><div className="mm-nav-title">Diplomas</div><div className="mm-nav-sub">1-year certified programs</div></div>
+          <span className="mm-chev">›</span>
+        </Link>
+        <Link to="/course-outline" className="mm-nav-row" onClick={closeMobileMenu}>
+  <div className="mm-nav-ic ni-p"><FiBookOpen size={15}/></div>
+  <div className="mm-nav-text"><div className="mm-nav-title">Course Outlines</div><div className="mm-nav-sub">View full course breakdowns</div></div>
+  <span className="mm-chev">›</span>
+</Link>
+        <Link to="/cart" className="mm-nav-row" onClick={closeMobileMenu}>
+          <div className="mm-nav-ic ni-g"><FiShoppingCart size={15}/></div>
+          <div className="mm-nav-text"><div className="mm-nav-title">Cart</div><div className="mm-nav-sub">{cartCount > 0 ? `${cartCount} items waiting` : "Your cart"}</div></div>
+          <div className="mm-nav-right">{cartCount > 0 && <span className="mm-cbadge">{cartCount}</span>}<span className="mm-chev">›</span></div>
+        </Link>
+        <Link to="/pricing" className="mm-nav-row" onClick={closeMobileMenu}>
+          <div className="mm-nav-ic ni-b"><FiDollarSign size={15}/></div>
+          <div className="mm-nav-text"><div className="mm-nav-title">Pricing</div><div className="mm-nav-sub">Plans & packages</div></div>
+          <span className="mm-chev">›</span>
+        </Link>
+      </div>
+    </div>
+
+    <div className="mm-divider" />
+
+    {/* Quick Links */}
+    <div className="mm-section">
+      <div className="mm-sec-label">Quick Links</div>
+      <div className="mm-chip-grid">
+        <a href="https://arteanalytics.com/services/" className="mm-chip"><div className="mm-chip-name">Digital Services</div><div className="mm-chip-sub">arteanalytics.com</div></a>
+        <a href="//markazai.cloud/"className="mm-chip"><div className="mm-chip-name">AI Academy</div><div className="mm-chip-sub">markazai.com</div></a>
+        <span className="mm-chip off"><div className="mm-chip-name">She Learns <em className="mm-soon">Soon</em></div><div className="mm-chip-sub">Coming soon</div></span>
+        <span className="mm-chip off"><div className="mm-chip-name">Digital Flyers <em className="mm-soon">Soon</em></div><div className="mm-chip-sub">Coming soon</div></span>
+        <a href="/feestructure" className="mm-chip"><div className="mm-chip-name">Fee Structure</div><div className="mm-chip-sub">View all fees</div></a>
+        <span className="mm-chip off"><div className="mm-chip-name">Class Schedule <em className="mm-soon">Soon</em></div><div className="mm-chip-sub">Coming soon</div></span>
+      </div>
+    </div>
+
+    <div className="mm-divider" />
+
+    {/* Contact */}
+    <div className="mm-section">
+      <div className="mm-sec-label">Contact</div>
+      <div className="mm-contact-list">
+        <a href="tel:+923309998880" className="mm-contact-row"><div className="mm-ci ci-g"><FiPhone size={13}/></div><span className="mm-ctxt">UAN +92 3309998880</span></a>
+        <a href="mailto:itechskill6@gmail.com" className="mm-contact-row"><div className="mm-ci ci-b"><FiMail size={13}/></div><span className="mm-ctxt">itechskill6@gmail.com</span></a>
+        <a href="https://wa.me/923309998880" target="_blank" rel="noopener noreferrer" className="mm-contact-row"><div className="mm-ci ci-w"><FaWhatsapp size={13}/></div><span className="mm-ctxt">WhatsApp +92 3309998880</span></a>
+      </div>
+    </div>
+
+    <a href="/Careers" className="mm-dream-row" onClick={closeMobileMenu}>
+      <div className="mm-dream-ic"><FiBriefcase size={14}/></div>
+      <div><div className="mm-dream-txt">Get a Dream Job</div><div className="mm-dream-sub">Explore career opportunities</div></div>
+      <span className="mm-chev" style={{marginLeft:"auto",color:"#d97706"}}>›</span>
+    </a>
+
+  </div>
+</div>
 
       {isMobileMenuOpen && <div className="mobile-menu-overlay" onClick={closeMobileMenu} />}
     </nav>
